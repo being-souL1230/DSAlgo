@@ -360,7 +360,7 @@ A comprehensive educational platform designed to make learning Data Structures a
 
 ## 📝 License
 
-[![License: Custom](https://img.shields.io/badge/License-Custom-blue.svg)](https://github.com/being-souL1230/DSASolver-Prototype/blob/main/LICENSE)  
+[![License: Custom](https://img.shields.io/badge/License-Custom-blue.svg)](https://github.com/being-souL1230/DSAlgo/blob/main/LICENSE)  
 *Custom Open Source Attribution License (Rishab Dixit & Anshi Dixit)*
 
 ## 🔍 Future Enhancements
