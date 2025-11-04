@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA Learning Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        .pagination-controls button {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--text-light);
+            border: 2px solid rgba(99, 102, 241, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 0 0.25rem;
+        }
+
+        .pagination-controls button:hover {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: rgba(99, 102, 241, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .pagination-controls button.active {
+            background: rgba(99, 102, 241, 0.3);
+            border-color: rgba(99, 102, 241, 0.6);
+            color: white;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page[data-page="1"] {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">DSA Learning Platform</div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/binary-tree">Binary Tree</a></li>
+                    <li><a href="/dfs-bfs">DFS & BFS</a></li>
+                    <li><a href="/linked-list">Linked List</a></li>
+                    <li><a href="/hashing">Hashing</a></li>
+                    <li><a href="/sorting">Sorting</a></li>
+                    <li><a href="/practice">Practice</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="pagination-controls" style="text-align: center; margin: 0.25rem 0 0.15rem; padding: 0.4rem 1rem;">
+        <button class="page-btn active" data-page="1">Visualizer</button>
+        <button class="page-btn" data-page="2">Intro & Bubble</button>
+        <button class="page-btn" data-page="3">Selection & Insertion</button>
+        <button class="page-btn" data-page="4">Merge & Quick</button>
+        <button class="page-btn" data-page="5">Heap & Comparison</button>
+        <button class="page-btn" data-page="6">Code</button>
+    </div>
+
+    <div class="container">
+        <div class="content-section">
+            <div class="page" data-page="1">
+                <h1 style="color: var(--primary-color); margin: 0.5rem 0 0.75rem;"><i class="fas fa-chart-bar"></i> Sorting Algorithms Visualizer</h1>
+                <p style="color: #64748b; margin-bottom: 1.25rem;">Watch all major sorting algorithms animate in real-time!</p>
+
+                <style>
+                    .visualizer-container {
+                        background: linear-gradient(145deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.95));
+                        border-radius: 12px;
+                        border: 1px solid rgba(99, 102, 241, 0.2);
+                        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+                        overflow: hidden;
+                        margin-bottom: 1.5rem;
+                    }
+                    .sort-controls {
+                        display: flex;
+                        gap: 0.75rem;
+                        flex-wrap: nowrap;
+                        align-items: center;
+                        padding: 1rem 1.25rem;
+                        background: rgba(15, 23, 42, 0.4);
+                        border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+                    }
+                    @media (max-width: 768px) {
+                        .sort-controls {
+                            flex-wrap: wrap;
+                        }
+                        .sort-controls .button-group {
+                            margin-left: 0;
+                            width: 100%;
+                            justify-content: flex-end;
+                        }
+                    }
+                    .sort-select-wrapper {
+                        position: relative;
+                        min-width: 160px;
+                        max-width: 200px;
+                        flex: 0 1 auto;
+                    }
+                    .sort-select-icon {
+                        position: absolute;
+                        left: 12px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        color: var(--primary-color);
+                        z-index: 1;
+                    }
+                    .sort-select {
+                        width: 100%;
+                        padding: 0.6rem 2.25rem 0.6rem 40px;
+                        background: rgba(15, 23, 42, 0.8);
+                        border: 1px solid rgba(99, 102, 241, 0.3);
+                        border-radius: 6px;
+                        color: var(--text-light);
+                        font-size: 0.9rem;
+                        height: 38px;
+                        appearance: none;
+                        -webkit-appearance: none;
+                        -moz-appearance: none;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2306b6d4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+                        background-repeat: no-repeat;
+                        background-position: right 12px center;
+                        background-size: 12px;
+                    }
+                    .sort-btn {
+                        padding: 0.25rem 0.6rem;
+                        border-radius: 4px;
+                        font-size: 0.8rem;
+                        font-weight: 500;
+                        cursor: pointer;
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 5px;
+                        transition: all 0.15s ease;
+                        height: 30px;
+                        white-space: nowrap;
+                        background: rgba(255, 255, 255, 0.05);
+                        color: var(--text-light);
+                        border: 1px solid rgba(255, 255, 255, 0.1);
+                        line-height: 1;
+                    }
+                    .sort-btn:hover {
+                        background: rgba(255, 255, 255, 0.08);
+                        transform: none;
+                    }
+                    .btn-primary {
+                        background: var(--primary-color);
+                        color: white;
+                        box-shadow: none !important;
+                        outline: none !important;
+                        padding: 0.2rem 0.8rem !important;
+                    }
+                    .btn-secondary {
+                        background: rgba(30, 41, 59, 0.6);
+                        border: 1px solid rgba(99, 102, 241, 0.2);
+                        color: var(--text-light);
+                        padding: 0.2rem 0.6rem !important;
+                    }
+                    .btn-danger {
+                        background: rgba(239, 68, 68, 0.08);
+                        border: 1px solid rgba(239, 68, 68, 0.2);
+                        color: #ef4444;
+                        padding: 0.2rem 0.6rem !important;
+                    }
+                    .sort-select:focus, .sort-btn:focus {
+                        outline: none;
+                        box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.4);
+                    }
+                    .sort-btn:hover {
+                        transform: translateY(-1px);
+                    }
+                    .sort-btn:active {
+                        transform: translateY(1px);
+                    }
+                    .sort-select:hover {
+                        border-color: rgba(99, 102, 241, 0.6);
+                    }
+                </style>
+
+                <div class="visualizer-container">
+                <div class="sort-controls">
+                    <div class="sort-select-wrapper">
+                        <i class="fas fa-sort-amount-down sort-select-icon"></i>
+                        <select id="algorithmSelect" class="sort-select">
+                            <option value="bubble">Bubble Sort</option>
+                            <option value="selection">Selection Sort</option>
+                            <option value="insertion">Insertion Sort</option>
+                            <option value="merge">Merge Sort</option>
+                            <option value="quick">Quick Sort</option>
+                            <option value="heap">Heap Sort</option>
+                        </select>
+                    </div>
+                    
+                    <div class="speed-control" style="display: flex; align-items: center; gap: 0.5rem; min-width: 180px;">
+                        <i class="fas fa-tachometer-alt" style="color: var(--primary-color); font-size: 0.9rem;"></i>
+                        <input type="range" id="speedSlider" min="1" max="100" value="50" 
+                               style="flex: 1; height: 4px; -webkit-appearance: none; appearance: none; background: var(--border-color); border-radius: 2px; outline: none;
+                               &::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 12px; height: 12px; background: var(--primary-color); border-radius: 50%; cursor: pointer; border: 2px solid var(--border-color); }
+                               &::-moz-range-thumb { width: 12px; height: 12px; background: var(--primary-color); border-radius: 50%; cursor: pointer; border: 2px solid var(--border-color); }
+                               &::-webkit-slider-runnable-track { background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%); height: 100%; border-radius: 2px; }
+                               &::-moz-range-track { background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%); height: 100%; border-radius: 2px; }"
+                        >
+                        <span id="speedValue" style="min-width: 24px; text-align: center; font-size: 0.8rem; color: var(--text-light); font-weight: 600; background: rgba(6, 182, 212, 0.1); padding: 2px 6px; border-radius: 4px;">50</span>
+                    </div>
+                    
+                    <div class="button-group" style="display: flex; gap: 0.4rem; margin-left: auto; align-items: center;">
+                        <button onclick="startSort()" class="sort-btn btn-primary" style="padding: 0.3rem 0.8rem; min-width: auto; font-size: 0.85rem;">
+                            <i class="fas fa-play"></i> Start
+                        </button>
+                        
+                        <button onclick="generateRandomData()" class="sort-btn btn-secondary" style="padding: 0.3rem 0.8rem; min-width: auto; font-size: 0.85rem;">
+                            <i class="fas fa-random"></i> Random
+                        </button>
+                        
+                        <button onclick="stopSort()" class="sort-btn btn-danger" style="padding: 0.3rem 0.8rem; min-width: auto; font-size: 0.85rem;">
+                            <i class="fas fa-stop"></i> Stop
+                    </div>
+                </div>
+
+                <div id="result-display" style="padding: 0.75rem 1rem; background: rgba(6, 182, 212, 0.05); border-bottom: 1px solid rgba(99, 102, 241, 0.1); font-size: 0.9rem; color: var(--text-light);">
+                    Select an algorithm and click "Start Sort" to begin!
+                </div>
+
+                <div class="visualization-container" style="padding: 1rem;">
+                    <svg id="sort-svg" width="100%" height="380" style="display: block;"></svg>
+                </div>
+                </div>
+            </div>
+
+          <div class="page" data-page="2">
+    <h2 style="color: var(--primary-color); margin-bottom: 1.5rem;"><i class="fas fa-book"></i> Introduction & Bubble Sort</h2>
+    
+    <div style="background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); padding: 2rem; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
+        
+        <!-- Introduction Section -->
+        <div style="margin-bottom: 2rem;">
+            <h3 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-chart-bar"></i> What is Sorting?</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <div style="background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%); padding: 1.25rem; border-radius: 8px;">
+                    <p style="line-height: 1.7; color: var(--text-light); margin-bottom: 1rem;">
+                        <strong>Sorting</strong> is the process of arranging data in a specific order (ascending or descending). It's one of the most fundamental operations 
+                        in computer science, used to organize data for efficient searching, analysis, and presentation.
+                    </p>
+                    <p style="line-height: 1.7; color: var(--text-light);">
+                        <strong>Why Sorting Matters:</strong> Sorted data enables binary search (O(log n) instead of O(n)), makes databases efficient, 
+                        helps find duplicates, and is crucial for many algorithms like merge operations.
+                    </p>
+                </div>
+                <div style="background: rgba(30, 41, 59, 0.8); padding: 1.25rem; border-radius: 8px; border-left: 4px solid var(--primary-color);">
+                    <h4 style="color: var(--primary-color); margin-bottom: 0.75rem;"><i class="fas fa-key"></i> Key Concepts</h4>
+                    <div style="display: grid; gap: 0.5rem;">
+                        <p style="line-height: 1.6; color: var(--text-light); margin: 0; font-size: 0.9rem;">
+                            <span style="color: #10b981;">✅ Stable Sort:</span> Maintains relative order of equal elements
+                        </p>
+                        <p style="line-height: 1.6; color: var(--text-light); margin: 0; font-size: 0.9rem;">
+                            <span style="color: #3b82f6;">📍 In-place:</span> Uses O(1) extra memory space
+                        </p>
+                        <p style="line-height: 1.6; color: var(--text-light); margin: 0; font-size: 0.9rem;">
+                            <span style="color: #f59e0b;">⚡ Adaptive:</span> Performs better on partially sorted data
+                        </p>
+                        <p style="line-height: 1.6; color: var(--text-light); margin: 0; font-size: 0.9rem;">
+                            <span style="color: #8b5cf6;">🌐 Online:</span> Can sort data as it arrives (streaming)
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bubble Sort Section -->
+        <div>
+            <h3 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-1"></i> Bubble Sort - The Beginner's Algorithm</h3>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <!-- How It Works & Real World -->
+                <div style="background: rgba(59, 130, 246, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(59, 130, 246, 0.3); padding: 1.25rem; border-radius: 8px; border-left: 4px solid #3b82f6;">
+                    <h4 style="color: #3b82f6; margin-bottom: 0.75rem;"><i class="fas fa-cogs"></i> How It Works</h4>
+                    <p style="line-height: 1.7; color: var(--text-light); margin-bottom: 1rem;">
+                        Repeatedly steps through the list, compares adjacent elements and swaps them if they're in wrong order. 
+                        The largest element "bubbles up" to its correct position in each pass.
+                    </p>
+                    <p style="line-height: 1.6; color: var(--text-light); font-size: 0.9rem; background: rgba(30, 41, 59, 0.6); padding: 0.75rem; border-radius: 6px;">
+                        <strong>Example:</strong> [5, 2, 8, 1] → Compare 5&2, swap → [2, 5, 8, 1] → Compare 5&8, no swap → [2, 5, 8, 1] 
+                        → Compare 8&1, swap → [2, 5, 1, 8]. Now 8 is in place. Repeat for remaining elements.
+                    </p>
+                </div>
+
+                <div style="background: rgba(217, 119, 6, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(217, 119, 6, 0.3); padding: 1.25rem; border-radius: 8px;">
+                    <h4 style="color: #d97706; margin-bottom: 0.75rem;"><i class="fas fa-lightbulb"></i> Real-World Analogies</h4>
+                    <p style="line-height: 1.6; color: var(--text-light); margin-bottom: 0.75rem;">
+                        <strong style="color: #f59e0b;">📝 Sorting Papers:</strong> Go through the stack, if the first paper is bigger than the second, 
+                        swap them. Repeat until no swaps needed.
+                    </p>
+                    <p style="line-height: 1.6; color: var(--text-light);">
+                        <strong style="color: #10b981;">👥 People in Line:</strong> Each person only looks at their neighbor. If you're taller and should be behind, 
+                        swap positions. Repeat until everyone is in order.
+                    </p>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <!-- Performance & Properties -->
+                <div style="background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(51, 65, 85, 0.4); padding: 1.25rem; border-radius: 8px;">
+                    <h4 style="color: var(--primary-color); margin-bottom: 0.75rem;"><i class="fas fa-chart-line"></i> Performance Analysis</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                        <div>
+                            <p style="line-height: 1.6; color: var(--text-light); margin: 0; font-size: 0.9rem;">
+                                <strong>Best Case:</strong><br>
+                                <span style="color: #059669; font-weight: 600;">O(n)</span><br>
+                                <small style="color: var(--text-light);">Already sorted</small>
+                            </p>
+                        </div>
+                        <div>
+                            <p style="line-height: 1.6; color: var(--text-light); margin: 0; font-size: 0.9rem;">
+                                <strong>Average Case:</strong><br>
+                                <span style="color: #dc2626; font-weight: 600;">O(n²)</span><br>
+                                <small style="color: var(--text-light);">Nested loops</small>
+                            </p>
+                        </div>
+                        <div>
+                            <p style="line-height: 1.6; color: var(--text-light); margin: 0; font-size: 0.9rem;">
+                                <strong>Worst Case:</strong><br>
+                                <span style="color: #dc2626; font-weight: 600;">O(n²)</span><br>
+                                <small style="color: var(--text-light);">Reverse sorted</small>
+                            </p>
+                        </div>
+                        <div>
+                            <p style="line-height: 1.6; color: var(--text-light); margin: 0; font-size: 0.9rem;">
+                                <strong>Space:</strong><br>
+                                <span style="color: #059669; font-weight: 600;">O(1)</span><br>
+                                <small style="color: var(--text-light);">In-place</small>
+                            </p>
+                        </div>
+                    </div>
+                    <div style="margin-top: 0.75rem;">
+                        <p style="line-height: 1.6; color: var(--text-light); margin: 0; font-size: 0.85rem;">
+                            <strong>Properties:</strong> ✅ Stable, ⚡ Adaptive, 📍 In-place<br>
+                            <strong>Best For:</strong> Teaching, small datasets, nearly sorted data
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Tips & Common Mistakes -->
+                <div style="background: rgba(245, 158, 11, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(245, 158, 11, 0.3); padding: 1.25rem; border-radius: 8px;">
+                    <h4 style="color: #f59e0b; margin-bottom: 0.75rem;"><i class="fas fa-exclamation-circle"></i> Pro Tips & Common Mistakes</h4>
+                    <ul style="line-height: 1.6; color: var(--text-light); font-size: 0.85rem; padding-left: 1rem;">
+                        <li><strong>Optimization:</strong> Add flag to detect no swaps - exit early when sorted!</li>
+                        <li><strong>Edge Case:</strong> Already sorted array takes O(n²) without optimization</li>
+                        <li><strong>Practical Use:</strong> Used in embedded systems where simplicity > performance</li>
+                        <li><strong>Interview Tip:</strong> Always mention the O(n) best case optimization</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
+
+         <div class="page" data-page="3">
+    <h2 style="color: var(--primary-color); margin-bottom: 1.5rem;">
+        <i class="fas fa-list"></i> Selection & Insertion Sort
+    </h2>
+    
+    <div style="background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); padding: 2rem; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
+        <!-- Selection Sort Section -->
+        <div style="margin-bottom: 2rem;">
+            <h3 style="color: var(--primary-color); margin-bottom: 1rem;">
+                <i class="fas fa-1"></i> Selection Sort
+            </h3>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div style="background: rgba(139, 92, 246, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(139, 92, 246, 0.3); padding: 1rem; border-radius: 8px; border-left: 4px solid #8b5cf6;">
+                    <h4 style="color: #8b5cf6; margin-bottom: 0.5rem; font-size: 1rem;">
+                        <i class="fas fa-cogs"></i> How It Works
+                    </h4>
+                    <p style="line-height: 1.6; color: var(--text-light); font-size: 0.85rem; margin-bottom: 0.5rem;">
+                        Divides array into sorted and unsorted regions. Repeatedly finds the minimum element from unsorted region and places it at the end of sorted region.
+                    </p>
+                    <p style="line-height: 1.6; color: var(--text-light); font-size: 0.8rem;">
+                        <strong>Example:</strong> [64, 25, 12, 22, 11] → Find min(11), swap → [11, 25, 12, 22, 64] → Find min(12), swap → [11, 12, 25, 22, 64] → Continue.
+                    </p>
+                </div>
+
+                <div style="background: rgba(217, 119, 6, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(217, 119, 6, 0.3); padding: 1rem; border-radius: 8px;">
+                    <h4 style="color: #d97706; margin-bottom: 0.5rem; font-size: 1rem;">
+                        <i class="fas fa-lightbulb"></i> Real-World Analogies
+                    </h4>
+                    <p style="line-height: 1.6; color: var(--text-light); font-size: 0.85rem;">
+                        <strong style="color: #8b5cf6;">🏆 Picking Teams:</strong> Find the best player, put them in the team, then find the next best from remaining players.
+                    </p>
+                    <p style="line-height: 1.6; color: var(--text-light); font-size: 0.85rem;">
+                        <strong style="color: #06b6d4;">👕 Organizing Clothes:</strong> Scan all items, pick the smallest, place it first, then repeat with remaining items.
+                    </p>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div style="background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(51, 65, 85, 0.4); padding: 1rem; border-radius: 8px;">
+                    <p style="line-height: 1.6; color: var(--text-light); font-size: 0.85rem;">
+                        <strong><i class="fas fa-clock"></i> Time Complexity:</strong><br>
+                        - Best: <span style="color: #dc2626; font-weight: 600;">O(n²)</span><br>
+                        - Average: <span style="color: #dc2626; font-weight: 600;">O(n²)</span><br>
+                        - Worst: <span style="color: #dc2626; font-weight: 600;">O(n²)</span><br>
+                        <strong><i class="fas fa-database"></i> Space:</strong> <span style="color: #059669; font-weight: 600;">O(1)</span><br>
+                        <strong>Properties:</strong> Not Stable, In-place<br>
+                        <strong>Best For:</strong> Small datasets, minimal writes
+                    </p>
+                </div>
+                
+                <div style="background: rgba(139, 92, 246, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(139, 92, 246, 0.3); padding: 1rem; border-radius: 8px;">
+                    <h4 style="color: #8b5cf6; margin-bottom: 0.5rem; font-size: 1rem;">
+                        <i class="fas fa-star"></i> Key Advantages
+                    </h4>
+                    <ul style="line-height: 1.6; color: var(--text-light); font-size: 0.8rem; padding-left: 1rem;">
+                        <li><strong>Minimal Swaps:</strong> Only O(n) swaps - good when writes are expensive</li>
+                        <li><strong>Predictable:</strong> Same comparisons regardless of input</li>
+                        <li><strong>Simple:</strong> Easy to understand and implement</li>
+                        <li><strong>Flash Memory:</strong> Ideal for SSD/flash storage</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Insertion Sort Section -->
+        <div>
+            <h3 style="color: var(--primary-color); margin-bottom: 1rem;">
+                <i class="fas fa-2"></i> Insertion Sort
+            </h3>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div style="background: rgba(16, 185, 129, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(16, 185, 129, 0.3); padding: 1rem; border-radius: 8px; border-left: 4px solid #10b981;">
+                    <h4 style="color: #10b981; margin-bottom: 0.5rem; font-size: 1rem;">
+                        <i class="fas fa-cogs"></i> How It Works
+                    </h4>
+                    <p style="line-height: 1.6; color: var(--text-light); font-size: 0.85rem; margin-bottom: 0.5rem;">
+                        Builds sorted array one item at a time. Takes each element and inserts it into correct position in sorted portion, shifting larger elements.
+                    </p>
+                    <p style="line-height: 1.6; color: var(--text-light); font-size: 0.8rem;">
+                        <strong>Example:</strong> [12, 11, 13, 5, 6] → Insert 11 → [11, 12, 13, 5, 6] → Insert 5 → [5, 11, 12, 13, 6] → Insert 6 → [5, 6, 11, 12, 13].
+                    </p>
+                </div>
+
+                <div style="background: rgba(217, 119, 6, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(217, 119, 6, 0.3); padding: 1rem; border-radius: 8px;">
+                    <h4 style="color: #d97706; margin-bottom: 0.5rem; font-size: 1rem;">
+                        <i class="fas fa-lightbulb"></i> Real-World Analogies
+                    </h4>
+                    <p style="line-height: 1.6; color: var(--text-light); font-size: 0.85rem;">
+                        <strong style="color: #10b981;">🃏 Sorting Playing Cards:</strong> Pick up one card at a time and insert it into correct position among cards you're holding.
+                    </p>
+                    <p style="line-height: 1.6; color: var(--text-light); font-size: 0.85rem;">
+                        <strong style="color: #3b82f6;">📚 Organizing Books:</strong> Take each book and slide it into right spot, moving others aside as needed.
+                    </p>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div style="background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(51, 65, 85, 0.4); padding: 1rem; border-radius: 8px;">
+                    <p style="line-height: 1.6; color: var(--text-light); font-size: 0.85rem;">
+                        <strong><i class="fas fa-clock"></i> Time Complexity:</strong><br>
+                        - Best: <span style="color: #059669; font-weight: 600;">O(n)</span> when sorted<br>
+                        - Average: <span style="color: #dc2626; font-weight: 600;">O(n²)</span><br>
+                        - Worst: <span style="color: #dc2626; font-weight: 600;">O(n²)</span> reverse sorted<br>
+                        <strong><i class="fas fa-database"></i> Space:</strong> <span style="color: #059669; font-weight: 600;">O(1)</span><br>
+                        <strong>Properties:</strong> Stable, Adaptive, In-place, Online<br>
+                        <strong>Best For:</strong> Nearly sorted data, small datasets
+                    </p>
+                </div>
+                
+                <div style="background: rgba(16, 185, 129, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(16, 185, 129, 0.3); padding: 1rem; border-radius: 8px;">
+                    <h4 style="color: #10b981; margin-bottom: 0.5rem; font-size: 1rem;">
+                        <i class="fas fa-rocket"></i> Why Powerful
+                    </h4>
+                    <ul style="line-height: 1.6; color: var(--text-light); font-size: 0.8rem; padding-left: 1rem;">
+                        <li><strong>Adaptive:</strong> O(n) for nearly sorted data</li>
+                        <li><strong>Online Algorithm:</strong> Sorts data as it arrives</li>
+                        <li><strong>Cache Friendly:</strong> Good locality of reference</li>
+                        <li><strong>Hybrid Sorts:</strong> Used in Timsort & Introsort</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+          <div class="page" data-page="4">
+    <h2 style="color: var(--primary-color); margin-bottom: 1.5rem;">
+        <i class="fas fa-rocket"></i> Merge & Quick Sort - Divide & Conquer Masters
+    </h2>
+
+    <div style="background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); padding: 2rem; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
+        <!-- Merge Sort Section -->
+        <div style="margin-bottom: 2rem;">
+            <h3 style="color: var(--primary-color); margin-bottom: 1rem;">
+                <i class="fas fa-1"></i> Merge Sort - The Reliable One
+            </h3>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div style="background: rgba(245, 158, 11, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(245, 158, 11, 0.3); padding: 1rem; border-radius: 8px; border-left: 4px solid #f59e0b;">
+                    <h4 style="color: #f59e0b; margin-bottom: 0.5rem; font-size: 1rem;">
+                        <i class="fas fa-cogs"></i> How It Works
+                    </h4>
+                    <p style="line-height: 1.6; color: var(--text-light); font-size: 0.85rem; margin-bottom: 0.5rem;">
+                        <strong>Divide & Conquer:</strong> Split array into halves → Recursively sort → Merge sorted halves. 
+                        The merge operation compares elements from both halves, selecting the smaller each time.
+                    </p>
+                    <p style="line-height: 1.6; color: var(--text-light); font-size: 0.8rem;">
+                        <strong>Example:</strong> [38, 27, 43, 3] → Split → [38,27] & [43,3] → Split → [38],[27],[43],[3] 
+                        → Merge → [27,38] & [3,43] → Final merge → [3,27,38,43]
+                    </p>
+                </div>
+
+                <div style="background: rgba(217, 119, 6, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(217, 119, 6, 0.3); padding: 1rem; border-radius: 8px;">
+                    <h4 style="color: #d97706; margin-bottom: 0.5rem; font-size: 1rem;">
+                        <i class="fas fa-lightbulb"></i> Real-World Analogies
+                    </h4>
+                    <p style="line-height: 1.6; color: var(--text-light); font-size: 0.85rem;">
+                        <strong style="color: #f59e0b;">📄 Organizing Papers:</strong> Divide large pile, delegate sorting, merge by comparing top items
+                    </p>
+                    <p style="line-height: 1.6; color: var(--text-light); font-size: 0.85rem;">
+                        <strong style="color: #8b5cf6;">🃏 Merging Card Decks:</strong> Two sorted decks → repeatedly pick smaller top card → one sorted deck
+                    </p>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div style="background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(51, 65, 85, 0.4); padding: 1rem; border-radius: 8px;">
+                    <p style="line-height: 1.6; color: var(--text-light); font-size: 0.85rem;">
+                        <strong><i class="fas fa-clock"></i> Time Complexity:</strong><br>
+                        • Best: <span style="color: #059669; font-weight: 600;">O(n log n)</span><br>
+                        • Average: <span style="color: #059669; font-weight: 600;">O(n log n)</span><br>
+                        • Worst: <span style="color: #059669; font-weight: 600;">O(n log n)</span> (Guaranteed!)<br>
+                        <strong><i class="fas fa-database"></i> Space:</strong> <span style="color: #dc2626; font-weight: 600;">O(n)</span> (auxiliary array)<br>
+                        <strong>Properties:</strong> ✅ Stable, 📊 Predictable<br>
+                        <strong>Best For:</strong> Large datasets, linked lists, external sorting
+                    </p>
+                </div>
+                
+                <div style="background: rgba(245, 158, 11, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(245, 158, 11, 0.3); padding: 1rem; border-radius: 8px;">
+                    <h4 style="color: #f59e0b; margin-bottom: 0.5rem; font-size: 1rem;">
+                        <i class="fas fa-shield-alt"></i> Key Advantages
+                    </h4>
+                    <ul style="line-height: 1.6; color: var(--text-light); font-size: 0.8rem; padding-left: 1rem;">
+                        <li><strong>Guaranteed Performance:</strong> Always O(n log n) regardless of input</li>
+                        <li><strong>Stable:</strong> Maintains relative order of equal elements</li>
+                        <li><strong>External Sorting:</strong> Can sort data too large for memory</li>
+                        <li><strong>Linked Lists:</strong> Works efficiently with linked lists (O(1) extra space)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Sort Section -->
+        <div>
+            <h3 style="color: var(--primary-color); margin-bottom: 1rem;">
+                <i class="fas fa-2"></i> Quick Sort - The Speed Demon
+            </h3>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div style="background: rgba(239, 68, 68, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(239, 68, 68, 0.3); padding: 1rem; border-radius: 8px; border-left: 4px solid #ef4444;">
+                    <h4 style="color: #ef4444; margin-bottom: 0.5rem; font-size: 1rem;">
+                        <i class="fas fa-cogs"></i> How It Works
+                    </h4>
+                    <p style="line-height: 1.6; color: var(--text-light); font-size: 0.85rem; margin-bottom: 0.5rem;">
+                        <strong>Pivot & Partition:</strong> Choose pivot → Partition into smaller/greater elements → 
+                        Recursively sort partitions. Efficient due to in-place operations and cache friendliness.
+                    </p>
+                    <p style="line-height: 1.6; color: var(--text-light); font-size: 0.8rem;">
+                        <strong>Example:</strong> [10, 7, 8, 9, 1, 5] pivot=5 → Partition → [1, 5, 8, 9, 7, 10] → 
+                        Sort left [1] and right [8,9,7,10] recursively
+                    </p>
+                    <p style="line-height: 1.6; color: var(--text-light); font-size: 0.75rem; font-style: italic;">
+                        <strong>Pro Tip:</strong> Use random pivot or median-of-three to avoid O(n²) worst case
+                    </p>
+                </div>
+
+                <div style="background: rgba(217, 119, 6, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(217, 119, 6, 0.3); padding: 1rem; border-radius: 8px;">
+                    <h4 style="color: #d97706; margin-bottom: 0.5rem; font-size: 1rem;">
+                        <i class="fas fa-lightbulb"></i> Real-World Analogies
+                    </h4>
+                    <p style="line-height: 1.6; color: var(--text-light); font-size: 0.85rem;">
+                        <strong style="color: #ef4444;">📏 Organizing by Height:</strong> Pick reference height → shorter left, taller right → repeat per group
+                    </p>
+                    <p style="line-height: 1.6; color: var(--text-light); font-size: 0.85rem;">
+                        <strong style="color: #06b6d4;">👕 Sorting Laundry:</strong> Reference size → smaller left pile, larger right pile → sort piles independently
+                    </p>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div style="background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(51, 65, 85, 0.4); padding: 1rem; border-radius: 8px;">
+                    <p style="line-height: 1.6; color: var(--text-light); font-size: 0.85rem;">
+                        <strong><i class="fas fa-clock"></i> Time Complexity:</strong><br>
+                        • Best: <span style="color: #059669; font-weight: 600;">O(n log n)</span> (balanced partitions)<br>
+                        • Average: <span style="color: #059669; font-weight: 600;">O(n log n)</span> (extremely fast!)<br>
+                        • Worst: <span style="color: #dc2626; font-weight: 600;">O(n²)</span> (bad pivot choice)<br>
+                        <strong><i class="fas fa-database"></i> Space:</strong> <span style="color: #059669; font-weight: 600;">O(log n)</span> (recursion)<br>
+                        <strong>Properties:</strong> ❌ Not Stable, 📍 In-place, 🏎️ Fastest<br>
+                        <strong>Best For:</strong> General purpose, arrays, average performance
+                    </p>
+                </div>
+                
+                <div style="background: rgba(239, 68, 68, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(239, 68, 68, 0.3); padding: 1rem; border-radius: 8px;">
+                    <h4 style="color: #ef4444; margin-bottom: 0.5rem; font-size: 1rem;">
+                        <i class="fas fa-bolt"></i> Why It's Fastest
+                    </h4>
+                    <ul style="line-height: 1.6; color: var(--text-light); font-size: 0.8rem; padding-left: 1rem;">
+                        <li><strong>Cache Friendly:</strong> Good locality of reference</li>
+                        <li><strong>In-Place:</strong> Minimal memory overhead</li>
+                        <li><strong>Small Constants:</strong> Less overhead than Merge Sort</li>
+                        <li><strong>Adaptive:</strong> Can be optimized for nearly sorted data</li>
+                        <li><strong>Used In:</strong> C++ std::sort, Java Arrays.sort()</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparison Section -->
+        <div style="background: rgba(59, 130, 246, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(59, 130, 246, 0.3); padding: 1rem; border-radius: 8px; margin-top: 1.5rem; border-left: 4px solid #3b82f6;">
+            <h4 style="color: #3b82f6; margin-bottom: 0.75rem; text-align: center;">
+                <i class="fas fa-balance-scale"></i> Merge Sort vs Quick Sort - When to Use Which?
+            </h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; text-align: center;">
+                <div>
+                    <h5 style="color: #f59e0b; margin-bottom: 0.5rem;">✅ Choose Merge Sort When:</h5>
+                    <ul style="line-height: 1.5; color: var(--text-light); font-size: 0.8rem; text-align: left;">
+                        <li>You need guaranteed O(n log n) performance</li>
+                        <li>Stability is required (equal elements keep order)</li>
+                        <li>Sorting linked lists (O(1) extra space)</li>
+                        <li>External sorting (data doesn't fit in memory)</li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 style="color: #ef4444; margin-bottom: 0.5rem;">✅ Choose Quick Sort When:</h5>
+                    <ul style="line-height: 1.5; color: var(--text-light); font-size: 0.8rem; text-align: left;">
+                        <li>You need the fastest average-case performance</li>
+                        <li>Sorting arrays in memory</li>
+                        <li>Memory is limited (in-place sorting)</li>
+                        <li>Stability doesn't matter</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+            <div class="page" data-page="5">
+                <h2 style="color: var(--primary-color); margin-bottom: 1.5rem;"><i class="fas fa-layer-group"></i> Heap Sort & Comparisons</h2>
+
+                <div style="background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); padding: 2rem; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
+                    <h3 style="color: var(--primary-color); margin-bottom: 1.5rem;"><i class="fas fa-layer-group"></i> Heap Sort</h3>
+                    
+                    <div style="background: rgba(6, 182, 212, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(6, 182, 212, 0.3); padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem; border-left: 4px solid #06b6d4;">
+                        <h4 style="color: #06b6d4; margin-bottom: 0.75rem;"><i class="fas fa-cogs"></i> How It Works</h4>
+                        <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 0.5rem;">
+                            Builds a max heap from the array (tree structure where parent is larger than children). Repeatedly extracts the maximum element 
+                            (root) and rebuilds heap with remaining elements. Combines heap data structure with sorting.
+                        </p>
+                        <p style="line-height: 1.8; color: var(--text-light); font-size: 0.9rem;">
+                            <strong>Example:</strong> [4, 10, 3, 5, 1] → Build max heap [10, 5, 3, 4, 1] → Extract 10 → Rebuild heap → Repeat until sorted.
+                        </p>
+                    </div>
+
+                    <div style="background: rgba(217, 119, 6, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(217, 119, 6, 0.3); padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <h4 style="color: #d97706; margin-bottom: 0.75rem;"><i class="fas fa-lightbulb"></i> Real-World Analogies</h4>
+                        <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 0.5rem;">
+                            <strong style="color: #06b6d4;">🏢 Corporate Hierarchy:</strong> The CEO (root) is always the highest paid. When CEO leaves, promote someone from 
+                            below and reorganize the hierarchy. Repeat to build sorted list.
+                        </p>
+                        <p style="line-height: 1.8; color: var(--text-light);">
+                            <strong style="color: #ef4444;">🏥 Hospital Priority Queue:</strong> Most critical patient is always at the top. When they're treated, 
+                            the next most critical rises to the top automatically.
+                        </p>
+                    </div>
+
+                    <div style="background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(51, 65, 85, 0.4); padding: 1.5rem; border-radius: 8px;">
+                        <strong><i class="fas fa-clock"></i> Time Complexity:</strong><br>
+                        - Best: <span style="color: #059669; font-weight: 600;">O(n log n)</span><br>
+                        - Average: <span style="color: #059669; font-weight: 600;">O(n log n)</span><br>
+                        - Worst: <span style="color: #059669; font-weight: 600;">O(n log n)</span> - guaranteed!<br>
+                        <strong><i class="fas fa-database"></i> Space:</strong> <span style="color: #059669; font-weight: 600;">O(1)</span> - in-place sorting<br>
+                        <strong>Properties:</strong> ❌ Not Stable, 📍 In-place, ⚡ Guaranteed performance<br>
+                        <strong>Best For:</strong> Memory constrained environments, guaranteed O(n log n), embedded systems
+                    </div>
+                </div>
+
+                <div style="background: rgba(16, 185, 129, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(16, 185, 129, 0.3); padding: 2rem; border-radius: 12px; margin-bottom: 2rem;">
+                    <h3 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-balance-scale"></i> Comparison Table</h3>
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(10px); border-radius: 8px; overflow: hidden; border-collapse: collapse; border: 1px solid rgba(51, 65, 85, 0.5);">
+                            <thead style="background: var(--primary-color); color: var(--text-dark);">
+                                <tr>
+                                    <th style="padding: 1rem; text-align: left;">Algorithm</th>
+                                    <th style="padding: 1rem;">Best</th>
+                                    <th style="padding: 1rem;">Average</th>
+                                    <th style="padding: 1rem;">Worst</th>
+                                    <th style="padding: 1rem;">Space</th>
+                                    <th style="padding: 1rem;">Stable?</th>
+                                </tr>
+                            </thead>
+                            <tbody style="color: var(--text-light);">
+                                <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.5);">
+                                    <td style="padding: 1rem; font-weight: 600;">Bubble Sort</td>
+                                    <td style="padding: 1rem; text-align: center; color: #10b981;">O(n)</td>
+                                    <td style="padding: 1rem; text-align: center; color: #ef4444;">O(n²)</td>
+                                    <td style="padding: 1rem; text-align: center; color: #ef4444;">O(n²)</td>
+                                    <td style="padding: 1rem; text-align: center; color: #10b981;">O(1)</td>
+                                    <td style="padding: 1rem; text-align: center; color: #10b981;">✓</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.5);">
+                                    <td style="padding: 1rem; font-weight: 600;">Selection Sort</td>
+                                    <td style="padding: 1rem; text-align: center; color: #ef4444;">O(n²)</td>
+                                    <td style="padding: 1rem; text-align: center; color: #ef4444;">O(n²)</td>
+                                    <td style="padding: 1rem; text-align: center; color: #ef4444;">O(n²)</td>
+                                    <td style="padding: 1rem; text-align: center; color: #10b981;">O(1)</td>
+                                    <td style="padding: 1rem; text-align: center; color: #ef4444;">✗</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.5);">
+                                    <td style="padding: 1rem; font-weight: 600;">Insertion Sort</td>
+                                    <td style="padding: 1rem; text-align: center; color: #10b981;">O(n)</td>
+                                    <td style="padding: 1rem; text-align: center; color: #ef4444;">O(n²)</td>
+                                    <td style="padding: 1rem; text-align: center; color: #ef4444;">O(n²)</td>
+                                    <td style="padding: 1rem; text-align: center; color: #10b981;">O(1)</td>
+                                    <td style="padding: 1rem; text-align: center; color: #10b981;">✓</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.5);">
+                                    <td style="padding: 1rem; font-weight: 600;">Merge Sort</td>
+                                    <td style="padding: 1rem; text-align: center; color: #10b981;">O(n log n)</td>
+                                    <td style="padding: 1rem; text-align: center; color: #10b981;">O(n log n)</td>
+                                    <td style="padding: 1rem; text-align: center; color: #10b981;">O(n log n)</td>
+                                    <td style="padding: 1rem; text-align: center; color: #ef4444;">O(n)</td>
+                                    <td style="padding: 1rem; text-align: center; color: #10b981;">✓</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.5);">
+                                    <td style="padding: 1rem; font-weight: 600;">Quick Sort</td>
+                                    <td style="padding: 1rem; text-align: center; color: #10b981;">O(n log n)</td>
+                                    <td style="padding: 1rem; text-align: center; color: #10b981;">O(n log n)</td>
+                                    <td style="padding: 1rem; text-align: center; color: #ef4444;">O(n²)</td>
+                                    <td style="padding: 1rem; text-align: center; color: #10b981;">O(log n)</td>
+                                    <td style="padding: 1rem; text-align: center; color: #ef4444;">✗</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 1rem; font-weight: 600;">Heap Sort</td>
+                                    <td style="padding: 1rem; text-align: center; color: #10b981;">O(n log n)</td>
+                                    <td style="padding: 1rem; text-align: center; color: #10b981;">O(n log n)</td>
+                                    <td style="padding: 1rem; text-align: center; color: #10b981;">O(n log n)</td>
+                                    <td style="padding: 1rem; text-align: center; color: #10b981;">O(1)</td>
+                                    <td style="padding: 1rem; text-align: center; color: #ef4444;">✗</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div style="background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); padding: 2rem; border-radius: 12px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
+                    <h3 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-bullseye"></i> When to Use Which Algorithm?</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+                        <div style="background: rgba(59, 130, 246, 0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #3b82f6;">
+                            <h4 style="color: #3b82f6; font-size: 0.9rem; margin-bottom: 0.5rem;">📊 Small Arrays (n < 10)</h4>
+                            <p style="font-size: 0.85rem; color: var(--text-light);">Use <strong>Insertion Sort</strong> - simple, fast, low overhead</p>
+                        </div>
+                        <div style="background: rgba(16, 185, 129, 0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #10b981;">
+                            <h4 style="color: #10b981; font-size: 0.9rem; margin-bottom: 0.5rem;">🔄 Nearly Sorted Data</h4>
+                            <p style="font-size: 0.85rem; color: var(--text-light);">Use <strong>Insertion Sort</strong> - O(n) best case, adaptive</p>
+                        </div>
+                        <div style="background: rgba(245, 158, 11, 0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #f59e0b;">
+                            <h4 style="color: #f59e0b; font-size: 0.9rem; margin-bottom: 0.5rem;">⚡ Need Guaranteed O(n log n)</h4>
+                            <p style="font-size: 0.85rem; color: var(--text-light);">Use <strong>Merge Sort</strong> or <strong>Heap Sort</strong></p>
+                        </div>
+                        <div style="background: rgba(239, 68, 68, 0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #ef4444;">
+                            <h4 style="color: #ef4444; font-size: 0.9rem; margin-bottom: 0.5rem;">🏎️ Best Average Performance</h4>
+                            <p style="font-size: 0.85rem; color: var(--text-light);">Use <strong>Quick Sort</strong> - fastest in practice</p>
+                        </div>
+                        <div style="background: rgba(139, 92, 246, 0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #8b5cf6;">
+                            <h4 style="color: #8b5cf6; font-size: 0.9rem; margin-bottom: 0.5rem;">Memory Constrained</h4>
+                            <p style="font-size: 0.85rem; color: var(--text-light);">Use <strong>Heap Sort</strong> - O(1) space, in-place</p>
+                        </div>
+                        <div style="background: rgba(6, 182, 212, 0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #06b6d4;">
+                            <h4 style="color: #06b6d4; font-size: 0.9rem; margin-bottom: 0.5rem;">Need Stability</h4>
+                            <p style="font-size: 0.85rem; color: var(--text-light);">Use <strong>Merge Sort</strong> - maintains element order</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page" data-page="6">
+                <div class="content-section code-section">
+                    <h2 style="color: var(--primary-color); margin-bottom: 1rem;">Code Implementation</h2>
+                    <div class="code-tabs">
+                        <button class="code-tab active" data-lang="python">Python</button>
+                        <button class="code-tab" data-lang="java">Java</button>
+                        <button class="code-tab" data-lang="cpp">C++</button>
+                        <button class="code-tab" data-lang="c">C</button>
+                    </div>
+
+                    <div class="code-content active" data-lang="python">
+                        <h3 id="py-title">Quick Sort</h3>
+                        <pre id="py-code">def quick_sort(arr):
+    if len(arr) <= 1:
+        return arr
+    pivot = arr[len(arr) // 2]
+    left = [x for x in arr if x < pivot]
+    middle = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot]
+    return quick_sort(left) + middle + quick_sort(right)</pre>
+                    </div>
+
+                    <div class="code-content" data-lang="java">
+                        <h3 id="java-title">Quick Sort</h3>
+                        <pre id="java-code">void quickSort(int[] arr, int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+int partition(int[] arr, int low, int high) {
+    int pivot = arr[high];
+    int i = low - 1;
+    for (int j = low; j < high; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            int temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
+    }
+    int temp = arr[i + 1];
+    arr[i + 1] = arr[high];
+    arr[high] = temp;
+    return i + 1;
+}</pre>
+                    </div>
+
+                    <div class="code-content" data-lang="cpp">
+                        <h3 id="cpp-title">Quick Sort</h3>
+                        <pre id="cpp-code">int partition(vector&lt;int&gt;& arr, int low, int high) {
+    int pivot = arr[high];
+    int i = low - 1;
+    for (int j = low; j < high; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            swap(arr[i], arr[j]);
+        }
+    }
+    swap(arr[i + 1], arr[high]);
+    return i + 1;
+}
+
+void quickSort(vector&lt;int&gt;& arr, int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}</pre>
+                    </div>
+
+                    <div class="code-content" data-lang="c">
+                        <h3 id="c-title">Quick Sort</h3>
+                        <pre id="c-code">int partition(int arr[], int low, int high) {
+    int pivot = arr[high];
+    int i = low - 1;
+    for (int j = low; j < high; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            int temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
+    }
+    int temp = arr[i + 1];
+    arr[i + 1] = arr[high];
+    arr[high] = temp;
+    return i + 1;
+}
+
+void quickSort(int arr[], int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chatbot">
+        <button class="chat-button" id="chatToggle"><i class="fas fa-comments"></i></button>
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <h3><i class="fas fa-robot"></i> AlgoBuddy</h3>
+                <button class="chat-close" id="chatClose">&times;</button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot">
+                    <p><i class="fas fa-hand-paper"></i> Hi! Ask me about any sorting algorithm, time complexity, or when to use which sort!</p>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Ask about sorting algorithms...">
+                <button id="chatSend"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/sorting.js') }}"></script>
+</body>
+</html>

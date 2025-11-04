@@ -1,0 +1,2414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA Learning Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">DSA Learning Platform</div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/binary-tree">Binary Tree</a></li>
+                    <li><a href="/dfs-bfs">DFS & BFS</a></li>
+                    <li><a href="/linked-list">Linked List</a></li>
+                    <li><a href="/hashing">Hashing</a></li>
+                    <li><a href="/sorting">Sorting</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Pagination Controls -->
+    <div class="pagination-controls" style="text-align: center; margin: 1rem 0; padding: 1rem;">
+        <button class="page-btn active" data-page="1">Visualizer</button>
+        <button class="page-btn" data-page="2">Explanation & BST</button>
+        <button class="page-btn" data-page="3">Traversals</button>
+        <button class="page-btn" data-page="4">Operations</button>
+        <button class="page-btn" data-page="5">AVL Trees</button>
+        <button class="page-btn" data-page="6">Applications</button>
+        <button class="page-btn" data-page="7">Code</button>
+    </div>
+
+    <div class="container">
+        <div class="content-section">
+            <div class="page" data-page="1">
+            <div class="content-container">
+                <h1 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-tree"></i> Binary Tree Visualizer</h1>
+                <p style="color: #64748b; margin-bottom: 2rem;">Build a binary tree and watch different traversal algorithms in action!</p>
+
+                <div class="controls" style="background: rgba(99, 102, 241, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(99, 102, 241, 0.2); padding: 1rem; border-radius: 12px; margin-bottom: 1.5rem;">
+                    <!-- Three Partitions: Tree Type | Operations | Traversals -->
+                    <div style="display: grid; grid-template-columns: auto 1fr auto; gap: 1.5rem; align-items: center;">
+                        <!-- Partition 1: Tree Type Selection -->
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem; align-items: flex-start;">
+                            <span style="font-weight: 600; color: var(--primary-color); font-size: 0.8rem;">Tree Type</span>
+                            <div style="display: flex; gap: 0.3rem;">
+                                <button class="tree-type-btn active" onclick="setTreeType('bst', this)">BST</button>
+                                <button class="tree-type-btn" onclick="setTreeType('avl', this)">AVL</button>
+                            </div>
+                        </div>
+
+                        <!-- Partition 2: Tree Operations -->
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem; align-items: center;">
+                            <span style="font-weight: 600; color: var(--primary-color); font-size: 0.8rem;">Operations</span>
+                            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                <input type="number" id="nodeValue" placeholder="Value" style="max-width: 100px; padding: 0.4rem; font-size: 0.85rem;">
+                                <button class="btn btn-primary" onclick="insertNode()">Insert</button>
+                                <button class="btn btn-secondary" onclick="deleteNode()">Delete</button>
+                                <button class="btn btn-secondary" onclick="clearTree()">Clear</button>
+                            </div>
+                        </div>
+
+                        <!-- Partition 3: Traversal Operations -->
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem; align-items: flex-end;">
+                            <span style="font-weight: 600; color: var(--primary-color); font-size: 0.8rem;">Traversals</span>
+                            <div style="display: flex; gap: 0.3rem; flex-wrap: wrap; justify-content: flex-end;">
+                                <button class="btn btn-success" onclick="traverseInorder()">In-order</button>
+                                <button class="btn btn-success" onclick="traversePreorder()">Pre-order</button>
+                                <button class="btn btn-success" onclick="traversePostorder()">Post-order</button>
+                                <button class="btn btn-success" onclick="traverseLevelorder()">Level-order</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="result-display">Result: []</div>
+
+                <div class="visualization-container" style="overflow: hidden; border-radius: 12px; background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); position: relative;">
+                    <svg id="tree-svg" width="100%" height="500" style="display: block; margin: 0 auto;"></svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" data-page="2">
+                <h2 style="color: var(--primary-color); margin-bottom: 1.5rem;"><i class="fas fa-book"></i> Detailed Explanation & BST Properties</h2>
+            
+            <div style="background: rgba(99, 102, 241, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(99, 102, 241, 0.3); padding: 2rem; border-radius: 12px; margin-bottom: 2rem;">
+                <h3 style="color: var(--primary-color); margin-bottom: 2rem;"><i class="fas fa-tree"></i> What is a Binary Tree?</h3>
+
+                <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 2rem;">
+                    A Binary Tree is a hierarchical data structure where each node has at most two children, referred to as the left child and right child.
+                    It's one of the most fundamental data structures in computer science, used to organize data in a way that allows for efficient searching,
+                    insertion, and deletion operations.
+                </p>
+
+                <!-- Internal Divider -->
+                <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.4), transparent); margin: 1.5rem 0;"></div>
+
+                <!-- Real-World Analogy Section -->
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-lightbulb"></i> Real-World Analogy</h4>
+                    <p style="line-height: 1.8; color: var(--text-light);">
+                        Think of a <strong>family tree</strong>! Just like how each person can have at most two parents, each node in a binary tree has at most two children.
+                        Or imagine a <strong>decision tree</strong> - at each step, you make a binary choice (Yes/No, Left/Right), and each choice leads you down a different path.
+                        Another example is a <strong>tournament bracket</strong> where teams compete in pairs, and winners advance to the next level.
+                    </p>
+                </div>
+
+                <!-- Internal Divider -->
+                <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.4), transparent); margin: 1.5rem 0;"></div>
+
+                <!-- Binary Tree Types Section -->
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-sitemap"></i> Types of Binary Trees</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div style="background: rgba(59, 130, 246, 0.1); padding: 1rem; border-radius: 8px;">
+                            <h5 style="color: #3b82f6; margin-bottom: 0.5rem;"><i class="fas fa-check-double"></i> Full Binary Tree</h5>
+                            <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">Every node has either 0 or 2 children</p>
+                            <pre style="font-size: 0.8rem; color: var(--text-light); margin: 0;">     A
+   /     \
+  B       C
+ / \     / \
+D   E   F   G</pre>
+                        </div>
+                        <div style="background: rgba(16, 185, 129, 0.1); padding: 1rem; border-radius: 8px;">
+                            <h5 style="color: #059669; margin-bottom: 0.5rem;"><i class="fas fa-check-circle"></i> Complete Binary Tree</h5>
+                            <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">All levels filled except possibly last, left-filled</p>
+                            <pre style="font-size: 0.8rem; color: var(--text-light); margin: 0;">     A
+   /     \
+  B       C
+ / \     /
+D   E   F</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Internal Divider -->
+                <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.4), transparent); margin: 1.5rem 0;"></div>
+            </div>
+
+                <div style="background: rgba(99, 102, 241, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(99, 102, 241, 0.3); padding: 2rem; border-radius: 12px; margin-bottom: 2rem;">
+                    <div style="display: grid; grid-template-columns: 1fr minmax(280px, 1fr); gap: 2rem; align-items: start;">
+                        <div>
+                            <h4 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-search"></i> Binary Search Tree (BST) Properties</h4>
+                            <ul style="font-size: 0.9rem; line-height: 1.8; color: var(--text-light);">
+                                <li><strong>Left subtree:</strong> All values &lt; node's value (smaller values go left, maintains ordering property)</li>
+                                <li><strong>Right subtree:</strong> All values &gt; node's value (larger values go right, ensures search efficiency)</li>
+                                <li><strong>No duplicates:</strong> Usually not allowed (some implementations allow, but complicates operations)</li>
+                                <li><strong>In-order traversal:</strong> Gives sorted sequence (left-root-right visits nodes in ascending order)</li>
+                            </ul>
+                        </div>
+                        <div style="background: rgba(30, 41, 59, 0.6); padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.9rem;">
+                            <strong style="color: #d97706;">Example BST:</strong> <strong style="color: #059669;">In-order: 1,3,4,6,7,8,9,10,14</strong><br>
+                            <pre style="margin: 0.5rem 0; color: var(--text-light);">
+     8
+   /     \
+  3       10
+ / \     /  \
+1   6   9    14
+   / \
+  4   7</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <div class="page" data-page="3">
+            <div style="background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); padding: 2rem; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
+                <h3 style="color: var(--primary-color); margin-bottom: 2rem;"><i class="fas fa-sync"></i> Binary Tree Traversals</h3>
+
+                <!-- In-order Traversal Section -->
+                <div style="margin-bottom: 2rem;">
+                    <div style="display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: start;">
+                        <div>
+                            <h4 style="color: #4f46e5; margin-bottom: 0.75rem;"><i class="fas fa-1"></i> In-order Traversal (Left → Root → Right)</h4>
+                            <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 0.5rem;">
+                                <strong>How it works:</strong> Visit left subtree first, then root, then right subtree. For a Binary Search Tree, this gives values in sorted order.
+                            </p>
+                            <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 0.5rem;">
+                                <strong>Analogy:</strong> Reading a book from left to right - you read the left page first, then the center binding, then the right page.
+                            </p>
+                        </div>
+                        <div style="background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(51, 65, 85, 0.4); padding: 1rem; border-radius: 8px; min-width: 200px;">
+                            <strong><i class="fas fa-clock"></i> Time Complexity:</strong> <span style="color: #059669; font-weight: 600;">O(n)</span><br>
+                            <em>visits each node exactly once</em><br><br>
+                            <strong><i class="fas fa-database"></i> Space Complexity:</strong> <span style="color: #059669; font-weight: 600;">O(h)</span><br>
+                            <em>where h is height (recursion stack)</em>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Internal Divider -->
+                <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(79, 70, 229, 0.4), transparent); margin: 1.5rem 0;"></div>
+
+                <!-- Pre-order Traversal Section -->
+                <div style="margin-bottom: 2rem;">
+                    <div style="display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: start;">
+                        <div>
+                            <h4 style="color: #4f46e5; margin-bottom: 0.75rem;"><i class="fas fa-2"></i> Pre-order Traversal (Root → Left → Right)</h4>
+                            <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 0.5rem;">
+                                <strong>How it works:</strong> Visit root first, then left subtree, then right subtree. Used to create a copy of the tree.
+                            </p>
+                            <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 0.5rem;">
+                                <strong>Analogy:</strong> Like outlining a document - you write the main heading first, then subheadings, then details under each.
+                            </p>
+                        </div>
+                        <div style="background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(51, 65, 85, 0.4); padding: 1rem; border-radius: 8px; min-width: 200px;">
+                            <strong><i class="fas fa-clock"></i> Time Complexity:</strong> <span style="color: #059669; font-weight: 600;">O(n)</span><br>
+                            <em>visits each node exactly once</em><br><br>
+                            <strong><i class="fas fa-database"></i> Space Complexity:</strong> <span style="color: #059669; font-weight: 600;">O(h)</span><br>
+                            <em>recursion stack depth equals height</em>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Internal Divider -->
+                <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(79, 70, 229, 0.4), transparent); margin: 1.5rem 0;"></div>
+
+                <!-- Post-order Traversal Section -->
+                <div style="margin-bottom: 2rem;">
+                    <div style="display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: start;">
+                        <div>
+                            <h4 style="color: #4f46e5; margin-bottom: 0.75rem;"><i class="fas fa-3"></i> Post-order Traversal (Left → Right → Root)</h4>
+                            <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 0.5rem;">
+                                <strong>How it works:</strong> Visit left subtree, then right subtree, then root. Used to delete the tree or evaluate expressions.
+                            </p>
+                            <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 0.5rem;">
+                                <strong>Analogy:</strong> Like calculating a math expression tree - you solve the smaller parts first, then combine them at the top.
+                            </p>
+                        </div>
+                        <div style="background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(51, 65, 85, 0.4); padding: 1rem; border-radius: 8px; min-width: 200px;">
+                            <strong><i class="fas fa-clock"></i> Time Complexity:</strong> <span style="color: #059669; font-weight: 600;">O(n)</span><br>
+                            <em>visits each node exactly once</em><br><br>
+                            <strong><i class="fas fa-database"></i> Space Complexity:</strong> <span style="color: #059669; font-weight: 600;">O(h)</span><br>
+                            <em>recursion stack usage</em>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Internal Divider -->
+                <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(79, 70, 229, 0.4), transparent); margin: 1.5rem 0;"></div>
+
+                <!-- Level-order Traversal Section -->
+                <div>
+                    <div style="display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: start;">
+                        <div>
+                            <h4 style="color: #4f46e5; margin-bottom: 0.75rem;"><i class="fas fa-4"></i> Level-order Traversal (BFS)</h4>
+                            <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 0.5rem;">
+                                <strong>How it works:</strong> Visit nodes level by level from top to bottom, left to right. Uses a queue.
+                            </p>
+                            <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 0.5rem;">
+                                <strong>Analogy:</strong> Like reading text on a page - left to right, top to bottom, one line at a time.
+                            </p>
+                        </div>
+                        <div style="background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(51, 65, 85, 0.4); padding: 1rem; border-radius: 8px; min-width: 200px;">
+                            <strong><i class="fas fa-clock"></i> Time Complexity:</strong> <span style="color: #059669; font-weight: 600;">O(n)</span><br>
+                            <em>visits each node once</em><br><br>
+                            <strong><i class="fas fa-database"></i> Space Complexity:</strong> <span style="color: #059669; font-weight: 600;">O(w)</span><br>
+                            <em>where w is max width of tree (queue size)</em>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" data-page="4">
+            <div class="content-container">
+                <h3 style="color: var(--primary-color); margin-bottom: 2rem;"><i class="fas fa-cogs"></i> BST Operations with Visual Examples</h3>
+
+                <!-- Search Operation -->
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="color: #8b5cf6; margin-bottom: 1rem;"><i class="fas fa-search"></i> Search Operation</h4>
+                    <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 1rem;">
+                        Search starts at root and compares target value with current node, moving left or right accordingly.
+                    </p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                        <div style="background: rgba(59, 130, 246, 0.1); padding: 1rem; border-radius: 8px;">
+                            <h5 style="color: #3b82f6; margin-bottom: 0.5rem;"><i class="fas fa-search"></i> Search for 6</h5>
+                            <pre style="font-size: 0.7rem; color: var(--text-light); margin: 0;">     8        ← Start at root
+   /     \
+  3       10    ← 6 < 8, go left
+ / \     /
+1   6   9       ← Found 6!</pre>
+                            <p style="font-size: 0.8rem; color: #22c55e; margin-top: 0.5rem;"><strong>✅ Found in O(log n) time</strong></p>
+                        </div>
+                        <div style="background: rgba(239, 68, 68, 0.1); padding: 1rem; border-radius: 8px;">
+                            <h5 style="color: #ef4444; margin-bottom: 0.5rem;"><i class="fas fa-times"></i> Search for 15</h5>
+                            <pre style="font-size: 0.7rem; color: var(--text-light); margin: 0;">     8
+   /     \
+  3       10    ← 15 > 8, go right
+ / \     /  \
+1   6   9    14  ← 15 > 10, go right
+               \
+                15? ← Not found</pre>
+                            <p style="font-size: 0.8rem; color: #ef4444; margin-top: 0.5rem;"><strong>❌ Not found</strong></p>
+                        </div>
+                        <div style="background: rgba(30, 41, 59, 0.6); padding: 1rem; border-radius: 8px;">
+                            <h5 style="color: var(--primary-color); margin-bottom: 0.75rem;"><i class="fas fa-clock"></i> Complexity Analysis</h5>
+                            <ul style="font-size: 0.85rem; line-height: 2; color: var(--text-light); list-style: none; padding: 0;">
+                                <li style="margin-bottom: 0.5rem;"><i class="fas fa-rocket" style="color: #059669; margin-right: 0.5rem;"></i><strong style="color: #059669;">Best Case:</strong> O(1) - found at root</li>
+                                <li style="margin-bottom: 0.5rem;"><i class="fas fa-chart-line" style="color: #3b82f6; margin-right: 0.5rem;"></i><strong style="color: #3b82f6;">Average Case:</strong> O(log n) - balanced tree</li>
+                                <li style="margin-bottom: 0.5rem;"><i class="fas fa-exclamation-triangle" style="color: #f59e0b; margin-right: 0.5rem;"></i><strong style="color: #f59e0b;">Worst Case:</strong> O(n) - skewed tree</li>
+                                <li><i class="fas fa-shield-alt" style="color: #8b5cf6; margin-right: 0.5rem;"></i><strong style="color: #8b5cf6;">AVL Trees:</strong> Always O(log n) guaranteed</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Internal Divider -->
+                <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.4), transparent); margin: 1.5rem 0;"></div>
+
+                <!-- Insertion Operation -->
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="color: #8b5cf6; margin-bottom: 1rem;"><i class="fas fa-plus-circle"></i> Insertion Operation</h4>
+                    <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 1rem;">
+                        Insert new node as leaf, maintaining BST property. AVL trees rebalance after insertion.
+                    </p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div style="background: rgba(16, 185, 129, 0.1); padding: 1rem; border-radius: 8px;">
+                            <h5 style="color: #059669; margin-bottom: 0.5rem;"><i class="fas fa-plus"></i> Insert 5</h5>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                                <div>
+                                    <p style="font-size: 0.8rem; margin-bottom: 0.3rem;">Before:</p>
+                                    <pre style="font-size: 0.7rem; color: var(--text-light); margin: 0;">     8
+   /     \
+  3       10
+ / \     /  \
+1   6   9    14
+   /
+  4</pre>
+                                </div>
+                                <div>
+                                    <p style="font-size: 0.8rem; margin-bottom: 0.3rem;">After:</p>
+                                    <pre style="font-size: 0.7rem; color: var(--text-light); margin: 0;">     8
+   /     \
+  3       10
+ / \     /  \
+1   6   9    14
+   / \
+  4   5  ← New node</pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="background: rgba(30, 41, 59, 0.6); padding: 1rem; border-radius: 8px;">
+                            <h5 style="color: var(--primary-color); margin-bottom: 0.75rem;"><i class="fas fa-sync"></i> AVL Rebalancing</h5>
+                            <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 1rem; font-style: italic;">
+                                After insertion, check balance factors and perform rotations if needed.
+                            </p>
+                            <ul style="font-size: 0.85rem; line-height: 2; color: var(--text-light); list-style: none; padding: 0;">
+                                <li style="margin-bottom: 0.5rem;"><i class="fas fa-search" style="color: #3b82f6; margin-right: 0.5rem;"></i><strong style="color: #3b82f6;">Check Balance Factor:</strong> Examine ancestors for imbalance</li>
+                                <li style="margin-bottom: 0.5rem;"><i class="fas fa-exclamation-triangle" style="color: #f59e0b; margin-right: 0.5rem;"></i><strong style="color: #f59e0b;">Trigger Condition:</strong> If |BF| > 1, rotation required</li>
+                                <li style="margin-bottom: 0.5rem;"><i class="fas fa-exchange-alt" style="color: #8b5cf6; margin-right: 0.5rem;"></i><strong style="color: #8b5cf6;">Rotation Cases:</strong> 4 types - LL, RR, LR, RL</li>
+                                <li><i class="fas fa-shield-alt" style="color: #059669; margin-right: 0.5rem;"></i><strong style="color: #059669;">Guarantee:</strong> Maintains O(log n) height</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Internal Divider -->
+                <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.4), transparent); margin: 1.5rem 0;"></div>
+
+                <!-- Deletion Operation -->
+                <div>
+                    <h4 style="color: #8b5cf6; margin-bottom: 1rem;"><i class="fas fa-minus-circle"></i> Deletion Operation</h4>
+                    <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 1rem;">
+                        Three cases for deletion: leaf node, one child, or two children (replace with inorder successor).
+                    </p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                        <div style="background: rgba(59, 130, 246, 0.1); padding: 1rem; border-radius: 8px;">
+                            <h5 style="color: #3b82f6; margin-bottom: 0.5rem;"><i class="fas fa-leaf"></i> Case 1: Leaf Node</h5>
+                            <p style="font-size: 0.8rem; margin-bottom: 0.5rem;">Delete 1 (no children)</p>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                                <div>
+                                    <p style="font-size: 0.8rem; margin-bottom: 0.3rem;">Before:</p>
+                                    <pre style="font-size: 0.7rem; color: var(--text-light); margin: 0;">  3
+ / \
+1   6</pre>
+                                </div>
+                                <div>
+                                    <p style="font-size: 0.8rem; margin-bottom: 0.3rem;">After:</p>
+                                    <pre style="font-size: 0.7rem; color: var(--text-light); margin: 0;">  3
+   \
+    6</pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="background: rgba(139, 92, 246, 0.1); padding: 1rem; border-radius: 8px;">
+                            <h5 style="color: #8b5cf6; margin-bottom: 0.5rem;"><i class="fas fa-users"></i> Case 2: One Child</h5>
+                            <p style="font-size: 0.8rem; margin-bottom: 0.5rem;">Delete 6 (has right child)</p>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                                <div>
+                                    <p style="font-size: 0.7rem; margin-bottom: 0.3rem;">Before:</p>
+                                    <pre style="font-size: 0.6rem; color: var(--text-light); margin: 0;">  3
+   \
+    6
+   / \
+  4   7</pre>
+                                </div>
+                                <div>
+                                    <p style="font-size: 0.7rem; margin-bottom: 0.3rem;">After:</p>
+                                    <pre style="font-size: 0.6rem; color: var(--text-light); margin: 0;">  3
+   \
+    7
+   /
+  4</pre>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="background: rgba(245, 101, 101, 0.1); padding: 1rem; border-radius: 8px;">
+                            <h5 style="color: #f56565; margin-bottom: 0.5rem;"><i class="fas fa-user-friends"></i> Case 3: Two Children</h5>
+                            <p style="font-size: 0.8rem; margin-bottom: 0.5rem;">Delete 8 (replace with inorder successor)</p>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                                <div>
+                                    <p style="font-size: 0.7rem; margin-bottom: 0.3rem;">Before:</p>
+                                    <pre style="font-size: 0.6rem; color: var(--text-light); margin: 0;">    8
+  /     \
+ 3       10
+/ \     /
+1   6   9</pre>
+                                </div>
+                                <div>
+                                    <p style="font-size: 0.7rem; margin-bottom: 0.3rem;">After:</p>
+                                    <pre style="font-size: 0.6rem; color: var(--text-light); margin: 0;">    9
+  /     \
+ 3       10
+/ \
+1   6</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" data-page="5">
+            <div class="content-container">
+                <h3 style="color: var(--primary-color); margin-bottom: 2rem;"><i class="fas fa-balance-scale"></i> AVL Trees - Self-Balancing Binary Search Trees</h3>
+
+                <!-- AVL Tree Introduction -->
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="color: #d97706; margin-bottom: 1rem;"><i class="fas fa-info-circle"></i> What is an AVL Tree?</h4>
+                    <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 1rem;">
+                        An AVL tree is a self-balancing Binary Search Tree where the difference between heights of left and right subtrees
+                        cannot be more than one for all nodes. Named after its inventors: Adelson-Velsky and Landis.
+                    </p>
+                    <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05)); padding: 1.5rem; border-radius: 10px; border: 2px solid rgba(245, 158, 11, 0.3); text-align: center; margin-bottom: 1rem;">
+                        <strong style="font-size: 1.1rem; color: #d97706; font-family: 'Courier New', monospace;">
+                            Balance Factor = [Height(Left Subtree) - Height(Right Subtree)] ≤ 1
+                        </strong>
+                        <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 0.5rem; font-style: italic;">
+                            AVL Tree Balance Condition
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Internal Divider -->
+                <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.4), transparent); margin: 1.5rem 0;"></div>
+
+                <!-- Why AVL Trees Matter -->
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="color: #d97706; margin-bottom: 1rem;"><i class="fas fa-exclamation-triangle"></i> Why Self-Balancing Matters?</h4>
+                    <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 1.5rem;">
+                        Self-balancing ensures optimal performance by maintaining tree height close to log n, preventing worst-case scenarios.
+                    </p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+                        <div style="background: rgba(239, 68, 68, 0.1); padding: 1rem; border-radius: 8px;">
+                            <h5 style="color: #ef4444; margin-bottom: 0.75rem;"><i class="fas fa-times-circle"></i> Unbalanced BST</h5>
+                            <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                                <div style="flex: 1;">
+                                    <pre style="font-size: 0.7rem; color: var(--text-light); margin: 0; line-height: 1.3;">7
+ \
+  8
+   \
+    9
+     \
+      10</pre>
+                                </div>
+                                <div style="text-align: center;">
+                                    <p style="font-size: 0.75rem; color: var(--text-light); margin-bottom: 0.3rem;"><strong>Height: 4</strong></p>
+                                    <p style="font-size: 0.8rem; color: #ef4444; margin: 0;"><strong>O(n)</strong></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="background: rgba(34, 197, 94, 0.1); padding: 1rem; border-radius: 8px;">
+                            <h5 style="color: #22c55e; margin-bottom: 0.75rem;"><i class="fas fa-check-circle"></i> Balanced AVL</h5>
+                            <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                                <div style="flex: 1;">
+                                    <pre style="font-size: 0.7rem; color: var(--text-light); margin: 0; line-height: 1.3;">    8
+  /     \
+ 7       9
+          \
+           10</pre>
+                                </div>
+                                <div style="text-align: center;">
+                                    <p style="font-size: 0.75rem; color: var(--text-light); margin-bottom: 0.3rem;"><strong>Height: 3</strong></p>
+                                    <p style="font-size: 0.8rem; color: #22c55e; margin: 0;"><strong>O(log n)</strong></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="background: rgba(59, 130, 246, 0.1); padding: 1rem; border-radius: 8px;">
+                            <h5 style="color: #3b82f6; margin-bottom: 0.75rem;"><i class="fas fa-balance-scale"></i> Self-Balancing</h5>
+                            <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                                <div style="flex: 1;">
+                                    <pre style="font-size: 0.7rem; color: var(--text-light); margin: 0; line-height: 1.3;">Insert → Auto Balance
+    8
+  /   \
+ 4     12
+  \
+   6</pre>
+                                </div>
+                                <div style="text-align: center;">
+                                    <p style="font-size: 0.75rem; color: var(--text-light); margin-bottom: 0.3rem;"><strong>Always Balanced</strong></p>
+                                    <p style="font-size: 0.8rem; color: #3b82f6; margin: 0;"><strong>Guaranteed!</strong></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Comparison Diagrams -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                        <div style="background: rgba(59, 130, 246, 0.1); padding: 0.75rem; border-radius: 6px; text-align: center;">
+                            <h6 style="color: #3b82f6; margin-bottom: 0.5rem; font-size: 0.8rem;">Perfect Balance</h6>
+                            <pre style="font-size: 0.6rem; color: var(--text-light); margin: 0; line-height: 1.2;">    8
+  /   \
+ 4     12
+/ \   / \
+2  6 10  14</pre>
+                            <p style="font-size: 0.7rem; color: #3b82f6; margin-top: 0.3rem;"><strong>Height: 3</strong></p>
+                        </div>
+                        <div style="background: rgba(139, 92, 246, 0.1); padding: 0.75rem; border-radius: 6px; text-align: center;">
+                            <h6 style="color: #8b5cf6; margin-bottom: 0.5rem; font-size: 0.8rem;">Operations Maintain Balance</h6>
+                            <pre style="font-size: 0.6rem; color: var(--text-light); margin: 0; line-height: 1.2;">Insert 5:
+    8      →      8
+  /   \    →    /   \
+ 4     12   →  5     12
+          →  /     / \
+         → 4     10  14</pre>
+                            <p style="font-size: 0.7rem; color: #8b5cf6; margin-top: 0.3rem;"><strong>Auto-rebalance!</strong></p>
+                        </div>
+                        <div style="background: rgba(16, 185, 129, 0.1); padding: 0.75rem; border-radius: 6px; text-align: center;">
+                            <h6 style="color: #059669; margin-bottom: 0.5rem; font-size: 0.8rem;">Worst Case Prevented</h6>
+                            <pre style="font-size: 0.6rem; color: var(--text-light); margin: 0; line-height: 1.2;">Without AVL:
+1→2→3→4→5
+
+With AVL:
+  4
+ / \
+2   5
+ \ /
+ 3 1</pre>
+                            <p style="font-size: 0.7rem; color: #059669; margin-top: 0.3rem;"><strong>Always Balanced!</strong></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Internal Divider -->
+                <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.4), transparent); margin: 1.5rem 0;"></div>
+
+                <!-- AVL Tree Rotations - Comprehensive -->
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="color: #d97706; margin-bottom: 1rem;"><i class="fas fa-sync-alt"></i> AVL Tree Rotations - Complete Guide</h4>
+
+                    <!-- Rotation Trigger Explanation -->
+                    <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(245, 158, 11, 0.1)); padding: 1rem; border-radius: 8px; border: 2px solid rgba(245, 158, 11, 0.3); margin-bottom: 2rem;">
+                        <h5 style="color: #d97706; margin-bottom: 0.5rem;"><i class="fas fa-exclamation-triangle"></i> When Do Rotations Occur?</h5>
+                        <p style="font-size: 0.9rem; color: var(--text-light); margin: 0;">
+                            Rotations happen when the <strong>Balance Factor</strong> becomes <strong>±2</strong> after insertion/deletion.
+                            The tree automatically detects imbalance and performs the appropriate rotation to restore balance.
+                        </p>
+                    </div>
+
+                    <!-- Single Rotations Section -->
+                    <div style="margin-bottom: 2rem;">
+                        <h5 style="color: #d97706; margin-bottom: 1rem;"><i class="fas fa-undo"></i> Single Rotations</h5>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                            <!-- LL Case -->
+                            <div style="background: rgba(59, 130, 246, 0.1); padding: 1rem; border-radius: 8px;">
+                                <h6 style="color: #3b82f6; margin-bottom: 0.75rem;"><i class="fas fa-undo"></i> Left-Left (LL) Case</h6>
+                                <p style="font-size: 0.8rem; color: var(--text-light); margin-bottom: 0.5rem;">Node inserted in left subtree of left child</p>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                                    <div>
+                                        <p style="font-size: 0.75rem; margin-bottom: 0.3rem; color: var(--text-light);">Before (BF = -2):</p>
+                                        <pre style="font-size: 0.65rem; color: var(--text-light); margin: 0; line-height: 1.2;">    30 (BF: -2)
+   /
+  20 (BF: -1)
+ /
+10</pre>
+                                    </div>
+                                    <div>
+                                        <p style="font-size: 0.75rem; margin-bottom: 0.3rem; color: var(--text-light);">After (Right Rotate):</p>
+                                        <pre style="font-size: 0.65rem; color: var(--text-light); margin: 0; line-height: 1.2;">    20 (BF: 0)
+  /     \
+10       30</pre>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 0.75rem; padding: 0.5rem; background: rgba(59, 130, 246, 0.05); border-radius: 4px;">
+                                    <p style="font-size: 0.75rem; color: #3b82f6; margin: 0;"><strong><i class="fas fa-chart-bar"></i> Analogy:</strong> Numbers 10, 20, 30 are inserted. Tree leans left heavy. Like stacking books: bottom book (20) becomes new base.</p>
+                                </div>
+                                <p style="font-size: 0.75rem; color: #3b82f6; margin-top: 0.5rem;"><strong>Right rotation around 30</strong></p>
+                            </div>
+
+                            <!-- RR Case -->
+                            <div style="background: rgba(139, 92, 246, 0.1); padding: 1rem; border-radius: 8px;">
+                                <h6 style="color: #8b5cf6; margin-bottom: 0.75rem;"><i class="fas fa-redo"></i> Right-Right (RR) Case</h6>
+                                <p style="font-size: 0.8rem; color: var(--text-light); margin-bottom: 0.5rem;">Node inserted in right subtree of right child</p>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                                    <div>
+                                        <p style="font-size: 0.75rem; margin-bottom: 0.3rem; color: var(--text-light);">Before (BF = +2):</p>
+                                        <pre style="font-size: 0.65rem; color: var(--text-light); margin: 0; line-height: 1.2;">  10 (BF: +2)
+     \
+      20 (BF: +1)
+       \
+        30</pre>
+                                    </div>
+                                    <div>
+                                        <p style="font-size: 0.75rem; margin-bottom: 0.3rem; color: var(--text-light);">After (Left Rotate):</p>
+                                        <pre style="font-size: 0.65rem; color: var(--text-light); margin: 0; line-height: 1.2;">    20 (BF: 0)
+  /     \
+10       30</pre>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 0.75rem; padding: 0.5rem; background: rgba(139, 92, 246, 0.05); border-radius: 4px;">
+                                    <p style="font-size: 0.75rem; color: #8b5cf6; margin: 0;"><strong><i class="fas fa-chart-line"></i> Analogy:</strong> Numbers 10, 20, 30 are inserted. Tree leans right heavy. Like a seesaw: middle number (20) becomes the balanced pivot point.</p>
+                                </div>
+                                <p style="font-size: 0.75rem; color: #8b5cf6; margin-top: 0.5rem;"><strong>Left rotation around 10</strong></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Double Rotations Section -->
+                    <div>
+                        <h5 style="color: #d97706; margin-bottom: 1rem;"><i class="fas fa-exchange-alt"></i> Double Rotations</h5>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                            <!-- LR Case -->
+                            <div style="background: rgba(16, 185, 129, 0.1); padding: 1rem; border-radius: 8px;">
+                                <h6 style="color: #059669; margin-bottom: 0.75rem;"><i class="fas fa-exchange-alt"></i> Left-Right (LR) Case</h6>
+                                <p style="font-size: 0.8rem; color: var(--text-light); margin-bottom: 0.5rem;">Node inserted in right subtree of left child</p>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                                    <div>
+                                        <p style="font-size: 0.75rem; margin-bottom: 0.3rem; color: var(--text-light);">Before (BF = -2):</p>
+                                        <pre style="font-size: 0.65rem; color: var(--text-light); margin: 0; line-height: 1.2;">    30 (BF: -2)
+   /
+  10 (BF: +1)
+   \
+    20</pre>
+                                    </div>
+                                    <div>
+                                        <p style="font-size: 0.75rem; margin-bottom: 0.3rem; color: var(--text-light);">After (LR Rotate):</p>
+                                        <pre style="font-size: 0.65rem; color: var(--text-light); margin: 0; line-height: 1.2;">    20 (BF: 0)
+  /     \
+10       30</pre>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 0.75rem; padding: 0.5rem; background: rgba(16, 185, 129, 0.05); border-radius: 4px;">
+                                    <p style="font-size: 0.75rem; color: #059669; margin: 0;"><strong><i class="fas fa-random"></i> Analogy:</strong> Numbers 10, 20, 30 inserted. 20 goes to right of 10's left child. Like rearranging chairs: move middle chair (20) to center position with two-step adjustment.</p>
+                                </div>
+                                <p style="font-size: 0.75rem; color: #059669; margin-top: 0.5rem;"><strong>Left rotate 10, then right rotate 30</strong></p>
+                            </div>
+
+                            <!-- RL Case -->
+                            <div style="background: rgba(245, 101, 101, 0.1); padding: 1rem; border-radius: 8px;">
+                                <h6 style="color: #f56565; margin-bottom: 0.75rem;"><i class="fas fa-retweet"></i> Right-Left (RL) Case</h6>
+                                <p style="font-size: 0.8rem; color: var(--text-light); margin-bottom: 0.5rem;">Node inserted in left subtree of right child</p>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                                    <div>
+                                        <p style="font-size: 0.75rem; margin-bottom: 0.3rem; color: var(--text-light);">Before (BF = +2):</p>
+                                        <pre style="font-size: 0.65rem; color: var(--text-light); margin: 0; line-height: 1.2;">  10 (BF: +2)
+     \
+      30 (BF: -1)
+     /
+    20</pre>
+                                    </div>
+                                    <div>
+                                        <p style="font-size: 0.75rem; margin-bottom: 0.3rem; color: var(--text-light);">After (RL Rotate):</p>
+                                        <pre style="font-size: 0.65rem; color: var(--text-light); margin: 0; line-height: 1.2;">    20 (BF: 0)
+  /     \
+10       30</pre>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 0.75rem; padding: 0.5rem; background: rgba(245, 101, 101, 0.05); border-radius: 4px;">
+                                    <p style="font-size: 0.75rem; color: #f56565; margin: 0;"><strong><i class="fas fa-sync"></i> Analogy:</strong> Numbers 10, 20, 30 inserted. 20 goes to left of 30's right child. Like reorganizing bookshelves: middle book (20) becomes the central divider after rearranging the stacks.</p>
+                                </div>
+                                <p style="font-size: 0.75rem; color: #f56565; margin-top: 0.5rem;"><strong>Right rotate 30, then left rotate 10</strong></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rotation Summary -->
+                    <div style="background: rgba(245, 158, 11, 0.1); padding: 1rem; border-radius: 8px; margin-top: 2rem; border: 2px solid rgba(245, 158, 11, 0.3);">
+                        <h6 style="color: #d97706; margin-bottom: 0.5rem;"><i class="fas fa-info-circle"></i> Rotation Summary</h6>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                            <div style="text-align: center;">
+                                <p style="font-size: 0.8rem; color: var(--text-light); margin: 0;"><strong>Single Rotations:</strong></p>
+                                <p style="font-size: 0.75rem; color: #3b82f6; margin: 0.3rem 0;">LL → Right rotate</p>
+                                <p style="font-size: 0.75rem; color: #8b5cf6; margin: 0;">RR → Left rotate</p>
+                            </div>
+                            <div style="text-align: center;">
+                                <p style="font-size: 0.8rem; color: var(--text-light); margin: 0;"><strong>Double Rotations:</strong></p>
+                                <p style="font-size: 0.75rem; color: #059669; margin: 0.3rem 0;">LR → Left + Right</p>
+                                <p style="font-size: 0.75rem; color: #f56565; margin: 0;">RL → Right + Left</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" data-page="6">
+            <div class="content-section">
+                <h2 style="color: var(--primary-color); margin-bottom: 1.5rem;"><i class="fas fa-bullseye"></i> Use Cases & Applications</h2>
+
+                <!-- Introduction Section -->
+                <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05)); padding: 2rem; border-radius: 12px; border: 2px solid rgba(245, 158, 11, 0.3); margin-bottom: 2rem;">
+                    <h3 style="color: #d97706; margin-bottom: 1rem;"><i class="fas fa-lightbulb"></i> Why Binary Trees Matter</h3>
+                    <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 1rem;">
+                        Binary trees form the foundation of many advanced data structures and algorithms. Their hierarchical nature makes them perfect for representing relationships, enabling efficient searching, sorting, and data organization across various domains.
+                    </p>
+                    <div style="background: rgba(245, 158, 11, 0.1); padding: 1rem; border-radius: 8px; border-left: 4px solid #d97706;">
+                        <strong style="color: #d97706;"><i class="fas fa-star"></i> Key Characteristics:</strong>
+                        <ul style="margin-top: 0.5rem; color: var(--text-light);">
+                            <li><strong>Efficient Operations:</strong> O(log n) search, insert, delete in balanced trees</li>
+                            <li><strong>Hierarchical Representation:</strong> Natural for parent-child relationships</li>
+                            <li><strong>Flexible Traversals:</strong> Multiple ways to visit nodes (in-order, pre-order, post-order, level-order)</li>
+                            <li><strong>Memory Efficient:</strong> No wasted space, dynamic sizing</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Main Applications Grid -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+
+                    <!-- System Organization -->
+                    <div style="background: rgba(16, 185, 129, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(16, 185, 129, 0.3); padding: 2rem; border-radius: 12px;">
+                        <h4 style="color: #059669; margin-bottom: 1.5rem;"><i class="fas fa-folder-open"></i> System Organization & Storage</h4>
+
+                        <div style="margin-bottom: 1.5rem;">
+                            <h5 style="color: #059669; margin-bottom: 0.75rem;"><i class="fas fa-hdd"></i> File Systems</h5>
+                            <p style="line-height: 1.6; color: var(--text-light); margin-bottom: 1rem;">
+                                Operating systems use tree structures to organize file hierarchies. Each directory can contain files and subdirectories, creating a natural tree structure for efficient file lookup and organization.
+                            </p>
+                            <div style="background: rgba(16, 185, 129, 0.05); padding: 0.75rem; border-radius: 6px; font-size: 0.9rem;">
+                                <strong>Examples:</strong> Linux file system (/home/user/documents), Windows Explorer directory trees, macOS Finder folder hierarchies
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 1.5rem;">
+                            <h5 style="color: #059669; margin-bottom: 0.75rem;"><i class="fas fa-database"></i> Database Indexing</h5>
+                            <p style="line-height: 1.6; color: var(--text-light); margin-bottom: 1rem;">
+                                B-trees and B+ trees (advanced binary tree variants) are fundamental to database indexing. They enable lightning-fast data retrieval in massive datasets by maintaining sorted order and minimizing disk I/O operations.
+                            </p>
+                            <div style="background: rgba(16, 185, 129, 0.05); padding: 0.75rem; border-radius: 6px; font-size: 0.9rem;">
+                                <strong>Performance:</strong> Millions of records accessed in milliseconds, essential for modern databases like PostgreSQL, MySQL, MongoDB
+                            </div>
+                        </div>
+
+                        <div>
+                            <h5 style="color: #059669; margin-bottom: 0.75rem;"><i class="fas fa-compress"></i> Data Compression</h5>
+                            <p style="line-height: 1.6; color: var(--text-light); margin-bottom: 1rem;">
+                                Huffman coding trees are used in data compression algorithms. Characters are arranged in a binary tree based on frequency, with shorter codes for common characters and longer codes for rare ones.
+                            </p>
+                            <div style="background: rgba(16, 185, 129, 0.05); padding: 0.75rem; border-radius: 6px; font-size: 0.9rem;">
+                                <strong>Applications:</strong> ZIP files, JPEG images, MP3 audio, lossless compression algorithms
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Computation & Algorithms -->
+                    <div style="background: rgba(59, 130, 246, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(59, 130, 246, 0.3); padding: 2rem; border-radius: 12px;">
+                        <h4 style="color: #2563eb; margin-bottom: 1.5rem;"><i class="fas fa-cogs"></i> Computation & Algorithm Design</h4>
+
+                        <div style="margin-bottom: 1.5rem;">
+                            <h5 style="color: #2563eb; margin-bottom: 0.75rem;"><i class="fas fa-calculator"></i> Expression Evaluation</h5>
+                            <p style="line-height: 1.6; color: var(--text-light); margin-bottom: 1rem;">
+                                Binary expression trees represent mathematical expressions naturally. Operators become internal nodes, operands become leaves. This structure enables efficient expression evaluation and compilation.
+                            </p>
+                            <div style="background: rgba(59, 130, 246, 0.05); padding: 0.75rem; border-radius: 6px; font-size: 0.9rem;">
+                                <strong>Example:</strong> (a + b) * (c - d) becomes a tree where * is root, + and - are children, etc.
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 1.5rem;">
+                            <h5 style="color: #2563eb; margin-bottom: 0.75rem;"><i class="fas fa-brain"></i> Decision Making & AI</h5>
+                            <p style="line-height: 1.6; color: var(--text-light); margin-bottom: 1rem;">
+                                Decision trees are fundamental to machine learning. Each internal node represents a decision based on a feature, branches represent outcomes, and leaves represent final classifications or predictions.
+                            </p>
+                            <div style="background: rgba(59, 130, 246, 0.05); padding: 0.75rem; border-radius: 6px; font-size: 0.9rem;">
+                                <strong>Algorithms:</strong> Random Forest, Gradient Boosting, CART, ID3, C4.5 decision tree algorithms
+                            </div>
+                        </div>
+
+                        <div>
+                            <h5 style="color: #2563eb; margin-bottom: 0.75rem;"><i class="fas fa-sort-amount-up"></i> Priority Queues & Heaps</h5>
+                            <p style="line-height: 1.6; color: var(--text-light); margin-bottom: 1rem;">
+                                Binary heaps (complete binary trees) implement priority queues efficiently. They enable O(log n) insertions and O(1) access to the highest/lowest priority element.
+                            </p>
+                            <div style="background: rgba(59, 130, 246, 0.05); padding: 0.75rem; border-radius: 6px; font-size: 0.9rem;">
+                                <strong>Uses:</strong> Dijkstra's algorithm, task scheduling, event simulation, bandwidth management
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Applications -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+
+                    <!-- Networking -->
+                    <div style="background: rgba(139, 92, 246, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(139, 92, 246, 0.3); padding: 1.5rem; border-radius: 12px;">
+                        <h5 style="color: #7c3aed; margin-bottom: 1rem;"><i class="fas fa-network-wired"></i> Networking</h5>
+                        <ul style="line-height: 1.8; color: var(--text-light); padding-left: 1rem;">
+                            <li><strong>Routing Tables:</strong> IP routing algorithms use tree structures for efficient packet forwarding</li>
+                            <li><strong>Network Topologies:</strong> Spanning trees for redundant network design</li>
+                            <li><strong>Load Balancing:</strong> Binary trees for distributing network traffic</li>
+                        </ul>
+                    </div>
+
+                    <!-- Graphics & Games -->
+                    <div style="background: rgba(245, 101, 101, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(245, 101, 101, 0.3); padding: 1.5rem; border-radius: 12px;">
+                        <h5 style="color: #ef4444; margin-bottom: 1rem;"><i class="fas fa-gamepad"></i> Graphics & Gaming</h5>
+                        <ul style="line-height: 1.8; color: var(--text-light); padding-left: 1rem;">
+                            <li><strong>Scene Graphs:</strong> Game engines organize 3D objects hierarchically</li>
+                            <li><strong>Collision Detection:</strong> Bounding volume hierarchies for efficient collision testing</li>
+                            <li><strong>Animation Systems:</strong> Skeletal animation trees for character movement</li>
+                        </ul>
+                    </div>
+
+                    <!-- Scientific Computing -->
+                    <div style="background: rgba(34, 197, 94, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(34, 197, 94, 0.3); padding: 1.5rem; border-radius: 12px;">
+                        <h5 style="color: #22c55e; margin-bottom: 1rem;"><i class="fas fa-flask"></i> Scientific Computing</h5>
+                        <ul style="line-height: 1.8; color: var(--text-light); padding-left: 1rem;">
+                            <li><strong>Computational Geometry:</strong> Quadtrees and octrees for spatial partitioning</li>
+                            <li><strong>Physical Simulations:</strong> Barnes-Hut algorithm for N-body problems</li>
+                            <li><strong>Data Analysis:</strong> Hierarchical clustering algorithms</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Advanced Applications -->
+                <div style="background: rgba(99, 102, 241, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(99, 102, 241, 0.3); padding: 2rem; border-radius: 12px;">
+                    <h4 style="color: var(--primary-color); margin-bottom: 1.5rem;"><i class="fas fa-rocket"></i> Advanced Applications & Research</h4>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                        <div>
+                            <h5 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-search-plus"></i> Search Algorithms</h5>
+                            <ul style="line-height: 1.8; color: var(--text-light);">
+                                <li><strong>Binary Search Trees:</strong> Fundamental data structure for ordered data with O(log n) operations</li>
+                                <li><strong>AVL Trees:</strong> Self-balancing BSTs guaranteeing O(log n) height</li>
+                                <li><strong>Red-Black Trees:</strong> Balanced BSTs with guaranteed performance bounds</li>
+                                <li><strong>B-Trees:</strong> Multiway search trees for disk-based storage systems</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h5 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-code-branch"></i> Algorithm Design</h5>
+                            <ul style="line-height: 1.8; color: var(--text-light);">
+                                <li><strong>Divide & Conquer:</strong> Many algorithms split problems into tree-like subproblems</li>
+                                <li><strong>Dynamic Programming:</strong> Tree structures for memoization and state management</li>
+                                <li><strong>Greedy Algorithms:</strong> Huffman coding, minimum spanning trees</li>
+                                <li><strong>Graph Algorithms:</strong> Minimum spanning trees, shortest path algorithms</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Performance Comparison -->
+                    <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(99, 102, 241, 0.05); border-radius: 8px;">
+                        <h5 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-chart-bar"></i> Performance Characteristics</h5>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                            <div style="text-align: center;">
+                                <h6 style="color: #059669; margin-bottom: 0.5rem;">Balanced Binary Trees</h6>
+                                <div style="font-size: 0.9rem; color: var(--text-light);">
+                                    <strong>Search:</strong> O(log n)<br>
+                                    <strong>Insert:</strong> O(log n)<br>
+                                    <strong>Delete:</strong> O(log n)<br>
+                                    <strong>Space:</strong> O(n)
+                                </div>
+                            </div>
+                            <div style="text-align: center;">
+                                <h6 style="color: #ef4444; margin-bottom: 0.5rem;">Unbalanced Binary Trees</h6>
+                                <div style="font-size: 0.9rem; color: var(--text-light);">
+                                    <strong>Search:</strong> O(n) worst case<br>
+                                    <strong>Insert:</strong> O(n) worst case<br>
+                                    <strong>Delete:</strong> O(n) worst case<br>
+                                    <strong>Space:</strong> O(n)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" data-page="7">
+            <div class="content-container">
+                <h2 style="color: var(--primary-color); margin-bottom: 1.5rem;"><i class="fas fa-code"></i> Complete Code Implementation</h2>
+
+                <!-- Implementation Tabs -->
+                <div class="code-tabs" style="margin-bottom: 2rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                        <div class="language-tabs">
+                            <button class="code-tab active" data-lang="python">Python</button>
+                            <button class="code-tab" data-lang="java">Java</button>
+                            <button class="code-tab" data-lang="cpp">C++</button>
+                            <button class="code-tab" data-lang="c">C</button>
+                        </div>
+                        <div class="code-pagination-controls" style="display: flex; align-items: center; gap: 0.5rem; margin-left: 2rem;">
+                            <button class="internal-prev" style="background: rgba(99, 102, 241, 0.2); border: none; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; color: var(--primary-color); font-size: 0.8rem; opacity: 0.5;"><i class="fas fa-chevron-left"></i></button>
+                            <span class="page-indicator" style="font-weight: 600; color: var(--primary-color); font-size: 0.8rem;">1/2</span>
+                            <button class="internal-next" style="background: rgba(245, 158, 11, 0.2); border: none; padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; color: #d97706; font-size: 0.8rem; opacity: 1;"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Python Implementation -->
+                <div class="code-content active" data-lang="python">
+                    <div style="margin-bottom: 3rem;">
+
+                        <!-- BST Implementation Page -->
+                        <div class="code-page active" data-page="1">
+                            <h4 style="color: #059669; margin-bottom: 1rem;"><i class="fas fa-tree"></i> Binary Search Tree (BST)</h4>
+                            <pre style="background: rgba(30, 41, 59, 0.8); padding: 1.5rem; border-radius: 8px; font-size: 0.85rem; line-height: 1.6; overflow-x: auto;"><code>class TreeNode:
+    def __init__(self, key):
+        self.key = key
+        self.left = None
+        self.right = None
+
+class BinarySearchTree:
+    def __init__(self):
+        self.root = None
+
+    def insert(self, key):
+        """Insert a new key into the BST"""
+        if self.root is None:
+            self.root = TreeNode(key)
+        else:
+            self._insert_recursive(self.root, key)
+
+    def _insert_recursive(self, node, key):
+        if key < node.key:
+            if node.left is None:
+                node.left = TreeNode(key)
+            else:
+                self._insert_recursive(node.left, key)
+        else:
+            if node.right is None:
+                node.right = TreeNode(key)
+            else:
+                self._insert_recursive(node.right, key)
+
+    def search(self, key):
+        """Search for a key in the BST"""
+        return self._search_recursive(self.root, key)
+
+    def _search_recursive(self, node, key):
+        if node is None or node.key == key:
+            return node
+        if key < node.key:
+            return self._search_recursive(node.left, key)
+        return self._search_recursive(node.right, key)
+
+    def delete(self, key):
+        """Delete a key from the BST"""
+        self.root = self._delete_recursive(self.root, key)
+
+    def _delete_recursive(self, node, key):
+        if node is None:
+            return node
+
+        if key < node.key:
+            node.left = self._delete_recursive(node.left, key)
+        elif key > node.key:
+            node.right = self._delete_recursive(node.right, key)
+        else:
+            # Node with only one child or no child
+            if node.left is None:
+                return node.right
+            elif node.right is None:
+                return node.left
+
+            # Node with two children: Get inorder successor
+            temp = self._min_value_node(node.right)
+            node.key = temp.key
+            node.right = self._delete_recursive(node.right, temp.key)
+
+        return node
+
+    def _min_value_node(self, node):
+        current = node
+        while current.left is not None:
+            current = current.left
+        return current
+
+    def inorder_traversal(self):
+        """In-order traversal: Left -> Root -> Right"""
+        result = []
+        self._inorder_recursive(self.root, result)
+        return result
+
+    def _inorder_recursive(self, node, result):
+        if node:
+            self._inorder_recursive(node.left, result)
+            result.append(node.key)
+            self._inorder_recursive(node.right, result)
+
+    def preorder_traversal(self):
+        """Pre-order traversal: Root -> Left -> Right"""
+        result = []
+        self._preorder_recursive(self.root, result)
+        return result
+
+    def _preorder_recursive(self, node, result):
+        if node:
+            result.append(node.key)
+            self._preorder_recursive(node.left, result)
+            self._preorder_recursive(node.right, result)
+
+    def postorder_traversal(self):
+        """Post-order traversal: Left -> Right -> Root"""
+        result = []
+        self._postorder_recursive(self.root, result)
+        return result
+
+    def _postorder_recursive(self, node, result):
+        if node:
+            self._postorder_recursive(node.left, result)
+            self._postorder_recursive(node.right, result)
+            result.append(node.key)
+
+    def level_order_traversal(self):
+        """Level-order traversal (BFS)"""
+        if not self.root:
+            return []
+
+        result = []
+        queue = [self.root]
+
+        while queue:
+            current = queue.pop(0)
+            result.append(current.key)
+
+            if current.left:
+                queue.append(current.left)
+            if current.right:
+                queue.append(current.right)
+
+        return result
+
+# Usage Example
+if __name__ == "__main__":
+    bst = BinarySearchTree()
+
+    # Insert elements
+    elements = [50, 30, 20, 40, 70, 60, 80]
+    for elem in elements:
+        bst.insert(elem)
+
+    print("In-order traversal:", bst.inorder_traversal())
+    print("Pre-order traversal:", bst.preorder_traversal())
+    print("Post-order traversal:", bst.postorder_traversal())
+    print("Level-order traversal:", bst.level_order_traversal())
+
+    # Search for an element
+    search_result = bst.search(40)
+    print("Search for 40:", "Found" if search_result else "Not found")
+
+    # Delete an element
+    bst.delete(20)
+    print("After deleting 20:", bst.inorder_traversal())</code></pre>
+                        </div>
+
+                        <!-- AVL Tree Implementation Page -->
+                        <div class="code-page" data-page="2">
+                            <h4 style="color: #d97706; margin-bottom: 1rem;"><i class="fas fa-balance-scale"></i> AVL Tree (Self-Balancing BST)</h4>
+                            <pre style="background: rgba(30, 41, 59, 0.8); padding: 1.5rem; border-radius: 8px; font-size: 0.85rem; line-height: 1.6; overflow-x: auto;"><code>class AVLNode:
+    def __init__(self, key):
+        self.key = key
+        self.left = None
+        self.right = None
+        self.height = 1
+
+class AVLTree:
+    def __init__(self):
+        self.root = None
+
+    def get_height(self, node):
+        if not node:
+            return 0
+        return node.height
+
+    def get_balance(self, node):
+        if not node:
+            return 0
+        return self.get_height(node.left) - self.get_height(node.right)
+
+    def right_rotate(self, y):
+        x = y.left
+        T2 = x.right
+
+        # Perform rotation
+        x.right = y
+        y.left = T2
+
+        # Update heights
+        y.height = max(self.get_height(y.left), self.get_height(y.right)) + 1
+        x.height = max(self.get_height(x.left), self.get_height(x.right)) + 1
+
+        return x
+
+    def left_rotate(self, x):
+        y = x.right
+        T2 = y.left
+
+        # Perform rotation
+        y.left = x
+        x.right = T2
+
+        # Update heights
+        x.height = max(self.get_height(x.left), self.get_height(x.right)) + 1
+        y.height = max(self.get_height(y.left), self.get_height(y.right)) + 1
+
+        return y
+
+    def insert(self, key):
+        """Insert a key into the AVL tree"""
+        self.root = self._insert_recursive(self.root, key)
+
+    def _insert_recursive(self, node, key):
+        # Perform normal BST insertion
+        if not node:
+            return AVLNode(key)
+
+        if key < node.key:
+            node.left = self._insert_recursive(node.left, key)
+        else:
+            node.right = self._insert_recursive(node.right, key)
+
+        # Update height
+        node.height = 1 + max(self.get_height(node.left), self.get_height(node.right))
+
+        # Get balance factor
+        balance = self.get_balance(node)
+
+        # Balance the tree if needed
+        # Left Left Case
+        if balance > 1 and key < node.left.key:
+            return self.right_rotate(node)
+
+        # Right Right Case
+        if balance < -1 and key > node.right.key:
+            return self.left_rotate(node)
+
+        # Left Right Case
+        if balance > 1 and key > node.left.key:
+            node.left = self.left_rotate(node.left)
+            return self.right_rotate(node)
+
+        # Right Left Case
+        if balance < -1 and key < node.right.key:
+            node.right = self.right_rotate(node.right)
+            return self.left_rotate(node)
+
+        return node
+
+    def inorder_traversal(self):
+        """In-order traversal"""
+        result = []
+        self._inorder_recursive(self.root, result)
+        return result
+
+    def _inorder_recursive(self, node, result):
+        if node:
+            self._inorder_recursive(node.left, result)
+            result.append(node.key)
+            self._inorder_recursive(node.right, result)
+
+# Usage Example
+if __name__ == "__main__":
+    avl = AVLTree()
+
+    # Insert elements that would cause imbalance
+    elements = [10, 20, 30, 40, 50, 25]
+    for elem in elements:
+        avl.insert(elem)
+
+    print("AVL Tree In-order traversal:", avl.inorder_traversal())
+    print("Tree remains balanced automatically!")</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Java Implementation -->
+                <div class="code-content" data-lang="java">
+                    <div style="margin-bottom: 3rem;">
+
+                        <!-- BST Implementation Page -->
+                        <div class="code-page active" data-page="1">
+                            <h4 style="color: #059669; margin-bottom: 1rem;"><i class="fas fa-tree"></i> Binary Search Tree (BST)</h4>
+                            <pre style="background: rgba(30, 41, 59, 0.8); padding: 1.5rem; border-radius: 8px; font-size: 0.85rem; line-height: 1.6; overflow-x: auto;"><code>class TreeNode {
+    int key;
+    TreeNode left, right;
+
+    public TreeNode(int item) {
+        key = item;
+        left = right = null;
+    }
+}
+
+class BinarySearchTree {
+    TreeNode root;
+
+    BinarySearchTree() {
+        root = null;
+    }
+
+    // Insert a new key
+    void insert(int key) {
+        root = insertRec(root, key);
+    }
+
+    TreeNode insertRec(TreeNode root, int key) {
+        if (root == null) {
+            root = new TreeNode(key);
+            return root;
+        }
+
+        if (key < root.key)
+            root.left = insertRec(root.left, key);
+        else if (key > root.key)
+            root.right = insertRec(root.right, key);
+
+        return root;
+    }
+
+    // Search for a key
+    boolean search(int key) {
+        return searchRec(root, key);
+    }
+
+    boolean searchRec(TreeNode root, int key) {
+        if (root == null)
+            return false;
+
+        if (root.key == key)
+            return true;
+
+        if (key < root.key)
+            return searchRec(root.left, key);
+
+        return searchRec(root.right, key);
+    }
+
+    // Delete a key
+    void delete(int key) {
+        root = deleteRec(root, key);
+    }
+
+    TreeNode deleteRec(TreeNode root, int key) {
+        if (root == null)
+            return root;
+
+        if (key < root.key)
+            root.left = deleteRec(root.left, key);
+        else if (key > root.key)
+            root.right = deleteRec(root.right, key);
+        else {
+            // Node with only one child or no child
+            if (root.left == null)
+                return root.right;
+            else if (root.right == null)
+                return root.left;
+
+            // Node with two children: Get inorder successor
+            root.key = minValue(root.right);
+
+            // Delete the inorder successor
+            root.right = deleteRec(root.right, root.key);
+        }
+
+        return root;
+    }
+
+    int minValue(TreeNode root) {
+        int minv = root.key;
+        while (root.left != null) {
+            minv = root.left.key;
+            root = root.left;
+        }
+        return minv;
+    }
+
+    // Traversals
+    void inorder() {
+        inorderRec(root);
+        System.out.println();
+    }
+
+    void inorderRec(TreeNode root) {
+        if (root != null) {
+            inorderRec(root.left);
+            System.out.print(root.key + " ");
+            inorderRec(root.right);
+        }
+    }
+
+    void preorder() {
+        preorderRec(root);
+        System.out.println();
+    }
+
+    void preorderRec(TreeNode root) {
+        if (root != null) {
+            System.out.print(root.key + " ");
+            preorderRec(root.left);
+            preorderRec(root.right);
+        }
+    }
+
+    void postorder() {
+        postorderRec(root);
+        System.out.println();
+    }
+
+    void postorderRec(TreeNode root) {
+        if (root != null) {
+            postorderRec(root.left);
+            postorderRec(root.right);
+            System.out.print(root.key + " ");
+        }
+    }
+
+    // Driver Code
+    public static void main(String[] args) {
+        BinarySearchTree tree = new BinarySearchTree();
+
+        // Insert elements
+        tree.insert(50);
+        tree.insert(30);
+        tree.insert(20);
+        tree.insert(40);
+        tree.insert(70);
+        tree.insert(60);
+        tree.insert(80);
+
+        System.out.print("Inorder traversal: ");
+        tree.inorder();
+
+        System.out.print("Preorder traversal: ");
+        tree.preorder();
+
+        System.out.print("Postorder traversal: ");
+        tree.postorder();
+
+        // Search
+        System.out.println("Search for 40: " + tree.search(40));
+
+        // Delete
+        tree.delete(20);
+        System.out.print("After deleting 20, inorder: ");
+        tree.inorder();
+    }
+}</code></pre>
+                        </div>
+
+                        <!-- AVL Tree Implementation Page -->
+                        <div class="code-page" data-page="2">
+                            <h4 style="color: #d97706; margin-bottom: 1rem;"><i class="fas fa-balance-scale"></i> AVL Tree (Self-Balancing BST)</h4>
+                            <pre style="background: rgba(30, 41, 59, 0.8); padding: 1.5rem; border-radius: 8px; font-size: 0.85rem; line-height: 1.6; overflow-x: auto;"><code>class AVLNode {
+    int key, height;
+    AVLNode left, right;
+
+    AVLNode(int d) {
+        key = d;
+        height = 1;
+    }
+}
+
+class AVLTree {
+    AVLNode root;
+
+    // Get height of the node
+    int height(AVLNode N) {
+        if (N == null)
+            return 0;
+        return N.height;
+    }
+
+    // Get balance factor of the node
+    int getBalance(AVLNode N) {
+        if (N == null)
+            return 0;
+        return height(N.left) - height(N.right);
+    }
+
+    // Right rotate subtree rooted with y
+    AVLNode rightRotate(AVLNode y) {
+        AVLNode x = y.left;
+        AVLNode T2 = x.right;
+
+        // Perform rotation
+        x.right = y;
+        y.left = T2;
+
+        // Update heights
+        y.height = Math.max(height(y.left), height(y.right)) + 1;
+        x.height = Math.max(height(x.left), height(x.right)) + 1;
+
+        // Return new root
+        return x;
+    }
+
+    // Left rotate subtree rooted with x
+    AVLNode leftRotate(AVLNode x) {
+        AVLNode y = x.right;
+        AVLNode T2 = y.left;
+
+        // Perform rotation
+        y.left = x;
+        x.right = T2;
+
+        // Update heights
+        x.height = Math.max(height(x.left), height(x.right)) + 1;
+        y.height = Math.max(height(y.left), height(y.right)) + 1;
+
+        // Return new root
+        return y;
+    }
+
+    // Insert a key into the AVL tree
+    AVLNode insert(AVLNode node, int key) {
+        // Perform normal BST insertion
+        if (node == null)
+            return (new AVLNode(key));
+
+        if (key < node.key)
+            node.left = insert(node.left, key);
+        else if (key > node.key)
+            node.right = insert(node.right, key);
+        else // Duplicate keys not allowed
+            return node;
+
+        // Update height of this ancestor node
+        node.height = 1 + Math.max(height(node.left), height(node.right));
+
+        // Get the balance factor of this ancestor node
+        int balance = getBalance(node);
+
+        // If this node becomes unbalanced, then there are 4 cases
+
+        // Left Left Case
+        if (balance > 1 && key < node.left.key)
+            return rightRotate(node);
+
+        // Right Right Case
+        if (balance < -1 && key > node.right.key)
+            return leftRotate(node);
+
+        // Left Right Case
+        if (balance > 1 && key > node.left.key) {
+            node.left = leftRotate(node.left);
+            return rightRotate(node);
+        }
+
+        // Right Left Case
+        if (balance < -1 && key < node.right.key) {
+            node.right = rightRotate(node.right);
+            return leftRotate(node);
+        }
+
+        return node;
+    }
+
+    void insert(int key) {
+        root = insert(root, key);
+    }
+
+    // Inorder traversal of the tree
+    void inorder(AVLNode node) {
+        if (node != null) {
+            inorder(node.left);
+            System.out.print(node.key + " ");
+            inorder(node.right);
+        }
+    }
+
+    public static void main(String[] args) {
+        AVLTree tree = new AVLTree();
+
+        // Insert elements that cause rotations
+        tree.insert(10);
+        tree.insert(20);
+        tree.insert(30);
+        tree.insert(40);
+        tree.insert(50);
+        tree.insert(25);
+
+        System.out.print("AVL Tree inorder traversal: ");
+        tree.inorder(tree.root);
+        System.out.println("\nTree automatically maintains balance!");
+    }
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- C++ Implementation -->
+                <div class="code-content" data-lang="cpp">
+                    <div style="margin-bottom: 3rem;">
+
+                        <!-- BST Implementation Page -->
+                        <div class="code-page active" data-page="1">
+                            <h4 style="color: #059669; margin-bottom: 1rem;"><i class="fas fa-tree"></i> Binary Search Tree (BST)</h4>
+                            <pre style="background: rgba(30, 41, 59, 0.8); padding: 1.5rem; border-radius: 8px; font-size: 0.85rem; line-height: 1.6; overflow-x: auto;"><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;queue&gt;
+using namespace std;
+
+struct TreeNode {
+    int key;
+    TreeNode *left, *right;
+
+    TreeNode(int val) : key(val), left(nullptr), right(nullptr) {}
+};
+
+class BinarySearchTree {
+private:
+    TreeNode* root;
+
+    TreeNode* insertRec(TreeNode* node, int key) {
+        if (node == nullptr) {
+            return new TreeNode(key);
+        }
+
+        if (key < node->key) {
+            node->left = insertRec(node->left, key);
+        } else if (key > node->key) {
+            node->right = insertRec(node->right, key);
+        }
+
+        return node;
+    }
+
+    TreeNode* searchRec(TreeNode* node, int key) {
+        if (node == nullptr || node->key == key) {
+            return node;
+        }
+
+        if (key < node->key) {
+            return searchRec(node->left, key);
+        }
+        return searchRec(node->right, key);
+    }
+
+    TreeNode* deleteRec(TreeNode* node, int key) {
+        if (node == nullptr) {
+            return node;
+        }
+
+        if (key < node->key) {
+            node->left = deleteRec(node->left, key);
+        } else if (key > node->key) {
+            node->right = deleteRec(node->right, key);
+        } else {
+            // Node with only one child or no child
+            if (node->left == nullptr) {
+                TreeNode* temp = node->right;
+                delete node;
+                return temp;
+            } else if (node->right == nullptr) {
+                TreeNode* temp = node->left;
+                delete node;
+                return temp;
+            }
+
+            // Node with two children: Get inorder successor
+            TreeNode* temp = minValueNode(node->right);
+            node->key = temp->key;
+            node->right = deleteRec(node->right, temp->key);
+        }
+        return node;
+    }
+
+    TreeNode* minValueNode(TreeNode* node) {
+        TreeNode* current = node;
+        while (current && current->left != nullptr) {
+            current = current->left;
+        }
+        return current;
+    }
+
+    void inorderRec(TreeNode* node, vector&lt;int&gt;& result) {
+        if (node != nullptr) {
+            inorderRec(node->left, result);
+            result.push_back(node->key);
+            inorderRec(node->right, result);
+        }
+    }
+
+public:
+    BinarySearchTree() : root(nullptr) {}
+
+    void insert(int key) {
+        root = insertRec(root, key);
+    }
+
+    bool search(int key) {
+        return searchRec(root, key) != nullptr;
+    }
+
+    void deleteKey(int key) {
+        root = deleteRec(root, key);
+    }
+
+    vector&lt;int&gt; inorderTraversal() {
+        vector&lt;int&gt; result;
+        inorderRec(root, result);
+        return result;
+    }
+
+    vector&lt;int&gt; levelOrderTraversal() {
+        vector&lt;int&gt; result;
+        if (!root) return result;
+
+        queue&lt;TreeNode*&gt; q;
+        q.push(root);
+
+        while (!q.empty()) {
+            TreeNode* node = q.front();
+            q.pop();
+            result.push_back(node->key);
+
+            if (node->left) q.push(node->left);
+            if (node->right) q.push(node->right);
+        }
+
+        return result;
+    }
+};
+
+int main() {
+    BinarySearchTree bst;
+
+    // Insert elements
+    vector&lt;int&gt; elements = {50, 30, 20, 40, 70, 60, 80};
+    for (int elem : elements) {
+        bst.insert(elem);
+    }
+
+    cout &lt;&lt; "In-order traversal: ";
+    vector&lt;int&gt; inorder = bst.inorderTraversal();
+    for (int val : inorder) {
+        cout &lt;&lt; val &lt;&lt; " ";
+    }
+    cout &lt;&lt; endl;
+
+    cout &lt;&lt; "Level-order traversal: ";
+    vector&lt;int&gt; levelorder = bst.levelOrderTraversal();
+    for (int val : levelorder) {
+        cout &lt;&lt; val &lt;&lt; " ";
+    }
+    cout &lt;&lt; endl;
+
+    // Search
+    cout &lt;&lt; "Search for 40: " &lt;&lt; (bst.search(40) ? "Found" : "Not found") &lt;&lt; endl;
+
+    // Delete
+    bst.deleteKey(20);
+    cout &lt;&lt; "After deleting 20, inorder: ";
+    inorder = bst.inorderTraversal();
+    for (int val : inorder) {
+        cout &lt;&lt; val &lt;&lt; " ";
+    }
+    cout &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+                        </div>
+
+                        <!-- AVL Tree Implementation Page -->
+                        <div class="code-page" data-page="2">
+                            <h4 style="color: #d97706; margin-bottom: 1rem;"><i class="fas fa-balance-scale"></i> AVL Tree (Self-Balancing BST)</h4>
+                            <pre style="background: rgba(30, 41, 59, 0.8); padding: 1.5rem; border-radius: 8px; font-size: 0.85rem; line-height: 1.6; overflow-x: auto;"><code>#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+struct AVLNode {
+    int key;
+    AVLNode *left;
+    AVLNode *right;
+    int height;
+
+    AVLNode(int k) : key(k), left(nullptr), right(nullptr), height(1) {}
+};
+
+class AVLTree {
+private:
+    AVLNode* root;
+
+    int height(AVLNode* N) {
+        if (N == nullptr)
+            return 0;
+        return N->height;
+    }
+
+    int getBalance(AVLNode* N) {
+        if (N == nullptr)
+            return 0;
+        return height(N->left) - height(N->right);
+    }
+
+    AVLNode* rightRotate(AVLNode* y) {
+        AVLNode* x = y->left;
+        AVLNode* T2 = x->right;
+
+        // Perform rotation
+        x->right = y;
+        y->left = T2;
+
+        // Update heights
+        y->height = max(height(y->left), height(y->right)) + 1;
+        x->height = max(height(x->left), height(x->right)) + 1;
+
+        // Return new root
+        return x;
+    }
+
+    AVLNode* leftRotate(AVLNode* x) {
+        AVLNode* y = x->right;
+        AVLNode* T2 = y->left;
+
+        // Perform rotation
+        y->left = x;
+        x->right = T2;
+
+        // Update heights
+        x->height = max(height(x->left), height(x->right)) + 1;
+        y->height = max(height(y->left), height(y->right)) + 1;
+
+        // Return new root
+        return y;
+    }
+
+    AVLNode* insertRec(AVLNode* node, int key) {
+        // Perform the normal BST insertion
+        if (node == nullptr)
+            return new AVLNode(key);
+
+        if (key < node->key)
+            node->left = insertRec(node->left, key);
+        else if (key > node->key)
+            node->right = insertRec(node->right, key);
+        else // Equal keys not allowed
+            return node;
+
+        // Update height of this ancestor node
+        node->height = 1 + max(height(node->left), height(node->right));
+
+        // Get the balance factor of this ancestor node
+        int balance = getBalance(node);
+
+        // If this node becomes unbalanced, then there are 4 cases
+
+        // Left Left Case
+        if (balance > 1 && key < node->left->key)
+            return rightRotate(node);
+
+        // Right Right Case
+        if (balance < -1 && key > node->right->key)
+            return leftRotate(node);
+
+        // Left Right Case
+        if (balance > 1 && key > node->left->key) {
+            node->left = leftRotate(node->left);
+            return rightRotate(node);
+        }
+
+        // Right Left Case
+        if (balance < -1 && key < node->right->key) {
+            node->right = rightRotate(node->right);
+            return leftRotate(node);
+        }
+
+        // Return the (unchanged) node pointer
+        return node;
+    }
+
+    void inorderRec(AVLNode* node) {
+        if (node != nullptr) {
+            inorderRec(node->left);
+            cout &lt;&lt; node->key &lt;&lt; " ";
+            inorderRec(node->right);
+        }
+    }
+
+public:
+    AVLTree() : root(nullptr) {}
+
+    void insert(int key) {
+        root = insertRec(root, key);
+    }
+
+    void inorder() {
+        inorderRec(root);
+        cout &lt;&lt; endl;
+    }
+};
+
+int main() {
+    AVLTree tree;
+
+    // Insert elements that cause rotations
+    tree.insert(10);
+    tree.insert(20);
+    tree.insert(30);
+    tree.insert(40);
+    tree.insert(50);
+    tree.insert(25);
+
+    cout &lt;&lt; "AVL Tree inorder traversal: ";
+    tree.inorder();
+
+    cout &lt;&lt; "Tree remains balanced automatically!" &lt;&lt; endl;
+
+    return 0;
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- C Implementation -->
+                <div class="code-content" data-lang="c">
+                    <div style="margin-bottom: 3rem;">
+
+                        <!-- BST Implementation Page -->
+                        <div class="code-page active" data-page="1">
+                            <h4 style="color: #059669; margin-bottom: 1rem;"><i class="fas fa-tree"></i> Binary Search Tree (BST)</h4>
+                            <pre style="background: rgba(30, 41, 59, 0.8); padding: 1.5rem; border-radius: 8px; font-size: 0.85rem; line-height: 1.6; overflow-x: auto;"><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+struct TreeNode {
+    int key;
+    struct TreeNode* left;
+    struct TreeNode* right;
+};
+
+struct TreeNode* createNode(int key) {
+    struct TreeNode* newNode = (struct TreeNode*)malloc(sizeof(struct TreeNode));
+    newNode->key = key;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
+}
+
+struct TreeNode* insert(struct TreeNode* node, int key) {
+    if (node == NULL) {
+        return createNode(key);
+    }
+
+    if (key < node->key) {
+        node->left = insert(node->left, key);
+    } else if (key > node->key) {
+        node->right = insert(node->right, key);
+    }
+
+    return node;
+}
+
+struct TreeNode* search(struct TreeNode* root, int key) {
+    if (root == NULL || root->key == key) {
+        return root;
+    }
+
+    if (key < root->key) {
+        return search(root->left, key);
+    }
+
+    return search(root->right, key);
+}
+
+struct TreeNode* minValueNode(struct TreeNode* node) {
+    struct TreeNode* current = node;
+    while (current && current->left != NULL) {
+        current = current->left;
+    }
+    return current;
+}
+
+struct TreeNode* deleteNode(struct TreeNode* root, int key) {
+    if (root == NULL) {
+        return root;
+    }
+
+    if (key < root->key) {
+        root->left = deleteNode(root->left, key);
+    } else if (key > root->key) {
+        root->right = deleteNode(root->right, key);
+    } else {
+        // Node with only one child or no child
+        if (root->left == NULL) {
+            struct TreeNode* temp = root->right;
+            free(root);
+            return temp;
+        } else if (root->right == NULL) {
+            struct TreeNode* temp = root->left;
+            free(root);
+            return temp;
+        }
+
+        // Node with two children: Get inorder successor
+        struct TreeNode* temp = minValueNode(root->right);
+        root->key = temp->key;
+        root->right = deleteNode(root->right, temp->key);
+    }
+    return root;
+}
+
+void inorderTraversal(struct TreeNode* root) {
+    if (root != NULL) {
+        inorderTraversal(root->left);
+        printf("%d ", root->key);
+        inorderTraversal(root->right);
+    }
+}
+
+void preorderTraversal(struct TreeNode* root) {
+    if (root != NULL) {
+        printf("%d ", root->key);
+        preorderTraversal(root->left);
+        preorderTraversal(root->right);
+    }
+}
+
+void postorderTraversal(struct TreeNode* root) {
+    if (root != NULL) {
+        postorderTraversal(root->left);
+        postorderTraversal(root->right);
+        printf("%d ", root->key);
+    }
+}
+
+int main() {
+    struct TreeNode* root = NULL;
+
+    // Insert elements
+    root = insert(root, 50);
+    root = insert(root, 30);
+    root = insert(root, 20);
+    root = insert(root, 40);
+    root = insert(root, 70);
+    root = insert(root, 60);
+    root = insert(root, 80);
+
+    printf("Inorder traversal: ");
+    inorderTraversal(root);
+    printf("\n");
+
+    printf("Preorder traversal: ");
+    preorderTraversal(root);
+    printf("\n");
+
+    printf("Postorder traversal: ");
+    postorderTraversal(root);
+    printf("\n");
+
+    // Search for a key
+    struct TreeNode* result = search(root, 40);
+    printf("Search for 40: %s\n", result ? "Found" : "Not found");
+
+    // Delete a key
+    root = deleteNode(root, 20);
+    printf("After deleting 20, inorder: ");
+    inorderTraversal(root);
+    printf("\n");
+
+    return 0;
+}</code></pre>
+                        </div>
+
+                        <!-- AVL Tree Implementation Page -->
+                        <div class="code-page" data-page="2">
+                            <h4 style="color: #d97706; margin-bottom: 1rem;"><i class="fas fa-balance-scale"></i> AVL Tree (Self-Balancing BST)</h4>
+                            <pre style="background: rgba(30, 41, 59, 0.8); padding: 1.5rem; border-radius: 8px; font-size: 0.85rem; line-height: 1.6; overflow-x: auto;"><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+struct AVLNode {
+    int key;
+    struct AVLNode* left;
+    struct AVLNode* right;
+    int height;
+};
+
+int height(struct AVLNode* N) {
+    if (N == NULL)
+        return 0;
+    return N->height;
+}
+
+int max(int a, int b) {
+    return (a > b) ? a : b;
+}
+
+struct AVLNode* newNode(int key) {
+    struct AVLNode* node = (struct AVLNode*)malloc(sizeof(struct AVLNode));
+    node->key = key;
+    node->left = NULL;
+    node->right = NULL;
+    node->height = 1;
+    return node;
+}
+
+struct AVLNode* rightRotate(struct AVLNode* y) {
+    struct AVLNode* x = y->left;
+    struct AVLNode* T2 = x->right;
+
+    // Perform rotation
+    x->right = y;
+    y->left = T2;
+
+    // Update heights
+    y->height = max(height(y->left), height(y->right)) + 1;
+    x->height = max(height(x->left), height(x->right)) + 1;
+
+    // Return new root
+    return x;
+}
+
+struct AVLNode* leftRotate(struct AVLNode* x) {
+    struct AVLNode* y = x->right;
+    struct AVLNode* T2 = y->left;
+
+    // Perform rotation
+    y->left = x;
+    x->right = T2;
+
+    // Update heights
+    x->height = max(height(x->left), height(x->right)) + 1;
+    y->height = max(height(y->left), height(y->right)) + 1;
+
+    // Return new root
+    return y;
+}
+
+int getBalance(struct AVLNode* N) {
+    if (N == NULL)
+        return 0;
+    return height(N->left) - height(N->right);
+}
+
+struct AVLNode* insert(struct AVLNode* node, int key) {
+    // Perform the normal BST insertion
+    if (node == NULL)
+        return newNode(key);
+
+    if (key < node->key)
+        node->left = insert(node->left, key);
+    else if (key > node->key)
+        node->right = insert(node->right, key);
+    else // Equal keys not allowed
+        return node;
+
+    // Update height of this ancestor node
+    node->height = 1 + max(height(node->left), height(node->right));
+
+    // Get the balance factor of this ancestor node
+    int balance = getBalance(node);
+
+    // If this node becomes unbalanced, then there are 4 cases
+
+    // Left Left Case
+    if (balance > 1 && key < node->left->key)
+        return rightRotate(node);
+
+    // Right Right Case
+    if (balance < -1 && key > node->right->key)
+        return leftRotate(node);
+
+    // Left Right Case
+    if (balance > 1 && key > node->left->key) {
+        node->left = leftRotate(node->left);
+        return rightRotate(node);
+    }
+
+    // Right Left Case
+    if (balance < -1 && key < node->right->key) {
+        node->right = rightRotate(node->right);
+        return leftRotate(node);
+    }
+
+    // Return the (unchanged) node pointer
+    return node;
+}
+
+void inorder(struct AVLNode* root) {
+    if (root != NULL) {
+        inorder(root->left);
+        printf("%d ", root->key);
+        inorder(root->right);
+    }
+}
+
+int main() {
+    struct AVLNode* root = NULL;
+
+    // Insert elements that cause rotations
+    root = insert(root, 10);
+    root = insert(root, 20);
+    root = insert(root, 30);
+    root = insert(root, 40);
+    root = insert(root, 50);
+    root = insert(root, 25);
+
+    printf("AVL Tree inorder traversal: ");
+    inorder(root);
+    printf("\nTree remains balanced automatically!\n");
+
+    return 0;
+}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chatbot">
+        <button class="chat-button" id="chatToggle"><i class="fas fa-comments"></i></button>
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <h3>AlgoBuddy</h3>
+                <button class="chat-close" id="chatClose">&times;</button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot">
+                    <p><i class="fas fa-hand-wave"></i> Hi! I'm here to help with Binary Trees! Ask me about traversals, time complexity, or code examples!</p>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Ask about binary trees...">
+                <button id="chatSend">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .tree-type-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            line-height: 1.4;
+            vertical-align: middle;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 36px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .tree-type-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .tree-type-btn:hover::before {
+            left: 100%;
+        }
+
+        .tree-type-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .tree-type-btn.active {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .tree-type-btn.active::before {
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+        }
+
+        .btn-primary {
+            background: rgba(16, 185, 129, 0.1);
+            color: #059669;
+            border: 2px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: rgba(16, 185, 129, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+            border: 2px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(239, 68, 68, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: rgba(59, 130, 246, 0.1);
+            color: #2563eb;
+            border: 2px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-success:hover {
+            background: rgba(59, 130, 246, 0.2);
+            transform: translateY(-1px);
+        }
+
+        /* Consistent button alignment for all control buttons */
+        .controls button {
+            vertical-align: middle;
+            line-height: 1.4;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: none !important; /* Ensure no glow effects */
+        }
+        
+        .controls button:hover {
+            box-shadow: none !important; /* No glow on hover */
+        }
+        
+        .controls button:active {
+            box-shadow: none !important; /* No glow when pressed */
+        }
+
+        /* Pagination Styles */
+        .pagination-controls button {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--text-light);
+            border: 2px solid rgba(99, 102, 241, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 0 0.25rem;
+        }
+
+        .pagination-controls button:hover {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: rgba(99, 102, 241, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .pagination-controls button.active {
+            background: rgba(99, 102, 241, 0.3);
+            border-color: rgba(99, 102, 241, 0.6);
+            color: white;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page[data-page="1"] {
+            display: block;
+        }
+
+        /* Code page pagination and scrolling */
+        .code-page {
+            display: none;
+        }
+
+        .code-page.active {
+            display: block;
+            max-height: 600px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 10px;
+            margin-right: -10px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(99, 102, 241, 0.4) rgba(30, 41, 59, 0.3);
+        }
+
+        .code-page.active::-webkit-scrollbar {
+            width: 6px;
+            margin-right: 5px;
+        }
+
+        .code-page.active::-webkit-scrollbar-track {
+            background: rgba(30, 41, 59, 0.3);
+            border-radius: 3px;
+            margin: 5px 0;
+        }
+
+        .code-page.active::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.6);
+            border-radius: 3px;
+            border: 1px solid rgba(30, 41, 59, 0.5);
+        }
+
+        .code-page.active::-webkit-scrollbar-thumb:hover {
+            background: rgba(99, 102, 241, 0.8);
+        }
+
+        .code-page.active::-webkit-scrollbar-corner {
+            background: rgba(30, 41, 59, 0.8);
+        }
+    </style>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/binaryTreeEnhanced.js') }}"></script>
+
+    <script>
+        // Pagination functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const pageButtons = document.querySelectorAll('.page-btn');
+            const pages = document.querySelectorAll('.page');
+
+            pageButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const pageNumber = this.getAttribute('data-page');
+
+                    // Hide all pages
+                    pages.forEach(page => {
+                        page.style.display = 'none';
+                    });
+
+                    // Show selected page
+                    const selectedPage = document.querySelector(`.page[data-page="${pageNumber}"]`);
+                    if (selectedPage) {
+                        selectedPage.style.display = 'block';
+                    }
+
+                    // Update active button
+                    pageButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Internal pagination for code sections
+            const codeContents = document.querySelectorAll('.code-content');
+            codeContents.forEach(content => {
+                const prevBtn = content.closest('.page').querySelector('.internal-prev');
+                const nextBtn = content.closest('.page').querySelector('.internal-next');
+                const indicator = content.closest('.page').querySelector('.page-indicator');
+                const codePages = content.querySelectorAll('.code-page');
+
+                let currentPage = 1;
+                const totalPages = codePages.length;
+
+                function updatePagination() {
+                    // Hide all code pages
+                    codePages.forEach(page => page.classList.remove('active'));
+
+                    // Show current page
+                    codePages[currentPage - 1].classList.add('active');
+
+                    // Update indicator
+                    indicator.textContent = `${currentPage}/${totalPages}`;
+
+                    // Update button states
+                    if (prevBtn) prevBtn.style.opacity = currentPage === 1 ? '0.5' : '1';
+                    if (nextBtn) nextBtn.style.opacity = currentPage === totalPages ? '0.5' : '1';
+                }
+
+                // Previous button
+                if (prevBtn) {
+                    prevBtn.addEventListener('click', () => {
+                        if (currentPage > 1) {
+                            currentPage--;
+                            updatePagination();
+                        }
+                    });
+                }
+
+                // Next button
+                if (nextBtn) {
+                    nextBtn.addEventListener('click', () => {
+                        if (currentPage < totalPages) {
+                            currentPage++;
+                            updatePagination();
+                        }
+                    });
+                }
+
+                // Initialize pagination
+                updatePagination();
+            });
+        });
+    </script>
+</body>
+</html>

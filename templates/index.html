@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA Learning Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">DSA Learning Platform</div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/binary-tree">Binary Tree</a></li>
+                    <li><a href="/dfs-bfs">DFS & BFS</a></li>
+                    <li><a href="/linked-list">Linked List</a></li>
+                    <li><a href="/hashing">Hashing</a></li>
+                    <li><a href="/sorting">Sorting</a></li>
+                    <li><a href="/practice">Practice</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>Welcome to DSA Learning Platform</h1>
+        <p>Learn by Doing, See by Visualizing, Clarify by Asking</p>
+        <p style="font-size: 1.2rem; margin-bottom: 1rem;"><i class="fas fa-graduation-cap"></i> An Interactive Data Structures & Algorithms Learning Platform</p>
+        <p style="font-size: 1rem; max-width: 800px; margin: 0 auto; color: var(--text-light); line-height: 1.7;">
+            Master fundamental algorithms and data structures through beautiful visualizations, 
+            multi-language code examples, and an AI-powered tutor. Perfect for students, 
+            developers, and anyone preparing for technical interviews.
+        </p>
+    </section>
+
+    <div class="container">
+        <div class="modules-grid">
+            <a href="/binary-tree" class="module-card">
+                <div class="module-icon"><i class="fas fa-tree"></i></div>
+                <h3>Binary Tree</h3>
+                <p>Explore tree structures with interactive visualizations of in-order, pre-order, post-order, and level-order traversals.</p>
+            </a>
+
+            <a href="/dfs-bfs" class="module-card">
+                <div class="module-icon"><i class="fas fa-search"></i></div>
+                <h3>DFS & BFS</h3>
+                <p>Build graphs and watch Depth-First Search and Breadth-First Search algorithms find paths in real-time.</p>
+            </a>
+
+            <a href="/linked-list" class="module-card">
+                <div class="module-icon"><i class="fas fa-link"></i></div>
+                <h3>Linked List</h3>
+                <p>Visualize linked list operations including insertion, deletion, search, and reversal with animated demonstrations.</p>
+            </a>
+
+            <a href="/hashing" class="module-card">
+                <div class="module-icon"><i class="fas fa-hashtag"></i></div>
+                <h3>Hashing</h3>
+                <p>Understand hash functions, collision handling with chaining and open addressing through visual demonstrations.</p>
+            </a>
+
+            <a href="/sorting" class="module-card">
+                <div class="module-icon"><i class="fas fa-chart-bar"></i></div>
+                <h3>Sorting Algorithms</h3>
+                <p>Watch all major sorting algorithms in action: Bubble, Selection, Insertion, Merge, Quick, and Heap Sort.</p>
+            </a>
+
+            <a href="/practice" class="module-card">
+                <div class="module-icon"><i class="fas fa-code"></i></div>
+                <h3>Code Practice</h3>
+                <p>Write and execute code in Python, Java, C++, and C with our integrated Monaco editor and real-time output!</p>
+            </a>
+        </div>
+
+        <div class="content-section">
+            <h2 style="text-align: center; color: var(--primary-color); margin-bottom: 1rem;">Why DSA Learning Platform?</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                <div style="text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 0.5rem;"><i class="fas fa-eye"></i></div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 0.5rem;">Visual Learning</h3>
+                    <p style="color: #64748b;">See algorithms come to life with beautiful, animated visualizations</p>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 0.5rem;"><i class="fas fa-laptop-code"></i></div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 0.5rem;">Multi-Language Support</h3>
+                    <p style="color: #64748b;">Code examples in Python, Java, C++, and C for comprehensive learning</p>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 0.5rem;"><i class="fas fa-robot"></i></div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 0.5rem;">AI Tutor</h3>
+                    <p style="color: #64748b;">Ask AlgoBuddy anything about DSA concepts, code, or comparisons</p>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 0.5rem;"><i class="fas fa-bolt"></i></div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 0.5rem;">Interactive Practice</h3>
+                    <p style="color: #64748b;">Hands-on experience with every data structure and algorithm</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 style="text-align: center; color: var(--primary-color); margin-bottom: 1.5rem;">Try It Out</h2>
+            <p style="text-align: center; color: var(--text-light); margin-bottom: 2rem;">
+                Here's a quick example of the binary search algorithm. Click on any module above to explore more!
+            </p>
+            <div class="code-editor">
+                <div class="code-editor-header">
+                    <div class="code-editor-dots">
+                        <div class="code-editor-dot red"></div>
+                        <div class="code-editor-dot yellow"></div>
+                        <div class="code-editor-dot green"></div>
+                    </div>
+                    <div class="code-editor-title">binary_search.py</div>
+                </div>
+                <div class="code-editor-body">
+                    <div class="code-line">
+                        <div class="code-line-number">1</div>
+                        <div class="code-line-content"><span class="code-keyword">def</span> <span class="code-function">binary_search</span>(arr, target):</div>
+                    </div>
+                    <div class="code-line">
+                        <div class="code-line-number">2</div>
+                        <div class="code-line-content">    <span class="code-comment"># Initialize left and right pointers</span></div>
+                    </div>
+                    <div class="code-line">
+                        <div class="code-line-number">3</div>
+                        <div class="code-line-content">    left, right = <span class="code-string">0</span>, <span class="code-function">len</span>(arr) - <span class="code-string">1</span></div>
+                    </div>
+                    <div class="code-line">
+                        <div class="code-line-number">4</div>
+                        <div class="code-line-content"></div>
+                    </div>
+                    <div class="code-line">
+                        <div class="code-line-number">5</div>
+                        <div class="code-line-content">    <span class="code-keyword">while</span> left &lt;= right:</div>
+                    </div>
+                    <div class="code-line">
+                        <div class="code-line-number">6</div>
+                        <div class="code-line-content">        mid = (left + right) // <span class="code-string">2</span></div>
+                    </div>
+                    <div class="code-line">
+                        <div class="code-line-number">7</div>
+                        <div class="code-line-content"></div>
+                    </div>
+                    <div class="code-line">
+                        <div class="code-line-number">8</div>
+                        <div class="code-line-content">        <span class="code-keyword">if</span> arr[mid] == target:</div>
+                    </div>
+                    <div class="code-line">
+                        <div class="code-line-number">9</div>
+                        <div class="code-line-content">            <span class="code-keyword">return</span> mid  <span class="code-comment"># Found the target!</span></div>
+                    </div>
+                    <div class="code-line">
+                        <div class="code-line-number">10</div>
+                        <div class="code-line-content">        <span class="code-keyword">elif</span> arr[mid] &lt; target:</div>
+                    </div>
+                    <div class="code-line">
+                        <div class="code-line-number">11</div>
+                        <div class="code-line-content">            left = mid + <span class="code-string">1</span></div>
+                    </div>
+                    <div class="code-line">
+                        <div class="code-line-number">12</div>
+                        <div class="code-line-content">        <span class="code-keyword">else</span>:</div>
+                    </div>
+                    <div class="code-line">
+                        <div class="code-line-number">13</div>
+                        <div class="code-line-content">            right = mid - <span class="code-string">1</span></div>
+                    </div>
+                    <div class="code-line">
+                        <div class="code-line-number">14</div>
+                        <div class="code-line-content"></div>
+                    </div>
+                    <div class="code-line">
+                        <div class="code-line-number">15</div>
+                        <div class="code-line-content">    <span class="code-keyword">return</span> -<span class="code-string">1</span>  <span class="code-comment"># Target not found</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2 style="text-align: center; color: var(--primary-color); margin-bottom: 1.5rem;">What You'll Learn</h2>
+            <div class="learning-journey">
+                <div class="journey-track">
+                    <div class="journey-milestone">
+                        <div class="milestone-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="milestone-content">
+                            <h3>Data Structures</h3>
+                            <p class="milestone-description">Master the fundamental building blocks of efficient programming. Learn how to organize and store data for optimal access and modification.</p>
+                            <ul>
+                                <li><strong>Binary Trees & Tree Traversals</strong>: Hierarchical structures for efficient searching</li>
+                                <li><strong>Linked Lists</strong>: Dynamic memory allocation with pointers/references</li>
+                                <li><strong>Hash Tables</strong>: O(1) access with collision handling techniques</li>
+                                <li><strong>Graphs</strong>: Network representations with adjacency lists/matrices</li>
+                                <li><strong>Stacks & Queues</strong>: LIFO and FIFO data management</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="journey-milestone">
+                        <div class="milestone-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div class="milestone-content">
+                            <h3>Algorithms</h3>
+                            <p class="milestone-description">Discover efficient problem-solving techniques and analyze their performance characteristics.</p>
+                            <ul>
+                                <li><strong>Searching</strong>: DFS, BFS, Binary Search implementations</li>
+                                <li><strong>Sorting</strong>: Comparison of O(n²) vs O(n log n) methods</li>
+                                <li><strong>Graph Algorithms</strong>: Shortest path, minimum spanning trees</li>
+                                <li><strong>Complexity Analysis</strong>: Big-O notation and space-time tradeoffs</li>
+                                <li><strong>Dynamic Programming</strong>: Memoization and optimal substructure</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="journey-milestone">
+                        <div class="milestone-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <div class="milestone-content">
+                            <h3>Interview Skills</h3>
+                            <p class="milestone-description">Develop strategies to excel in technical interviews and showcase your problem-solving abilities.</p>
+                            <ul>
+                                <li><strong>Problem Decomposition</strong>: Breaking down complex problems</li>
+                                <li><strong>Code Optimization</strong>: Time-space tradeoff decisions</li>
+                                <li><strong>Interview Patterns</strong>: Sliding window, two pointers, etc.</li>
+                                <li><strong>Communication Techniques</strong>: Explaining your approach clearly</li>
+                                <li><strong>Code Testing</strong>: Edge case identification and validation</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p class="copyright">
+                 &copy; 2025 DSA Learning Platform. All rights reserved.<br>
+                Created by <span class="copyright-name">Rishab Dixit & Anshi Dixit</span>
+            </p>
+        </div>
+    </footer>
+
+    <div class="chatbot">
+        <button class="chat-button" id="chatToggle"><i class="fas fa-comments"></i></button>
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <h3><i class="fas fa-robot"></i> AlgoBuddy</h3>
+                <button class="chat-close" id="chatClose">&times;</button>
+            </div>
+            <div class="chat-topics">
+                <button class="topic-btn" data-topic="Binary Trees"><i class="fas fa-tree"></i> Trees</button>
+                <button class="topic-btn" data-topic="DFS & BFS"><i class="fas fa-search"></i> DFS/BFS</button>
+                <button class="topic-btn" data-topic="Linked Lists"><i class="fas fa-link"></i> Lists</button>
+                <button class="topic-btn" data-topic="Hashing"><i class="fas fa-hashtag"></i> Hash</button>
+                <button class="topic-btn" data-topic="Sorting"><i class="fas fa-chart-bar"></i> Sort</button>
+                <button class="topic-btn" data-topic="Time Complexity"><i class="fas fa-clock"></i> Big-O</button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot">
+                    <p><i class="fas fa-hand-paper"></i> Hi! I'm AlgoBuddy, your DSA tutor! Select a topic above or ask me anything about algorithms and data structures. I can explain concepts, show code examples in multiple languages, and help you understand complexity!</p>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Ask me anything about DSA...">
+                <button id="chatSend"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

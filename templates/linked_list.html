@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA Learning Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .pagination-controls button {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--text-light);
+            border: 2px solid rgba(99, 102, 241, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 0 0.25rem;
+        }
+
+        .pagination-controls button:hover {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: rgba(99, 102, 241, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .pagination-controls button.active {
+            background: rgba(99, 102, 241, 0.3);
+            border-color: rgba(99, 102, 241, 0.6);
+            color: white;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page[data-page="1"] {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">DSA Learning Platform</div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/binary-tree">Binary Tree</a></li>
+                    <li><a href="/dfs-bfs">DFS & BFS</a></li>
+                    <li><a href="/linked-list">Linked List</a></li>
+                    <li><a href="/hashing">Hashing</a></li>
+                    <li><a href="/sorting">Sorting</a></li>
+                    <li><a href="/practice">Practice</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="pagination-controls" style="text-align: center; margin: 1rem 0; padding: 1rem;">
+        <button class="page-btn active" data-page="1">Visualizer</button>
+        <button class="page-btn" data-page="2">Introduction</button>
+        <button class="page-btn" data-page="3">Types</button>
+        <button class="page-btn" data-page="4">Operations</button>
+        <button class="page-btn" data-page="5">Array vs List</button>
+        <button class="page-btn" data-page="6">Code</button>
+    </div>
+
+    <div class="container">
+        <div class="content-section">
+            <div class="page" data-page="1">
+                <h1 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-link"></i> Linked List Visualizer</h1>
+                <p style="color: #64748b; margin-bottom: 2rem;">Build and manipulate a linked list with animated operations!</p>
+
+                <div class="controls" style="padding: 1rem; background: rgba(30, 41, 59, 0.3); border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid rgba(51, 65, 85, 0.3);">
+                    <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="number" id="nodeValue" placeholder="Value" style="width: 80px; padding: 0.5rem; border-radius: 6px; border: 1px solid rgba(51, 65, 85, 0.5); background: rgba(30, 41, 59, 0.8); color: white; font-size: 0.9rem;">
+                            <button class="btn btn-primary" onclick="insertAtBeginning()" style="font-size: 0.85rem; padding: 0.5rem 0.75rem;">Insert Beg</button>
+                            <button class="btn btn-primary" onclick="insertAtEnd()" style="font-size: 0.85rem; padding: 0.5rem 0.75rem;">Insert End</button>
+                        </div>
+
+                        <div style="display: flex; gap: 0.25rem;">
+                            <button class="btn btn-secondary" onclick="deleteFromBeginning()" style="font-size: 0.8rem; padding: 0.5rem 0.6rem;">Del Beg</button>
+                            <button class="btn btn-secondary" onclick="deleteFromEnd()" style="font-size: 0.8rem; padding: 0.5rem 0.6rem;">Del End</button>
+                            <button class="btn btn-secondary" onclick="deleteByValue()" style="font-size: 0.8rem; padding: 0.5rem 0.6rem;">Del Val</button>
+                        </div>
+
+                        <div style="display: flex; gap: 0.25rem;">
+                            <button class="btn btn-success" onclick="searchValue()" style="font-size: 0.8rem; padding: 0.5rem 0.6rem;">Search</button>
+                            <button class="btn btn-success" onclick="reverseList()" style="font-size: 0.8rem; padding: 0.5rem 0.6rem;">Reverse</button>
+                            <button class="btn btn-warning" onclick="clearList()" style="font-size: 0.8rem; padding: 0.6rem 0.6rem;">Clear</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="result-display">List is empty. Insert some values!</div>
+
+                <div class="visualization-container" id="listContainer" style="overflow-x: auto; justify-content: flex-start; padding-left: 2rem;">
+                    <div style="display: flex; align-items: center; min-width: fit-content;" id="linkedListDisplay"></div>
+                </div>
+            </div>
+
+            <div class="page" data-page="2">
+                <h2 style="color: var(--primary-color); margin-bottom: 1.5rem;"><i class="fas fa-book"></i> Introduction to Linked Lists</h2>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                    <div style="background: rgba(99, 102, 241, 0.1); backdrop-filter: blur(15px); border: 1px solid rgba(99, 102, 241, 0.3); padding: 1.5rem; border-radius: 12px;">
+                        <h3 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-link"></i> What is a Linked List?</h3>
+                        <div style="color: var(--text-light); font-size: 0.9rem; line-height: 1.6;">
+                            <strong style="color: var(--primary-color); font-size: 1rem;">Definition:</strong> 
+                            <em style="color: var(--text-light);">Linear data structure where elements (nodes) contain data + reference to next node</em><br><br>
+                            
+                            <strong style="color: var(--primary-color); font-size: 1rem;">Node Structure:</strong>
+                            <div style="background: rgba(30, 41, 59, 0.9); padding: 0.75rem; border-radius: 6px; margin: 0.5rem 0; font-family: 'Courier New', monospace; color: #10b981;">
+                                [Data: 42] → [Data: 15] → [Data: 78] → <span style="color: #ef4444;">NULL</span>
+                            </div>
+                            
+                            <strong style="color: var(--primary-color); font-size: 1rem;">Key Features:</strong>
+                            <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                                <li><strong style="color: #10b981;">Dynamic Memory:</strong> Allocates memory as needed</li>
+                                <li><strong style="color: #f59e0b;">Non-contiguous:</strong> Nodes scattered in memory</li>
+                                <li><strong style="color: var(--primary-color);">Variable Size:</strong> Grows/shrinks dynamically</li>
+                                <li><strong style="color: #ef4444;">Sequential Access:</strong> Must traverse from start</li>
+                                <li><strong style="color: #8b5cf6;">Efficient Modifications:</strong> O(1) insert/delete at known positions</li>
+                            </ul>
+                            
+                            <strong style="color: var(--primary-color); font-size: 1rem;">Memory Layout:</strong> 
+                            <em style="color: var(--text-light);">Unlike arrays, nodes can be anywhere in memory with pointers connecting them.</em>
+                        </div>
+                    </div>
+
+                    <div style="background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(15px); border: 1px solid rgba(51, 65, 85, 0.5); padding: 1.5rem; border-radius: 12px;">
+                        <h3 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-lightbulb"></i> Real-World Analogies</h3>
+                        <div style="color: var(--text-light); font-size: 0.9rem; line-height: 1.6;">
+                            <div style="margin-bottom: 1rem;">
+                                <strong style="color: #f56565;"><i class="fas fa-map-marked-alt"></i> Treasure Hunt:</strong> 
+                                <span style="color: var(--text-light);">Each clue contains treasure location + next clue location. Follow chain sequentially.</span>
+                            </div>
+                            <div style="margin-bottom: 1rem;">
+                                <strong style="color: #f59e0b;"><i class="fas fa-train"></i> Train Cars:</strong> 
+                                <span style="color: var(--text-light);">Each car connected to next via coupling. Add/remove cars by changing couplings.</span>
+                            </div>
+                            <div style="margin-bottom: 1rem;">
+                                <strong style="color: #10b981;"><i class="fas fa-users"></i> Hand Chain:</strong> 
+                                <span style="color: var(--text-light);">People form line by holding hands. Insert person by changing hand connections.</span>
+                            </div>
+                            <div style="margin-bottom: 1rem;">
+                                <strong style="color: var(--primary-color);"><i class="fas fa-book"></i> Story Chapters:</strong> 
+                                <span style="color: var(--text-light);">Each chapter ends with "turn to page X" reference to continue the story.</span>
+                            </div>
+                            <div>
+                                <strong style="color: #8b5cf6;"><i class="fas fa-brain"></i> Thought Chain:</strong> 
+                                <span style="color: var(--text-light);">One thought leads to another, creating associative memory chains in our brain.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page" data-page="3">
+                <h2 style="color: var(--primary-color); margin-bottom: 1.5rem;"><i class="fas fa-sitemap"></i> Types of Linked Lists</h2>
+
+                <div style="background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
+                    <h3 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-layer-group"></i> Three Main Types</h3>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4 style="color: #4f46e5; margin-bottom: 0.5rem;"><i class="fas fa-1"></i> Singly Linked List</h4>
+                        <div style="background: rgba(30, 41, 59, 0.6); padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; margin-bottom: 0.5rem;">
+                            [10] → [20] → [30] → NULL
+                        </div>
+                        <p style="font-size: 0.85rem; line-height: 1.4; color: var(--text-light); margin-bottom: 0.5rem;">
+                            <strong>Structure:</strong> Each node points only to the next node. Simple and memory-efficient.
+                        </p>
+                        <p style="font-size: 0.85rem; line-height: 1.4; color: var(--text-light); margin-bottom: 0.5rem;">
+                            <strong>Use Cases:</strong> Implementing stacks, queues, simple navigation systems.
+                        </p>
+                        <p style="font-size: 0.85rem; line-height: 1.4; color: var(--text-light); margin-bottom: 0.5rem;">
+                            <strong>Analogies:</strong> Train cars, conga line, assembly line workers, one-way street.
+                        </p>
+                        <p style="font-size: 0.85rem; line-height: 1.4; color: var(--text-light);">
+                            <strong>Pros:</strong> Simple implementation, low memory overhead. 
+                            <strong>Cons:</strong> Cannot traverse backwards, O(n) for reverse operations.
+                        </p>
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4 style="color: #4f46e5; margin-bottom: 0.5rem;"><i class="fas fa-2"></i> Doubly Linked List</h4>
+                        <div style="background: rgba(30, 41, 59, 0.6); padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; margin-bottom: 0.5rem;">
+                            NULL ← [10] ⇄ [20] ⇄ [30] → NULL
+                        </div>
+                        <p style="font-size: 0.85rem; line-height: 1.4; color: var(--text-light); margin-bottom: 0.5rem;">
+                            <strong>Structure:</strong> Each node has both previous and next pointers. Bidirectional traversal.
+                        </p>
+                        <p style="font-size: 0.85rem; line-height: 1.4; color: var(--text-light); margin-bottom: 0.5rem;">
+                            <strong>Use Cases:</strong> Browser history, undo/redo systems, music player playlists, LRU cache.
+                        </p>
+                        <p style="font-size: 0.85rem; line-height: 1.4; color: var(--text-light); margin-bottom: 0.5rem;">
+                            <strong>Analogies:</strong> Browser tabs, elevator floors, playlist with prev/next, two-way street.
+                        </p>
+                        <p style="font-size: 0.85rem; line-height: 1.4; color: var(--text-light);">
+                            <strong>Pros:</strong> Bidirectional traversal, efficient forward/backward navigation. 
+                            <strong>Cons:</strong> Higher memory usage (extra pointer per node).
+                        </p>
+                    </div>
+
+                    <div>
+                        <h4 style="color: #4f46e5; margin-bottom: 0.5rem;"><i class="fas fa-3"></i> Circular Linked List</h4>
+                        <div style="background: rgba(30, 41, 59, 0.6); padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; margin-bottom: 0.5rem;">
+                            [10] → [20] → [30] → ↺
+                        </div>
+                        <p style="font-size: 0.85rem; line-height: 1.4; color: var(--text-light); margin-bottom: 0.5rem;">
+                            <strong>Structure:</strong> Last node points back to first node, forming a circle. No NULL termination.
+                        </p>
+                        <p style="font-size: 0.85rem; line-height: 1.4; color: var(--text-light); margin-bottom: 0.5rem;">
+                            <strong>Use Cases:</strong> Round-robin scheduling, circular buffers, multiplayer games (turn-based), carousel displays.
+                        </p>
+                        <p style="font-size: 0.85rem; line-height: 1.4; color: var(--text-light); margin-bottom: 0.5rem;">
+                            <strong>Analogies:</strong> Round-robin scheduling, carousel, circular queue, clock hands.
+                        </p>
+                        <p style="font-size: 0.85rem; line-height: 1.4; color: var(--text-light);">
+                            <strong>Pros:</strong> Any node can be starting point, good for cyclic operations. 
+                            <strong>Cons:</strong> Must track end condition, risk of infinite loops.
+                        </p>
+                    </div>
+                </div>
+
+                <div style="background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
+                    <h3 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-code"></i> Technical Deep Dive</h3>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                        <div style="background: rgba(30, 41, 59, 0.8); padding: 1rem; border-radius: 8px;">
+                            <h4 style="color: #4f46e5; margin-bottom: 0.5rem;"><i class="fas fa-memory"></i> Memory Management</h4>
+                            <ul style="font-size: 0.85rem; line-height: 1.6; color: var(--text-light);">
+                                <li><strong>Dynamic Allocation:</strong> Memory allocated at runtime</li>
+                                <li><strong>Heap Storage:</strong> Nodes stored in heap memory</li>
+                                <li><strong>No Wasted Space:</strong> Only used memory is allocated</li>
+                                <li><strong>Fragmentation:</strong> Memory can become fragmented</li>
+                                <li><strong>Garbage Collection:</strong> Manual in C/C++, automatic in Java/Python</li>
+                            </ul>
+                        </div>
+
+                        <div style="background: rgba(30, 41, 59, 0.8); padding: 1rem; border-radius: 8px;">
+                            <h4 style="color: #4f46e5; margin-bottom: 0.5rem;"><i class="fas fa-tools"></i> Implementation Details</h4>
+                            <ul style="font-size: 0.85rem; line-height: 1.6; color: var(--text-light);">
+                                <li><strong>Node Class:</strong> Contains data field + next pointer</li>
+                                <li><strong>Head Pointer:</strong> Reference to first node in list</li>
+                                <li><strong>Tail Pointer:</strong> Optional reference to last node</li>
+                                <li><strong>Size Counter:</strong> Track number of nodes (optional)</li>
+                                <li><strong>Edge Cases:</strong> Handle empty list, single node scenarios</li>
+                            </ul>
+                        </div>
+
+                        <div style="background: rgba(30, 41, 59, 0.8); padding: 1rem; border-radius: 8px;">
+                            <h4 style="color: #4f46e5; margin-bottom: 0.5rem;"><i class="fas fa-chart-line"></i> Performance Characteristics</h4>
+                            <ul style="font-size: 0.85rem; line-height: 1.6; color: var(--text-light);">
+                                <li><strong>Access Time:</strong> O(n) - linear search required</li>
+                                <li><strong>Insert/Delete:</strong> O(1) at ends, O(n) in middle</li>
+                                <li><strong>Search:</strong> O(n) - must traverse from start</li>
+                                <li><strong>Memory:</strong> O(n) - proportional to elements</li>
+                                <li><strong>Cache Performance:</strong> Poor due to scattered memory</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page" data-page="4">
+                <h2 style="color: var(--primary-color); margin-bottom: 1.5rem;"><i class="fas fa-cog"></i> Linked List Operations</h2>
+
+                <div style="background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
+                    <h3 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-cog"></i> Common Operations</h3>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                        <div style="background: rgba(30, 41, 59, 0.8); border-radius: 8px; padding: 1rem; border: 1px solid rgba(51, 65, 85, 0.3);">
+                            <h4 style="color: #4f46e5; margin-bottom: 0.75rem;"><i class="fas fa-1"></i> Insert Beginning</h4>
+                            <div style="display: grid; grid-template-columns: 120px 1fr; gap: 0.5rem; align-items: start;">
+                                <div style="font-weight: 600; color: var(--text-light); font-size: 0.85rem;">How it works:</div>
+                                <div style="color: var(--text-light); font-size: 0.85rem;">Create new node, point to head, make it new head</div>
+
+                                <div style="font-weight: 600; color: #059669; font-size: 0.85rem;">Time:</div>
+                                <div style="color: var(--text-light); font-size: 0.85rem;"><span style="color: #059669; font-weight: 600;">O(1)</span> - constant time, no traversal</div>
+
+                                <div style="font-weight: 600; color: #059669; font-size: 0.85rem;">Space:</div>
+                                <div style="color: var(--text-light); font-size: 0.85rem;"><span style="color: #059669; font-weight: 600;">O(1)</span> - only one new node</div>
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(30, 41, 59, 0.8); border-radius: 8px; padding: 1rem; border: 1px solid rgba(51, 65, 85, 0.3);">
+                            <h4 style="color: #4f46e5; margin-bottom: 0.75rem;"><i class="fas fa-2"></i> Insert End</h4>
+                            <div style="display: grid; grid-template-columns: 120px 1fr; gap: 0.5rem; align-items: start;">
+                                <div style="font-weight: 600; color: var(--text-light); font-size: 0.85rem;">How it works:</div>
+                                <div style="color: var(--text-light); font-size: 0.85rem;">Traverse to last node, create new node, point last to it</div>
+
+                                <div style="font-weight: 600; color: #dc2626; font-size: 0.85rem;">Time:</div>
+                                <div style="color: var(--text-light); font-size: 0.85rem;"><span style="color: #dc2626; font-weight: 600;">O(n)</span> - traverse entire list to find end</div>
+
+                                <div style="font-weight: 600; color: #059669; font-size: 0.85rem;">Space:</div>
+                                <div style="color: var(--text-light); font-size: 0.85rem;"><span style="color: #059669; font-weight: 600;">O(1)</span> - only one new node</div>
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(30, 41, 59, 0.8); border-radius: 8px; padding: 1rem; border: 1px solid rgba(51, 65, 85, 0.3);">
+                            <h4 style="color: #4f46e5; margin-bottom: 0.75rem;"><i class="fas fa-3"></i> Delete Beginning</h4>
+                            <div style="display: grid; grid-template-columns: 120px 1fr; gap: 0.5rem; align-items: start;">
+                                <div style="font-weight: 600; color: var(--text-light); font-size: 0.85rem;">How it works:</div>
+                                <div style="color: var(--text-light); font-size: 0.85rem;">Move head pointer to second node, first node removed</div>
+
+                                <div style="font-weight: 600; color: #059669; font-size: 0.85rem;">Time:</div>
+                                <div style="color: var(--text-light); font-size: 0.85rem;"><span style="color: #059669; font-weight: 600;">O(1)</span> - direct access to head</div>
+
+                                <div style="font-weight: 600; color: #059669; font-size: 0.85rem;">Space:</div>
+                                <div style="color: var(--text-light); font-size: 0.85rem;"><span style="color: #059669; font-weight: 600;">O(1)</span> - no extra space needed</div>
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(30, 41, 59, 0.8); border-radius: 8px; padding: 1rem; border: 1px solid rgba(51, 65, 85, 0.3);">
+                            <h4 style="color: #4f46e5; margin-bottom: 0.75rem;"><i class="fas fa-4"></i> Delete End</h4>
+                            <div style="display: grid; grid-template-columns: 120px 1fr; gap: 0.5rem; align-items: start;">
+                                <div style="font-weight: 600; color: var(--text-light); font-size: 0.85rem;">How it works:</div>
+                                <div style="color: var(--text-light); font-size: 0.85rem;">Traverse to second-last node, set next to null</div>
+
+                                <div style="font-weight: 600; color: #dc2626; font-size: 0.85rem;">Time:</div>
+                                <div style="color: var(--text-light); font-size: 0.85rem;"><span style="color: #dc2626; font-weight: 600;">O(n)</span> - traverse to find second-last node</div>
+
+                                <div style="font-weight: 600; color: #059669; font-size: 0.85rem;">Space:</div>
+                                <div style="color: var(--text-light); font-size: 0.85rem;"><span style="color: #059669; font-weight: 600;">O(1)</span> - no extra space</div>
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(30, 41, 59, 0.8); border-radius: 8px; padding: 1rem; border: 1px solid rgba(51, 65, 85, 0.3);">
+                            <h4 style="color: #4f46e5; margin-bottom: 0.75rem;"><i class="fas fa-5"></i> Search</h4>
+                            <div style="display: grid; grid-template-columns: 120px 1fr; gap: 0.5rem; align-items: start;">
+                                <div style="font-weight: 600; color: var(--text-light); font-size: 0.85rem;">How it works:</div>
+                                <div style="color: var(--text-light); font-size: 0.85rem;">Traverse from head, compare each node's data with target</div>
+
+                                <div style="font-weight: 600; color: #dc2626; font-size: 0.85rem;">Time:</div>
+                                <div style="color: var(--text-light); font-size: 0.85rem;"><span style="color: #dc2626; font-weight: 600;">O(n)</span> - may need to check all nodes</div>
+
+                                <div style="font-weight: 600; color: #059669; font-size: 0.85rem;">Space:</div>
+                                <div style="color: var(--text-light); font-size: 0.85rem;"><span style="color: #059669; font-weight: 600;">O(1)</span> - no additional storage</div>
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(30, 41, 59, 0.8); border-radius: 8px; padding: 1rem; border: 1px solid rgba(51, 65, 85, 0.3);">
+                            <h4 style="color: #4f46e5; margin-bottom: 0.75rem;"><i class="fas fa-6"></i> Reverse</h4>
+                            <div style="display: grid; grid-template-columns: 120px 1fr; gap: 0.5rem; align-items: start;">
+                                <div style="font-weight: 600; color: var(--text-light); font-size: 0.85rem;">How it works:</div>
+                                <div style="color: var(--text-light); font-size: 0.85rem;">Traverse list, reverse all next pointers</div>
+
+                                <div style="font-weight: 600; color: #dc2626; font-size: 0.85rem;">Time:</div>
+                                <div style="color: var(--text-light); font-size: 0.85rem;"><span style="color: #dc2626; font-weight: 600;">O(n)</span> - visit each node once</div>
+
+                                <div style="font-weight: 600; color: #059669; font-size: 0.85rem;">Space:</div>
+                                <div style="color: var(--text-light); font-size: 0.85rem;"><span style="color: #059669; font-weight: 600;">O(1)</span> - only a few pointers needed</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+           <div class="page" data-page="5">
+    <h2 style="color: var(--primary-color); margin-bottom: 1.5rem;"><i class="fas fa-balance-scale"></i> Array vs Linked List Comparison</h2>
+
+    <div style="background: rgba(245, 158, 11, 0.1); backdrop-filter: blur(15px); border: 1px solid rgba(245, 158, 11, 0.3); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
+        <h3 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-balance-scale"></i> Linked List vs Array</h3>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div style="background: rgba(34, 197, 94, 0.1); padding: 1rem; border-radius: 8px; border: 1px solid rgba(34, 197, 94, 0.3);">
+                <h4 style="color: #22c55e; margin-bottom: 0.75rem;"><i class="fas fa-plus-circle"></i> Linked List Advantages</h4>
+                <ul style="font-size: 0.8rem; line-height: 1.6; color: var(--text-light); padding-left: 1rem;">
+                    <li><strong>Dynamic Sizing:</strong> Grow/shrink without pre-allocation</li>
+                    <li><strong>Efficient End Operations:</strong> O(1) insert/delete at ends</li>
+                    <li><strong>No Wasted Space:</strong> Only allocate what you need</li>
+                    <li><strong>Easy Implementation:</strong> Simple node structure</li>
+                    <li><strong>Memory Flexibility:</strong> Nodes scattered in memory</li>
+                    <li><strong>Cache-Insensitive:</strong> Better for unpredictable access patterns</li>
+                    <li><strong>Efficient Memory Usage:</strong> No need for contiguous memory blocks</li>
+                    <li><strong>Easy Rearrangement:</strong> Just update pointers to reorganize</li>
+                </ul>
+            </div>
+
+            <div style="background: rgba(239, 68, 68, 0.1); padding: 1rem; border-radius: 8px; border: 1px solid rgba(239, 68, 68, 0.3);">
+                <h4 style="color: #ef4444; margin-bottom: 0.75rem;"><i class="fas fa-minus-circle"></i> Linked List Disadvantages</h4>
+                <ul style="font-size: 0.8rem; line-height: 1.6; color: var(--text-light); padding-left: 1rem;">
+                    <li><strong>No Random Access:</strong> O(n) to reach index i</li>
+                    <li><strong>Extra Memory Overhead:</strong> Pointer storage per node</li>
+                    <li><strong>Not Cache-Friendly:</strong> Poor spatial locality</li>
+                    <li><strong>O(n) Search Time:</strong> Linear traversal required</li>
+                    <li><strong>Complex Middle Operations:</strong> Need to find position first</li>
+                    <li><strong>Backward Traversal:</strong> Only in doubly linked lists</li>
+                    <li><strong>Memory Fragmentation:</strong> Nodes allocated randomly</li>
+                    <li><strong>Complex Reverse Traversal:</strong> Requires doubly linked list</li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1rem;">
+            <div style="background: rgba(30, 41, 59, 0.8); padding: 1rem; border-radius: 8px; border: 1px solid rgba(51, 65, 85, 0.5);">
+                <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;"><i class="fas fa-clock"></i> Time Complexity Comparison</h4>
+                <table style="width: 100%; font-size: 0.75rem; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.5);">
+                            <th style="text-align: left; padding: 0.25rem; color: var(--text-light);">Operation</th>
+                            <th style="text-align: center; padding: 0.25rem; color: var(--text-light);">Array</th>
+                            <th style="text-align: center; padding: 0.25rem; color: var(--text-light);">Linked List</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.3);">
+                            <td style="padding: 0.25rem; color: var(--text-light);">Access by index</td>
+                            <td style="text-align: center; padding: 0.25rem; color: #22c55e;">O(1)</td>
+                            <td style="text-align: center; padding: 0.25rem; color: #ef4444;">O(n)</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.3);">
+                            <td style="padding: 0.25rem; color: var(--text-light);">Insert at beginning</td>
+                            <td style="text-align: center; padding: 0.25rem; color: #ef4444;">O(n)</td>
+                            <td style="text-align: center; padding: 0.25rem; color: #22c55e;">O(1)</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.3);">
+                            <td style="padding: 0.25rem; color: var(--text-light);">Insert at end</td>
+                            <td style="text-align: center; padding: 0.25rem; color: #22c55e;">O(1)*</td>
+                            <td style="text-align: center; padding: 0.25rem; color: #ef4444;">O(n)**</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.3);">
+                            <td style="padding: 0.25rem; color: var(--text-light);">Insert at middle</td>
+                            <td style="text-align: center; padding: 0.25rem; color: #ef4444;">O(n)</td>
+                            <td style="text-align: center; padding: 0.25rem; color: #ef4444;">O(n)</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.3);">
+                            <td style="padding: 0.25rem; color: var(--text-light);">Delete from beginning</td>
+                            <td style="text-align: center; padding: 0.25rem; color: #ef4444;">O(n)</td>
+                            <td style="text-align: center; padding: 0.25rem; color: #22c55e;">O(1)</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.3);">
+                            <td style="padding: 0.25rem; color: var(--text-light);">Delete from middle</td>
+                            <td style="text-align: center; padding: 0.25rem; color: #ef4444;">O(n)</td>
+                            <td style="text-align: center; padding: 0.25rem; color: #ef4444;">O(n)</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.25rem; color: var(--text-light);">Search element</td>
+                            <td style="text-align: center; padding: 0.25rem; color: #ef4444;">O(n)</td>
+                            <td style="text-align: center; padding: 0.25rem; color: #ef4444;">O(n)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="font-size: 0.7rem; color: var(--text-light); margin-top: 0.5rem; font-style: italic;">
+                    *O(1) amortized if dynamic array, O(n) if fixed-size<br>
+                    **O(1) if maintaining tail pointer
+                </p>
+            </div>
+
+            <div style="background: rgba(30, 41, 59, 0.8); padding: 1rem; border-radius: 8px; border: 1px solid rgba(51, 65, 85, 0.5);">
+                <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;"><i class="fas fa-question-circle"></i> When to Use Which?</h4>
+                <div style="margin-bottom: 0.75rem;">
+                    <h5 style="color: #22c55e; font-size: 0.8rem; margin-bottom: 0.25rem;">Choose Array when:</h5>
+                    <ul style="font-size: 0.7rem; line-height: 1.4; color: var(--text-light); padding-left: 0.75rem;">
+                        <li>Frequent random access (index-based)</li>
+                        <li>Known size, minimal insertions/deletions</li>
+                        <li>Memory is contiguous and cache-friendly</li>
+                        <li>Simple implementation needed</li>
+                        <li>Mathematical operations requiring indexing</li>
+                        <li>Multi-dimensional data representation</li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 style="color: #3b82f6; font-size: 0.8rem; margin-bottom: 0.25rem;">Choose Linked List when:</h5>
+                    <ul style="font-size: 0.7rem; line-height: 1.4; color: var(--text-light); padding-left: 0.75rem;">
+                        <li>Frequent insertions/deletions at ends</li>
+                        <li>Dynamic size requirements</li>
+                        <li>Memory allocation is unpredictable</li>
+                        <li>Need to implement stacks/queues</li>
+                        <li>Implementing adjacency lists for graphs</li>
+                        <li>Memory constraints with dynamic allocation</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: rgba(30, 41, 59, 0.8); padding: 1rem; border-radius: 8px; border: 1px solid rgba(51, 65, 85, 0.5);">
+                <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;"><i class="fas fa-brain"></i> Memory Comparison</h4>
+                <div style="margin-bottom: 0.75rem;">
+                    <h5 style="color: #ef4444; font-size: 0.8rem; margin-bottom: 0.25rem;">Array Memory Layout:</h5>
+                    <div style="background: rgba(239, 68, 68, 0.1); padding: 0.5rem; border-radius: 4px; font-family: monospace; font-size: 0.7rem; margin-bottom: 0.5rem;">
+                        [0] [1] [2] [3] [4]<br>
+                        ↑ contiguous blocks
+                    </div>
+                    <p style="font-size: 0.7rem; color: var(--text-light);">
+                        <strong>Overhead:</strong> None (pure data)<br>
+                        <strong>Access:</strong> Direct indexing<br>
+                        <strong>Cache Performance:</strong> Excellent (spatial locality)<br>
+                        <strong>Memory Usage:</strong> Fixed size or amortized growth
+                    </p>
+                </div>
+                <div>
+                    <h5 style="color: #3b82f6; font-size: 0.8rem; margin-bottom: 0.25rem;">Linked List Memory Layout:</h5>
+                    <div style="background: rgba(59, 130, 246, 0.1); padding: 0.5rem; border-radius: 4px; font-family: monospace; font-size: 0.7rem; margin-bottom: 0.5rem;">
+                        [Data|→] [Data|→] [Data|→]<br>
+                        scattered in memory
+                    </div>
+                    <p style="font-size: 0.7rem; color: var(--text-light);">
+                        <strong>Overhead:</strong> Pointer per node (8-16 bytes)<br>
+                        <strong>Access:</strong> Sequential traversal<br>
+                        <strong>Cache Performance:</strong> Poor (no locality)<br>
+                        <strong>Memory Usage:</strong> Exact allocation per node
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1rem;">
+            <div style="background: rgba(30, 41, 59, 0.8); padding: 1rem; border-radius: 8px; border: 1px solid rgba(51, 65, 85, 0.5);">
+                <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;"><i class="fas fa-code"></i> Real-World Applications</h4>
+                <div style="margin-bottom: 0.75rem;">
+                    <h5 style="color: #22c55e; font-size: 0.8rem; margin-bottom: 0.25rem;">Array Applications:</h5>
+                    <ul style="font-size: 0.7rem; line-height: 1.4; color: var(--text-light); padding-left: 0.75rem;">
+                        <li>Image processing (pixel arrays)</li>
+                        <li>Mathematical computations</li>
+                        <li>Lookup tables</li>
+                        <li>Database records storage</li>
+                        <li>String manipulation</li>
+                        <li>Dynamic programming tables</li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 style="color: #3b82f6; font-size: 0.8rem; margin-bottom: 0.25rem;">Linked List Applications:</h5>
+                    <ul style="font-size: 0.7rem; line-height: 1.4; color: var(--text-light); padding-left: 0.75rem;">
+                        <li>Browser navigation (back/forward)</li>
+                        <li>Music/video playlists</li>
+                        <li>Undo/Redo functionality</li>
+                        <li>Memory management (free lists)</li>
+                        <li>Graph adjacency lists</li>
+                        <li>Symbol tables in compilers</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: rgba(30, 41, 59, 0.8); padding: 1rem; border-radius: 8px; border: 1px solid rgba(51, 65, 85, 0.5);">
+                <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;"><i class="fas fa-cogs"></i> Performance Considerations</h4>
+                <div style="margin-bottom: 0.75rem;">
+                    <h5 style="color: #22c55e; font-size: 0.8rem; margin-bottom: 0.25rem;">Array Performance Factors:</h5>
+                    <ul style="font-size: 0.7rem; line-height: 1.4; color: var(--text-light); padding-left: 0.75rem;">
+                        <li>Cache hits due to spatial locality</li>
+                        <li>Memory pre-allocation overhead</li>
+                        <li>Resizing cost for dynamic arrays</li>
+                        <li>Memory waste with sparse data</li>
+                        <li>Predictable access patterns</li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 style="color: #3b82f6; font-size: 0.8rem; margin-bottom: 0.25rem;">Linked List Performance Factors:</h5>
+                    <ul style="font-size: 0.7rem; line-height: 1.4; color: var(--text-light); padding-left: 0.75rem;">
+                        <li>Pointer chasing overhead</li>
+                        <li>Memory allocation/deallocation cost</li>
+                        <li>Cache misses due to scattered nodes</li>
+                        <li>Memory overhead for pointers</li>
+                        <li>No bounds checking needed</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div style="background: rgba(30, 41, 59, 0.8); padding: 1rem; border-radius: 8px; border: 1px solid rgba(51, 65, 85, 0.5);">
+                <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;"><i class="fas fa-project-diagram"></i> Variations & Advanced Types</h4>
+                <div style="margin-bottom: 0.75rem;">
+                    <h5 style="color: #22c55e; font-size: 0.8rem; margin-bottom: 0.25rem;">Array Variations:</h5>
+                    <ul style="font-size: 0.7rem; line-height: 1.4; color: var(--text-light); padding-left: 0.75rem;">
+                        <li>Dynamic Arrays (ArrayList, Vector)</li>
+                        <li>Multi-dimensional Arrays</li>
+                        <li>Jagged Arrays</li>
+                        <li>Sparse Arrays</li>
+                        <li>Circular Buffers</li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 style="color: #3b82f6; font-size: 0.8rem; margin-bottom: 0.25rem;">Linked List Variations:</h5>
+                    <ul style="font-size: 0.7rem; line-height: 1.4; color: var(--text-light); padding-left: 0.75rem;">
+                        <li>Singly Linked List</li>
+                        <li>Doubly Linked List</li>
+                        <li>Circular Linked List</li>
+                        <li>Skip List</li>
+                        <li>Unrolled Linked List</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+            <div class="page" data-page="6">
+                <div class="content-section code-section">
+                    <h2 style="color: var(--primary-color); margin-bottom: 1rem;">Code Implementation</h2>
+                    <div class="code-tabs">
+                        <button class="code-tab active" data-lang="python">Python</button>
+                        <button class="code-tab" data-lang="java">Java</button>
+                        <button class="code-tab" data-lang="cpp">C++</button>
+                        <button class="code-tab" data-lang="c">C</button>
+                    </div>
+
+                    <div class="code-content active" data-lang="python">
+                        <h3>Linked List Operations</h3>
+                        <pre>class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+class LinkedList:
+    def insert_at_beginning(self, data):
+        new_node = Node(data)
+        new_node.next = self.head
+        self.head = new_node
+    
+    def insert_at_end(self, data):
+        new_node = Node(data)
+        if not self.head:
+            self.head = new_node
+            return
+        current = self.head
+        while current.next:
+            current = current.next
+        current.next = new_node
+    
+    def reverse(self):
+        prev = None
+        current = self.head
+        while current:
+            next_node = current.next
+            current.next = prev
+            prev = current
+            current = next_node
+        self.head = prev</pre>
+                    </div>
+
+                    <div class="code-content" data-lang="java">
+                        <h3>Linked List Operations</h3>
+                        <pre>class Node {
+    int data;
+    Node next;
+    Node(int data) { this.data = data; }
+}
+
+class LinkedList {
+    Node head;
+    
+    void insertAtBeginning(int data) {
+        Node newNode = new Node(data);
+        newNode.next = head;
+        head = newNode;
+    }
+    
+    void insertAtEnd(int data) {
+        Node newNode = new Node(data);
+        if (head == null) {
+            head = newNode;
+            return;
+        }
+        Node current = head;
+        while (current.next != null) {
+            current = current.next;
+        }
+        current.next = newNode;
+    }
+    
+    void reverse() {
+        Node prev = null;
+        Node current = head;
+        while (current != null) {
+            Node nextNode = current.next;
+            current.next = prev;
+            prev = current;
+            current = nextNode;
+        }
+        head = prev;
+    }
+}</pre>
+                    </div>
+
+                    <div class="code-content" data-lang="cpp">
+                        <h3>Linked List Operations</h3>
+                        <pre>struct Node {
+    int data;
+    Node* next;
+    Node(int val) : data(val), next(nullptr) {}
+};
+
+class LinkedList {
+    Node* head;
+public:
+    void insertAtBeginning(int data) {
+        Node* newNode = new Node(data);
+        newNode-&gt;next = head;
+        head = newNode;
+    }
+    
+    void insertAtEnd(int data) {
+        Node* newNode = new Node(data);
+        if (!head) {
+            head = newNode;
+            return;
+        }
+        Node* current = head;
+        while (current-&gt;next) {
+            current = current-&gt;next;
+        }
+        current-&gt;next = newNode;
+    }
+    
+    void reverse() {
+        Node* prev = nullptr;
+        Node* current = head;
+        while (current) {
+            Node* nextNode = current-&gt;next;
+            current-&gt;next = prev;
+            prev = current;
+            current = nextNode;
+        }
+        head = prev;
+    }
+};</pre>
+                    </div>
+
+                    <div class="code-content" data-lang="c">
+                        <h3>Linked List Operations</h3>
+                        <pre>struct Node {
+    int data;
+    struct Node* next;
+};
+
+void insertAtBeginning(struct Node** head, int data) {
+    struct Node* newNode = malloc(sizeof(struct Node));
+    newNode-&gt;data = data;
+    newNode-&gt;next = *head;
+    *head = newNode;
+}
+
+void insertAtEnd(struct Node** head, int data) {
+    struct Node* newNode = malloc(sizeof(struct Node));
+    newNode-&gt;data = data;
+    newNode-&gt;next = NULL;
+    if (*head == NULL) {
+        *head = newNode;
+        return;
+    }
+    struct Node* current = *head;
+    while (current-&gt;next) {
+        current = current-&gt;next;
+    }
+    current-&gt;next = newNode;
+}
+
+void reverse(struct Node** head) {
+    struct Node* prev = NULL;
+    struct Node* current = *head;
+    while (current) {
+        struct Node* nextNode = current-&gt;next;
+        current-&gt;next = prev;
+        prev = current;
+        current = nextNode;
+    }
+    *head = prev;
+}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chatbot">
+        <button class="chat-button" id="chatToggle"><i class="fas fa-comments"></i></button>
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <h3><i class="fas fa-robot"></i> AlgoBuddy</h3>
+                <button class="chat-close" id="chatClose">&times;</button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot">
+                    <p><i class="fas fa-hand-paper"></i> Hi! Ask me about linked list operations, time complexity, or code examples!</p>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Ask about linked lists...">
+                <button id="chatSend"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/linkedList.js') }}"></script>
+</body>
+</html>

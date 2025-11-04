@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA Learning Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">DSA Learning Platform</div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/binary-tree">Binary Tree</a></li>
+                    <li><a href="/dfs-bfs">DFS & BFS</a></li>
+                    <li><a href="/linked-list">Linked List</a></li>
+                    <li><a href="/hashing">Hashing</a></li>
+                    <li><a href="/sorting">Sorting</a></li>
+                    <li><a href="/practice">Practice</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="pagination-controls" style="text-align: center; margin: 1rem 0; padding: 1rem;">
+        <button class="page-btn active" data-page="1">Visualizer</button>
+        <button class="page-btn" data-page="2">Introduction</button>
+        <button class="page-btn" data-page="3">BFS Deep Dive</button>
+        <button class="page-btn" data-page="4">DFS Deep Dive</button>
+        <button class="page-btn" data-page="5">Comparison & Apps</button>
+        <button class="page-btn" data-page="6">Code</button>
+    </div>
+
+    <div class="container">
+        <div class="content-section">
+            <div class="page" data-page="1">
+            <h1 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-search"></i> Tree Traversal (DFS & BFS)</h1>
+            <p style="color: #64748b; margin-bottom: 2rem;">Build a tree structure and watch DFS/BFS traversal algorithms in action!</p>
+
+            <div class="controls">
+                <h4 style="margin: 0 1rem 0 0; color: var(--primary-color);">Tree Building:</h4>
+                <button class="btn btn-info" onclick="addRoot()">Add Root</button>
+                <button class="btn btn-info" onclick="addChild()">Add Child</button>
+                <button class="btn btn-warning" onclick="cancelChildMode()">Cancel Child Mode</button>
+                
+                <div style="width: 2px; height: 30px; background: rgba(99, 102, 241, 0.3); margin: 0 1rem;"></div>
+                
+                <button class="btn btn-secondary" onclick="setStart()">Set Start</button>
+                <button class="btn btn-secondary" onclick="setGoal()">Set Goal</button>
+                <button class="btn btn-secondary" onclick="clearGraph()">Clear Tree</button>
+                
+                <div style="width: 2px; height: 30px; background: rgba(99, 102, 241, 0.3); margin: 0 1rem;"></div>
+                
+                <button class="btn btn-success" onclick="runBFS()">Run BFS</button>
+                <button class="btn btn-success" onclick="runDFS()">Run DFS</button>
+            </div>
+
+            <div id="result-display">Click "Add Root" to start building a tree structure!</div>
+
+            <div class="queue-stack-display" id="dataStructureDisplay" style="display: none;">
+                <h4 id="dsTitle">Queue/Stack:</h4>
+                <div class="queue-stack-items" id="dsItems"></div>
+            </div>
+
+            <div class="visualization-container">
+                <svg id="graph-svg" width="100%" height="500"></svg>
+            </div>
+            </div>
+
+            <div class="page" data-page="2">
+            <h2 style="color: var(--primary-color); margin-bottom: 1.5rem;"><i class="fas fa-book"></i> Introduction to Graph Traversal</h2>
+            
+            <div style="background: rgba(99, 102, 241, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(99, 102, 241, 0.3); padding: 2rem; border-radius: 12px; margin-bottom: 2rem;">
+                <h3 style="color: var(--primary-color); margin-bottom: 2rem;"><i class="fas fa-search"></i> What are DFS and BFS?</h3>
+
+                <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 2rem;">
+                    Depth-First Search (DFS) and Breadth-First Search (BFS) are fundamental <strong>graph traversal algorithms</strong> used to systematically visit all nodes in a graph or search for a specific node.
+                    These algorithms form the backbone of many important applications in computer science, from pathfinding to web crawling.
+                </p>
+
+                <!-- Internal Divider -->
+                <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.4), transparent); margin: 1.5rem 0;"></div>
+
+                <!-- Core Concepts Section -->
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-brain"></i> Core Concepts</h4>
+                    <ul style="line-height: 1.8; color: var(--text-light);">
+                        <li><strong>Graph Traversal:</strong> Systematically visiting each node in a graph exactly once</li>
+                        <li><strong>Search Algorithms:</strong> Finding a path from start node to goal node</li>
+                        <li><strong>Data Structures:</strong> Queue (FIFO) for BFS, Stack (LIFO) for DFS</li>
+                        <li><strong>Exploration Strategy:</strong> DFS goes deep first, BFS explores level by level</li>
+                    </ul>
+                </div>
+
+                <!-- Internal Divider -->
+                <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.4), transparent); margin: 1.5rem 0;"></div>
+
+                <!-- Tree vs Graph Context Section -->
+                <div>
+                    <h4 style="color: #d97706; margin-bottom: 1rem;"><i class="fas fa-tree"></i> Tree vs Graph Context</h4>
+                    <p style="line-height: 1.6; color: var(--text-light); margin-bottom: 1rem;">
+                        While both algorithms work on general graphs, they behave differently on trees (acyclic connected graphs):
+                    </p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div style="background: rgba(59, 130, 246, 0.1); padding: 1rem; border-radius: 6px;">
+                            <strong style="color: #3b82f6;">On Trees (No Cycles):</strong>
+                            <ul style="font-size: 0.9rem; margin-top: 0.5rem;">
+                                <li>BFS: Level-order traversal</li>
+                                <li>DFS: Pre/in/post-order traversal</li>
+                                <li>Both find unique paths</li>
+                            </ul>
+                        </div>
+                        <div style="background: rgba(139, 92, 246, 0.1); padding: 1rem; border-radius: 6px;">
+                            <strong style="color: #8b5cf6;">On General Graphs:</strong>
+                            <ul style="font-size: 0.9rem; margin-top: 0.5rem;">
+                                <li>BFS: Shortest path in unweighted graphs</li>
+                                <li>DFS: May find longer paths</li>
+                                <li>Cycle detection needed</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <div class="page" data-page="3">
+            <h2 style="color: var(--primary-color); margin-bottom: 1.5rem;"><i class="fas fa-water"></i> Breadth-First Search (BFS)</h2>
+
+            <div style="background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); padding: 2rem; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
+                <div style="display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: start; margin-bottom: 2rem;">
+                    <div>
+                        <h3 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-cogs"></i> How BFS Works</h3>
+
+                        <!-- How BFS Works Section - Left aligned with diagram -->
+                        <h4 style="color: #3b82f6; margin-bottom: 0.75rem;">How BFS Works (Step by Step)</h4>
+                        <ol style="line-height: 1.8; color: var(--text-light);">
+                            <li><strong>Initialize:</strong> Create a queue and visited set, enqueue start node</li>
+                            <li><strong>Process Level:</strong> Dequeue front node, mark as visited, process it</li>
+                            <li><strong>Explore Neighbors:</strong> Enqueue all unvisited neighbors of current node</li>
+                            <li><strong>Repeat:</strong> Continue until queue is empty or goal is found</li>
+                        </ol>
+                    </div>
+                    <div style="background: rgba(30, 41, 59, 0.8); padding: 1rem; border-radius: 6px; font-family: monospace; font-size: 0.9rem;">
+                        <strong style="color: #3b82f6;">Example Tree:</strong><br>
+                        <pre style="margin: 0.5rem 0; color: var(--text-light);">
+     A
+   /   \
+  B     C
+ / \   / \
+D   E F   G</pre>
+                        <strong style="color: #059669;">BFS Traversal Order: A → B → C → D → E → F → G</strong>
+                    </div>
+                </div>
+
+                <!-- Internal Divider -->
+                <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.4), transparent); margin: 1.5rem 0;"></div>
+
+                <!-- Implementation Variants Section -->
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="color: #059669; margin-bottom: 0.75rem;"><i class="fas fa-code"></i> BFS Implementation Variants</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div style="background: rgba(30, 41, 59, 0.6); padding: 1rem; border-radius: 6px;">
+                            <strong style="color: #3b82f6;">Recursive BFS:</strong>
+                            <ul style="font-size: 0.9rem; margin-top: 0.5rem;">
+                                <li>Less common</li>
+                                <li>Uses system call stack</li>
+                                <li>Harder to implement</li>
+                                <li>Not recommended</li>
+                            </ul>
+                        </div>
+                        <div style="background: rgba(30, 41, 59, 0.6); padding: 1rem; border-radius: 6px;">
+                            <strong style="color: #059669;">Iterative BFS:</strong>
+                            <ul style="font-size: 0.9rem; margin-top: 0.5rem;">
+                                <li>Most common approach</li>
+                                <li>Uses explicit queue</li>
+                                <li>Easier to understand</li>
+                                <li>Better performance</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Internal Divider -->
+                <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.4), transparent); margin: 1.5rem 0;"></div>
+
+                <!-- Analogy and Complexity Section -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                    <div>
+                        <h4 style="color: #d97706; margin-bottom: 0.75rem;"><i class="fas fa-lightbulb"></i> Real-World Analogy</h4>
+                        <p style="line-height: 1.8; color: var(--text-light); font-size: 0.9rem;">
+                            Imagine you're at a party looking for someone. <strong>BFS is like asking everyone in the room if they're the person</strong>,
+                            then moving to the next room. You check all people at the same "distance" from you before going further.
+                            It's like <strong>ripples spreading in a pond</strong> - the wave expands outward evenly in all directions.
+                        </p>
+                    </div>
+                    <div>
+                        <h4 style="color: #059669; margin-bottom: 0.75rem;"><i class="fas fa-chart-bar"></i> Complexity Analysis</h4>
+                        <p style="line-height: 1.6; color: var(--text-light); font-size: 0.9rem; margin-bottom: 0.5rem;">
+                            <strong><i class="fas fa-clock"></i> Time Complexity:</strong> <span style="color: #059669; font-weight: 600;">O(V + E)</span><br>
+                            <em>where V = vertices, E = edges. We visit each vertex once and explore each edge once.</em>
+                        </p>
+                        <p style="line-height: 1.6; color: var(--text-light); font-size: 0.9rem;">
+                            <strong><i class="fas fa-database"></i> Space Complexity:</strong> <span style="color: #059669; font-weight: 600;">O(V)</span><br>
+                            <em>Queue can hold up to V vertices in the worst case (all nodes at one level).</em>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Internal Divider -->
+                <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.4), transparent); margin: 1.5rem 0;"></div>
+
+                <!-- Best For Section -->
+                <div style="text-align: center;">
+                    <div style="display: inline-block; padding: 1rem 1.5rem; background: rgba(16, 185, 129, 0.2); backdrop-filter: blur(10px); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 8px;">
+                        <strong style="color: #059669;">✅ Best For:</strong> Finding shortest path, level-order traversal, finding all nodes within a given distance
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <div class="page" data-page="4">
+            <h2 style="color: var(--primary-color); margin-bottom: 1.5rem;"><i class="fas fa-mountain"></i> Depth-First Search (DFS)</h2>
+
+            <div style="background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); padding: 2rem; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
+                <div style="display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: start; margin-bottom: 2rem;">
+                    <div>
+                        <h3 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-cogs"></i> How DFS Works</h3>
+
+                        <!-- How DFS Works Section - Left aligned with diagram -->
+                        <h4 style="color: #8b5cf6; margin-bottom: 0.75rem;">How DFS Works (Step by Step)</h4>
+                        <ol style="line-height: 1.8; color: var(--text-light);">
+                            <li><strong>Initialize:</strong> Create a stack and visited set, push start node</li>
+                            <li><strong>Process Node:</strong> Pop top node from stack, mark as visited, process it</li>
+                            <li><strong>Explore Deep:</strong> Push all unvisited neighbors onto stack (in reverse order)</li>
+                            <li><strong>Backtrack:</strong> Continue until stack is empty or goal is found</li>
+                        </ol>
+                    </div>
+                    <div style="background: rgba(30, 41, 59, 0.8); padding: 1rem; border-radius: 6px; font-family: monospace; font-size: 0.9rem;">
+                        <strong style="color: #8b5cf6;">Example Tree:</strong><br>
+                        <pre style="margin: 0.5rem 0; color: var(--text-light);">
+     A
+   /   \
+  B     C
+ / \   / \
+D   E F   G</pre>
+                        <strong style="color: #059669;">DFS Traversal Order: A → B → D → E → C → F → G</strong>
+                    </div>
+                </div>
+
+                <!-- Internal Divider -->
+                <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.4), transparent); margin: 1.5rem 0;"></div>
+
+                <!-- Implementation Variants Section -->
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="color: #d97706; margin-bottom: 0.75rem;"><i class="fas fa-code"></i> DFS Implementation Variants</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                        <div style="background: rgba(30, 41, 59, 0.6); padding: 1rem; border-radius: 6px;">
+                            <strong style="color: #8b5cf6;">Recursive DFS:</strong>
+                            <ul style="font-size: 0.9rem; margin-top: 0.5rem;">
+                                <li>Most natural implementation</li>
+                                <li>Uses system call stack</li>
+                                <li>Easier to understand</li>
+                                <li>Risk of stack overflow</li>
+                            </ul>
+                        </div>
+                        <div style="background: rgba(30, 41, 59, 0.6); padding: 1rem; border-radius: 6px;">
+                            <strong style="color: #059669;">Iterative DFS:</strong>
+                            <ul style="font-size: 0.9rem; margin-top: 0.5rem;">
+                                <li>Uses explicit stack</li>
+                                <li>Avoids stack overflow</li>
+                                <li>Slightly more complex</li>
+                                <li>Better for large graphs</li>
+                            </ul>
+                        </div>
+                        <div style="background: rgba(30, 41, 59, 0.6); padding: 1rem; border-radius: 6px;">
+                            <strong style="color: #8b5cf6;">Tree Traversal Types (DFS variants):</strong>
+                            <ul style="font-size: 0.9rem; margin-top: 0.5rem;">
+                                <li><strong>Pre-order:</strong> Visit root, then left subtree, then right subtree</li>
+                                <li><strong>In-order:</strong> Visit left subtree, root, then right subtree</li>
+                                <li><strong>Post-order:</strong> Visit left subtree, right subtree, then root</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Internal Divider -->
+                <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.4), transparent); margin: 1.5rem 0;"></div>
+
+                <!-- Analogy and Complexity Section -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                    <div>
+                        <h4 style="color: #d97706; margin-bottom: 0.75rem;"><i class="fas fa-lightbulb"></i> Real-World Analogy</h4>
+                        <p style="line-height: 1.8; color: var(--text-light); font-size: 0.9rem;">
+                            Imagine exploring a <strong>maze or a cave system</strong>. DFS is like following one path as far as it goes, marking your way.
+                            When you hit a dead end, you backtrack to the last junction and try another path. It's like <strong>exploring a rabbit hole</strong>
+                            - you go deep into one topic before moving to another. Or think of <strong>file system search</strong> - diving deep into folders before checking siblings.
+                        </p>
+                    </div>
+                    <div>
+                        <h4 style="color: #059669; margin-bottom: 0.75rem;"><i class="fas fa-chart-bar"></i> Complexity Analysis</h4>
+                        <p style="line-height: 1.6; color: var(--text-light); font-size: 0.9rem; margin-bottom: 0.5rem;">
+                            <strong><i class="fas fa-clock"></i> Time Complexity:</strong> <span style="color: #059669; font-weight: 600;">O(V + E)</span><br>
+                            <em>where V = vertices, E = edges. Each vertex and edge is explored once.</em>
+                        </p>
+                        <p style="line-height: 1.6; color: var(--text-light); font-size: 0.9rem;">
+                            <strong><i class="fas fa-database"></i> Space Complexity:</strong> <span style="color: #059669; font-weight: 600;">O(V)</span><br>
+                            <em>Recursive implementation: O(h) call stack where h is max depth (can be V in worst case).<br>
+                            Iterative implementation: O(V) for explicit stack to track nodes to visit.</em>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Internal Divider -->
+                <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.4), transparent); margin: 1.5rem 0;"></div>
+
+                <!-- Best For Section -->
+                <div style="text-align: center;">
+                    <div style="display: inline-block; padding: 1rem 1.5rem; background: rgba(16, 185, 129, 0.2); backdrop-filter: blur(10px); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 8px;">
+                        <strong style="color: #059669;">✅ Best For:</strong> Detecting cycles, topological sorting, finding connected components, maze solving
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <div class="page" data-page="5">
+            <h2 style="color: var(--primary-color); margin-bottom: 1.5rem;"><i class="fas fa-balance-scale"></i> BFS vs DFS: Comparison & Applications</h2>
+
+            <div style="background: rgba(16, 185, 129, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(16, 185, 129, 0.3); padding: 2rem; border-radius: 12px; margin-bottom: 2rem;">
+                <h3 style="color: var(--primary-color); margin-bottom: 2rem;"><i class="fas fa-balance-scale"></i> BFS vs DFS: Comprehensive Comparison</h3>
+
+                <!-- Algorithm Characteristics Section -->
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-chart-line"></i> Algorithm Characteristics</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div style="background: rgba(59, 130, 246, 0.1); padding: 1rem; border-radius: 6px; border-left: 3px solid #3b82f6;">
+                            <h5 style="color: #3b82f6; margin-bottom: 0.5rem;">Breadth-First Search (BFS)</h5>
+                            <ul style="font-size: 0.9rem; line-height: 1.6;">
+                                <li><strong>Data Structure:</strong> Queue (FIFO)</li>
+                                <li><strong>Traversal:</strong> Level by level</li>
+                                <li><strong>Path Quality:</strong> Shortest path guaranteed</li>
+                                <li><strong>Memory:</strong> High (stores all current level)</li>
+                                <li><strong>Implementation:</strong> Iterative preferred</li>
+                                <li><strong>Use Case:</strong> Unweighted shortest path</li>
+                            </ul>
+                        </div>
+                        <div style="background: rgba(139, 92, 246, 0.1); padding: 1rem; border-radius: 6px; border-left: 3px solid #8b5cf6;">
+                            <h5 style="color: #8b5cf6; margin-bottom: 0.5rem;">Depth-First Search (DFS)</h5>
+                            <ul style="font-size: 0.9rem; line-height: 1.6;">
+                                <li><strong>Data Structure:</strong> Stack (LIFO)</li>
+                                <li><strong>Traversal:</strong> Deep exploration first</li>
+                                <li><strong>Path Quality:</strong> May find longer paths</li>
+                                <li><strong>Memory:</strong> Low (stores current path)</li>
+                                <li><strong>Implementation:</strong> Recursive common</li>
+                                <li><strong>Use Case:</strong> Topological sort, cycle detection</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Internal Divider -->
+                <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.4), transparent); margin: 1.5rem 0;"></div>
+
+                <!-- When to Choose Section -->
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="color: #d97706; margin-bottom: 1rem;"><i class="fas fa-brain"></i> When to Choose Which Algorithm</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div style="background: rgba(16, 185, 129, 0.1); padding: 1rem; border-radius: 6px;">
+                            <strong style="color: #059669;">Choose BFS when:</strong>
+                            <ul style="font-size: 0.9rem; margin-top: 0.5rem;">
+                                <li>You need the shortest path</li>
+                                <li>Graph is unweighted</li>
+                                <li>Answers are closer to root</li>
+                                <li>Memory is not a constraint</li>
+                                <li>Level-order processing needed</li>
+                            </ul>
+                        </div>
+                        <div style="background: rgba(245, 158, 11, 0.1); padding: 1rem; border-radius: 6px;">
+                            <strong style="color: #d97706;">Choose DFS when:</strong>
+                            <ul style="font-size: 0.9rem; margin-top: 0.5rem;">
+                                <li>Memory is limited</li>
+                                <li>Any path will do</li>
+                                <li>Need topological ordering</li>
+                                <li>Detecting cycles</li>
+                                <li>Solving puzzles/games</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Internal Divider -->
+                <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.4), transparent); margin: 1.5rem 0;"></div>
+
+                <!-- Important Considerations Section -->
+                <div>
+                    <h4 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-exclamation-triangle"></i> Important Considerations</h4>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                        <div style="background: rgba(30, 41, 59, 0.6); padding: 1rem; border-radius: 6px;">
+                            <ul style="line-height: 1.6; color: var(--text-light); margin: 0;">
+                                <li><strong>Graph Size:</strong> DFS works better on large graphs due to lower memory usage</li>
+                                <li><strong>Graph Density:</strong> BFS performs better on sparse graphs (fewer edges)</li>
+                            </ul>
+                        </div>
+                        <div style="background: rgba(30, 41, 59, 0.6); padding: 1rem; border-radius: 6px;">
+                            <ul style="line-height: 1.6; color: var(--text-light); margin: 0;">
+                                <li><strong>Goal Location:</strong> BFS is better when goal is likely close to start</li>
+                                <li><strong>Path Existence:</strong> DFS may find a path faster in some cases</li>
+                                <li><strong>Cycle Handling:</strong> Both need visited tracking to prevent infinite loops</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); padding: 2rem; border-radius: 12px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
+                <h3 style="color: var(--primary-color); margin-bottom: 2rem;"><i class="fas fa-bullseye"></i> Real-World Applications & Use Cases</h3>
+
+                <!-- BFS Applications Section -->
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="color: #3b82f6; margin-bottom: 1rem;"><i class="fas fa-route"></i> Breadth-First Search Applications</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <h5 style="color: #059669; margin-bottom: 0.5rem;">Navigation & Routing</h5>
+                            <ul style="font-size: 0.9rem; line-height: 1.6; color: var(--text-light);">
+                                <li>GPS shortest path calculation</li>
+                                <li>Google Maps route finding</li>
+                                <li>Network packet routing</li>
+                                <li>Minimum steps in games</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h5 style="color: #059669; margin-bottom: 0.5rem;">Social Networks</h5>
+                            <ul style="font-size: 0.9rem; line-height: 1.6; color: var(--text-light);">
+                                <li>Friend suggestions (degrees of separation)</li>
+                                <li>LinkedIn connection finder</li>
+                                <li>Social network analysis</li>
+                                <li>Influence spread modeling</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h5 style="color: #059669; margin-bottom: 0.5rem;">Web & Data Processing</h5>
+                            <ul style="font-size: 0.9rem; line-height: 1.6; color: var(--text-light);">
+                                <li>Web crawlers (breadth-first crawling)</li>
+                                <li>Distributed computing job scheduling</li>
+                                <li>Finding all nodes at distance K</li>
+                                <li>Broadcasting in networks</li>
+                                <li>Chess/Knight's tour (minimum moves)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Internal Divider -->
+                <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.4), transparent); margin: 1.5rem 0;"></div>
+
+                <!-- DFS Applications Section -->
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="color: #8b5cf6; margin-bottom: 1rem;"><i class="fas fa-puzzle-piece"></i> Depth-First Search Applications</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <h5 style="color: #d97706; margin-bottom: 0.5rem;">Graph Analysis</h5>
+                            <ul style="font-size: 0.9rem; line-height: 1.6; color: var(--text-light);">
+                                <li>Cycle detection in graphs</li>
+                                <li>Topological sorting</li>
+                                <li>Finding connected components</li>
+                                <li>Graph coloring problems</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h5 style="color: #d97706; margin-bottom: 0.5rem;">Problem Solving</h5>
+                            <ul style="font-size: 0.9rem; line-height: 1.6; color: var(--text-light);">
+                                <li>Sudoku solver</li>
+                                <li>N-Queens problem</li>
+                                <li>Maze solving</li>
+                                <li>Path finding in games</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h5 style="color: #d97706; margin-bottom: 0.5rem;">System Analysis</h5>
+                            <ul style="font-size: 0.9rem; line-height: 1.6; color: var(--text-light);">
+                                <li>File system traversal</li>
+                                <li>Dependency resolution</li>
+                                <li>Deadlock detection</li>
+                                <li>Memory leak detection</li>
+                                <li>Compiler syntax analysis</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Internal Divider -->
+                <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.4), transparent); margin: 1.5rem 0;"></div>
+
+                <!-- Advanced Applications Section -->
+                <div>
+                    <h4 style="color: #059669; margin-bottom: 1rem;"><i class="fas fa-microchip"></i> Advanced Applications</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                        <div style="background: rgba(30, 41, 59, 0.6); padding: 1rem; border-radius: 6px;">
+                            <h6 style="color: var(--primary-color); margin-bottom: 0.5rem;">AI & Machine Learning</h6>
+                            <ul style="font-size: 0.8rem; line-height: 1.4; color: var(--text-light);">
+                                <li>Decision trees</li>
+                                <li>Game tree search</li>
+                                <li>Constraint satisfaction</li>
+                                <li>Expert systems</li>
+                            </ul>
+                        </div>
+                        <div style="background: rgba(30, 41, 59, 0.6); padding: 1rem; border-radius: 6px;">
+                            <h6 style="color: var(--primary-color); margin-bottom: 0.5rem;">Database Systems</h6>
+                            <ul style="font-size: 0.8rem; line-height: 1.4; color: var(--text-light);">
+                                <li>Query optimization</li>
+                                <li>Dependency graphs</li>
+                                <li>Transaction scheduling</li>
+                                <li>Data mining</li>
+                            </ul>
+                        </div>
+                        <div style="background: rgba(30, 41, 59, 0.6); padding: 1rem; border-radius: 6px;">
+                            <h6 style="color: var(--primary-color); margin-bottom: 0.5rem;">Network Analysis</h6>
+                            <ul style="font-size: 0.8rem; line-height: 1.4; color: var(--text-light);">
+                                <li>Network topology</li>
+                                <li>TCP congestion control</li>
+                                <li>Load balancing</li>
+                                <li>Fault tolerance</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <div class="page" data-page="6">
+                <div class="content-section code-section">
+                    <h2 style="color: var(--primary-color); margin-bottom: 1rem;">Code Implementation</h2>
+            <div class="code-tabs">
+                <button class="code-tab active" data-lang="python">Python</button>
+                <button class="code-tab" data-lang="java">Java</button>
+                <button class="code-tab" data-lang="cpp">C++</button>
+                <button class="code-tab" data-lang="c">C</button>
+            </div>
+
+            <div class="code-content active" data-lang="python">
+                <h3>BFS Implementation</h3>
+                <pre>def bfs(graph, start, goal):
+    visited = set()
+    queue = [[start]]
+    while queue:
+        path = queue.pop(0)
+        node = path[-1]
+        if node == goal:
+            return path
+        if node not in visited:
+            visited.add(node)
+            for neighbor in graph.get(node, []):
+                new_path = list(path)
+                new_path.append(neighbor)
+                queue.append(new_path)
+    return None</pre>
+            </div>
+
+            <div class="code-content" data-lang="java">
+                <h3>BFS Implementation</h3>
+                <pre>public List&lt;Integer&gt; bfs(Map&lt;Integer, List&lt;Integer&gt;&gt; graph, int start, int goal) {
+    Set&lt;Integer&gt; visited = new HashSet&lt;&gt;();
+    Queue&lt;List&lt;Integer&gt;&gt; queue = new LinkedList&lt;&gt;();
+    queue.offer(Arrays.asList(start));
+    while (!queue.isEmpty()) {
+        List&lt;Integer&gt; path = queue.poll();
+        int node = path.get(path.size() - 1);
+        if (node == goal) return path;
+        if (!visited.contains(node)) {
+            visited.add(node);
+            for (int neighbor : graph.getOrDefault(node, new ArrayList&lt;&gt;())) {
+                List&lt;Integer&gt; newPath = new ArrayList&lt;&gt;(path);
+                newPath.add(neighbor);
+                queue.offer(newPath);
+            }
+        }
+    }
+    return null;
+}</pre>
+            </div>
+
+            <div class="code-content" data-lang="cpp">
+                <h3>BFS Implementation</h3>
+                <pre>vector&lt;int&gt; bfs(unordered_map&lt;int, vector&lt;int&gt;&gt;& graph, int start, int goal) {
+    unordered_set&lt;int&gt; visited;
+    queue&lt;vector&lt;int&gt;&gt; q;
+    q.push({start});
+    while (!q.empty()) {
+        vector&lt;int&gt; path = q.front();
+        q.pop();
+        int node = path.back();
+        if (node == goal) return path;
+        if (visited.find(node) == visited.end()) {
+            visited.insert(node);
+            for (int neighbor : graph[node]) {
+                vector&lt;int&gt; newPath = path;
+                newPath.push_back(neighbor);
+                q.push(newPath);
+            }
+        }
+    }
+    return {};
+}</pre>
+            </div>
+
+            <div class="code-content" data-lang="c">
+                <h3>BFS Implementation</h3>
+                <pre>int* bfs(int graph[][MAX], int n, int start, int goal, int* pathLen) {
+    int visited[MAX] = {0};
+    int queue[MAX], front = 0, rear = 0;
+    int parent[MAX];
+    for (int i = 0; i &lt; MAX; i++) parent[i] = -1;
+    queue[rear++] = start;
+    visited[start] = 1;
+    while (front &lt; rear) {
+        int node = queue[front++];
+        if (node == goal) {
+            int* path = malloc(MAX * sizeof(int));
+            int idx = 0, curr = goal;
+            while (curr != -1) {
+                path[idx++] = curr;
+                curr = parent[curr];
+            }
+            *pathLen = idx;
+            return path;
+        }
+        for (int i = 0; i &lt; n; i++) {
+            if (graph[node][i] && !visited[i]) {
+                visited[i] = 1;
+                parent[i] = node;
+                queue[rear++] = i;
+            }
+        }
+    }
+    return NULL;
+}</pre>
+            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chatbot">
+        <button class="chat-button" id="chatToggle"><i class="fas fa-comments"></i></button>
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <h3>AlgoBuddy</h3>
+                <button class="chat-close" id="chatClose">&times;</button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot">
+                    <p><i class="fas fa-hand-wave"></i> Hi! Ask me about DFS, BFS, or the differences between them!</p>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Ask about graph algorithms...">
+                <button id="chatSend">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/graph.js') }}"></script>
+</body>
+</html>

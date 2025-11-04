@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA Learning Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .pagination-controls button {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--text-light);
+            border: 2px solid rgba(99, 102, 241, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 0 0.25rem;
+        }
+
+        .pagination-controls button:hover {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: rgba(99, 102, 241, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .pagination-controls button.active {
+            background: rgba(99, 102, 241, 0.3);
+            border-color: rgba(99, 102, 241, 0.6);
+            color: white;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page[data-page="1"] {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">DSA Learning Platform</div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/binary-tree">Binary Tree</a></li>
+                    <li><a href="/dfs-bfs">DFS & BFS</a></li>
+                    <li><a href="/linked-list">Linked List</a></li>
+                    <li><a href="/hashing">Hashing</a></li>
+                    <li><a href="/sorting">Sorting</a></li>
+                    <li><a href="/practice">Practice</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="pagination-controls" style="text-align: center; margin: 1rem 0; padding: 1rem;">
+        <button class="page-btn active" data-page="1">Visualizer</button>
+        <button class="page-btn" data-page="2">Introduction</button>
+        <button class="page-btn" data-page="3">Chaining</button>
+        <button class="page-btn" data-page="4">Advanced Concepts</button>
+        <button class="page-btn" data-page="5">Code</button>
+    </div>
+
+    <div class="container">
+        <div class="content-section">
+            <div class="page" data-page="1">
+                <h1 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-hashtag"></i> Hash Table
+                    Visualizer</h1>
+                <p style="color: #64748b; margin-bottom: 2rem;">Visualize hash functions and collision handling with
+                    chaining!</p>
+
+                <div class="controls">
+                    <div class="input-group">
+                        <input type="text" id="hashKey" placeholder="Enter key">
+                        <input type="text" id="hashValue" placeholder="Enter value">
+                        <button class="btn btn-primary" onclick="insertHash()">Insert</button>
+                        <button class="btn btn-secondary" onclick="lookupHash()">Lookup</button>
+                        <button class="btn btn-warning" onclick="clearHash()">Clear Table</button>
+                    </div>
+                </div>
+
+                <div id="result-display">Hash Table (Size: 10) - Insert key-value pairs to see hashing in action!</div>
+
+                <div class="visualization-container" style="min-height: 500px; align-items: flex-start; padding: 2rem;">
+                    <div class="hash-table" id="hashTableDisplay"></div>
+                </div>
+            </div>
+
+            <div class="page" data-page="2">
+                <h2 style="color: var(--primary-color); margin-bottom: 1.5rem;"><i class="fas fa-book"></i> Introduction
+                    to Hash Tables</h2>
+
+                <div
+                    style="background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); padding: 2rem; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
+
+                    <!-- What is Hash Table Section -->
+                    <div
+                        style="background: rgba(99, 102, 241, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(99, 102, 241, 0.3); padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                        <h3 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-hashtag"></i>
+                            What is a Hash Table?</h3>
+                        <p style="line-height: 1.7; color: var(--text-light); margin-bottom: 1rem;">
+                            A <strong>hash table</strong> (or hash map) is a data structure that maps keys to values for
+                            highly efficient lookup.
+                            It uses a <strong>hash function</strong> to compute an index into an array of buckets or
+                            slots, from which the desired value can be found.
+                        </p>
+                        <p style="line-height: 1.7; color: var(--text-light); margin-bottom: 1rem;">
+                            <strong>Why Hash Tables?</strong> They combine the speed of arrays (O(1) access) with the
+                            flexibility of dictionaries.
+                            In the real world, hash tables power databases, caches, symbol tables in compilers, and much
+                            more.
+                        </p>
+                        <p style="line-height: 1.7; color: var(--text-light);">
+                            <strong>Core Principle:</strong> Convert any key (string, number, object) into an array
+                            index using a hash function.
+                            This allows direct access to the value without searching through all entries.
+                        </p>
+                    </div>
+
+                    <!-- Real World Analogies - Compact Grid -->
+                    <div
+                        style="background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(51, 65, 85, 0.5); padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid var(--primary-color);">
+                        <h3 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-lightbulb"></i>
+                            Real-World Analogies</h3>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div>
+                                <p style="line-height: 1.6; color: var(--text-light); margin-bottom: 0.75rem;">
+                                    <strong style="color: #3b82f6;">📚 Library Card Catalog:</strong> Instead of
+                                    searching through every book, you use the book's title (key) to quickly
+                                    find which shelf (hash index) it's on. The catalog system is the hash function that
+                                    converts title → location.
+                                </p>
+                                <p style="line-height: 1.6; color: var(--text-light); margin-bottom: 0.75rem;">
+                                    <strong style="color: #10b981;">📱 Phone Contacts:</strong> You don't scroll through
+                                    all contacts; you type a name and instantly get the number.
+                                    The phone uses hashing internally to find contacts in constant time.
+                                </p>
+                            </div>
+                            <div>
+                                <p style="line-height: 1.6; color: var(--text-light); margin-bottom: 0.75rem;">
+                                    <strong style="color: #f59e0b;">🔐 Locker Room:</strong> Your locker number is
+                                    calculated from your ID (hash function), so you always know exactly
+                                    where your stuff is without checking every locker. If two people get the same number
+                                    (collision), they share the locker.
+                                </p>
+                                <p style="line-height: 1.6; color: var(--text-light);">
+                                    <strong style="color: #8b5cf6;">🏪 Store Aisles:</strong> Products are organized by
+                                    category (hash of product type).
+                                    Cereal is always in aisle 5, snacks in aisle 7. You don't search the whole store!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- How Hash Tables Work - Side by Side -->
+                    <div
+                        style="background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                        <h3 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-key"></i> How
+                            Hash Tables Work</h3>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                            <!-- Step by Step Process -->
+                            <div
+                                style="background: rgba(59, 130, 246, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(59, 130, 246, 0.3); padding: 1.25rem; border-radius: 8px;">
+                                <h4 style="color: #3b82f6; margin-bottom: 0.75rem;"><i class="fas fa-cogs"></i>
+                                    Step-by-Step Process</h4>
+                                <ol style="line-height: 1.7; color: var(--text-light); margin-bottom: 1rem;">
+                                    <li style="margin-bottom: 0.5rem;"><strong>Hash Function:</strong> Convert key into
+                                        an integer (hash code). For example, "apple" → 97112112108101</li>
+                                    <li style="margin-bottom: 0.5rem;"><strong>Compression:</strong> Map hash code to
+                                        valid table index using modulo: <code
+                                            style="background: rgba(30, 41, 59, 0.8); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.9rem;">index = hash(key) % table_size</code>
+                                    </li>
+                                    <li style="margin-bottom: 0.5rem;"><strong>Storage:</strong> Store the key-value
+                                        pair at calculated index</li>
+                                    <li><strong>Retrieval:</strong> Use same hash function to find where value is stored
+                                        in O(1) time</li>
+                                </ol>
+                                <p style="line-height: 1.7; color: var(--text-light); font-size: 0.9rem;">
+                                    <strong>Example:</strong> Inserting ("John", "555-1234") with table size 10:<br>
+                                    hash("John") = 2416 → 2416 % 10 = 6 → Store at index 6
+                                </p>
+                            </div>
+
+                            <!-- Collision Problem -->
+                            <div
+                                style="background: rgba(245, 158, 11, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(245, 158, 11, 0.3); padding: 1.25rem; border-radius: 8px;">
+                                <h4 style="color: #f57c00; margin-bottom: 0.75rem;"><i
+                                        class="fas fa-exclamation-triangle"></i> The Collision Problem</h4>
+                                <p style="line-height: 1.7; color: var(--text-light); margin-bottom: 1rem;">
+                                    A <strong>collision</strong> occurs when two different keys hash to the same index.
+                                    This is inevitable due to the <strong>pigeonhole principle</strong>:
+                                    if you have more possible keys than table slots, collisions must occur.
+                                </p>
+                                <p style="line-height: 1.7; color: var(--text-light); font-size: 0.9rem;">
+                                    <strong>Example:</strong> With table size 10, both "John" and "Jane" might hash to
+                                    index 6. We need a strategy to handle this!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Performance Summary -->
+                    <div
+                        style="background: rgba(16, 185, 129, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(16, 185, 129, 0.3); padding: 1.25rem; border-radius: 8px;">
+                        <h4 style="color: #10b981; margin-bottom: 1rem; text-align: center;"><i
+                                class="fas fa-rocket"></i> Hash Table Performance</h4>
+                        <div
+                            style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; text-align: center;">
+                            <div>
+                                <h5 style="color: #3b82f6; margin-bottom: 0.5rem;">⚡ Average Case</h5>
+                                <p style="line-height: 1.6; color: var(--text-light); font-size: 0.9rem; margin: 0;">
+                                    <strong>O(1)</strong> for all operations<br>
+                                    <em>Insert, Search, Delete</em>
+                                </p>
+                            </div>
+                            <div>
+                                <h5 style="color: #ef4444; margin-bottom: 0.5rem;">🐌 Worst Case</h5>
+                                <p style="line-height: 1.6; color: var(--text-light); font-size: 0.9rem; margin: 0;">
+                                    <strong>O(n)</strong> for all operations<br>
+                                    <em>All keys collide</em>
+                                </p>
+                            </div>
+                            <div>
+                                <h5 style="color: #f59e0b; margin-bottom: 0.5rem;">💾 Space</h5>
+                                <p style="line-height: 1.6; color: var(--text-light); font-size: 0.9rem; margin: 0;">
+                                    <strong>O(n)</strong> storage<br>
+                                    <em>Linear growth</em>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="page" data-page="3">
+                <h2 style="color: var(--primary-color); margin-bottom: 1.5rem;"><i class="fas fa-link"></i> Chaining -
+                    Collision Resolution</h2>
+
+                <div
+                    style="background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); padding: 2rem; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
+                    <h3 style="color: var(--primary-color); margin-bottom: 1.5rem;"><i class="fas fa-link"></i> Chaining
+                        Mechanism</h3>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4 style="color: #3b82f6; margin-bottom: 0.75rem; font-size: 1.1rem;"><i
+                                class="fas fa-cogs"></i> How Chaining Works</h4>
+                        <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 0.75rem;">
+                            <strong>Collision Resolution:</strong> Each table index holds a <span
+                                style="color: #10b981; font-weight: bold;">linked list</span> of key-value pairs.
+                            Collisions append to the list.
+                        </p>
+                        <p
+                            style="line-height: 1.8; color: var(--text-light); margin-bottom: 0.75rem; font-size: 0.9rem;">
+                            <strong>Example:</strong> Index 3 contains chain: ("Alice", 123) → ("Bob", 456) →
+                            ("Charlie", 789)
+                        </p>
+                        <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 0.75rem;">
+                            <strong style="color: #f59e0b;">Analogy:</strong> Like multiple people sharing the same
+                            locker - they hang their items on different hooks inside.
+                            To find your item, you check each hook in that locker.
+                        </p>
+
+                        <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                            <div style="flex: 1;">
+                                <h4 style="color: #f59e0b; margin-bottom: 0.75rem; font-size: 1.1rem;"><i
+                                        class="fas fa-chart-bar"></i> Visual Example</h4>
+                                <div
+                                    style="background: rgba(15, 23, 42, 0.8); padding: 1rem; border-radius: 8px; font-family: monospace; color: #e2e8f0; margin-bottom: 1rem;">
+                                    <pre style="margin: 0; font-size: 0.85rem;">Hash Table (Size: 5)
+Index | Chain
+------|------
+  0   | ("Apple", 100) → ("Banana", 200)
+  1   | ("Cherry", 300)
+  2   | Empty
+  3   | ("Date", 400) → ("Elderberry", 500) → ("Fig", 600)
+  4   | Empty</pre>
+                                </div>
+                            </div>
+
+                            <div style="flex: 1;">
+                                <div
+                                    style="background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(51, 65, 85, 0.4); padding: 1rem; border-radius: 8px; margin-top: 0.5rem; margin-bottom: 1rem;">
+                                    <strong><i class="fas fa-clock"></i> Performance:</strong><br>
+                                    - <span style="color: #10b981; font-weight: bold;">Average:</span> <span
+                                        style="color: #059669; font-weight: 600;">O(1 + α)</span> (α = load factor)<br>
+                                    - <span style="color: #dc2626; font-weight: bold;">Worst:</span> <span
+                                        style="color: #dc2626; font-weight: 600;">O(n)</span> (all keys collide)<br>
+                                    - <strong><i class="fas fa-database"></i> Space:</strong> <span
+                                        style="color: #dc2626; font-weight: 600;">O(n + m)</span> (n items + m
+                                    slots)<br><br>
+                                    <strong><i class="fas fa-check-circle"></i> Key Advantages</strong>
+                                    <ul
+                                        style="line-height: 1.8; color: var(--text-light); font-size: 0.9rem; margin-top: 0.5rem;">
+                                        <li><strong>Simple:</strong> Easy to implement and debug</li>
+                                        <li><strong>Load Factor > 1:</strong> Handles high load without performance drop
+                                        </li>
+                                        <li><strong>Deletion:</strong> Efficient removal from linked list</li>
+                                        <li><strong>Cache-Friendly:</strong> Good locality for list traversal</li>
+                                        <li><strong>Used In:</strong> Java HashMap, Python dict, C++ unordered_map</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page" data-page="4">
+                    <h2 style="color: var(--primary-color); margin-bottom: 1.5rem;"><i class="fas fa-search"></i> Open
+                        Addressing Methods</h2>
+
+                    <div
+                        style="background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); padding: 2rem; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
+                        <h3 style="color: var(--primary-color); margin-bottom: 1.5rem;"><i class="fas fa-1"></i> Linear
+                            Probing</h3>
+
+                        <div style="margin-bottom: 1.5rem;">
+                            <h4 style="color: #8b5cf6; margin-bottom: 0.75rem; font-size: 1.1rem;"><i
+                                    class="fas fa-cogs"></i> How It Works</h4>
+                            <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 0.75rem;">
+                                <strong>How it works:</strong> All entries stored in table itself. If slot is occupied,
+                                probe next slots sequentially:
+                                (hash + 1) % size, (hash + 2) % size, etc., until empty slot found.
+                            </p>
+                            <p
+                                style="line-height: 1.8; color: var(--text-light); margin-bottom: 0.75rem; font-size: 0.9rem;">
+                                <strong>Example:</strong> Insert at index 5 → occupied → try 6 → occupied → try 7 →
+                                empty → insert here
+                            </p>
+                            <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 0.75rem;">
+                                <strong style="color: #10b981;">Analogy:</strong> Like parking - if your spot is taken,
+                                drive to the next available spot.
+                                To find your car later, start at your assigned spot and drive forward until you find it.
+                            </p>
+                            <div
+                                style="background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(51, 65, 85, 0.4); padding: 1rem; border-radius: 8px; margin-top: 0.5rem; margin-bottom: 1rem;">
+                                <strong><i class="fas fa-clock"></i> Time Complexity:</strong><br>
+                                - Average: <span style="color: #059669; font-weight: 600;">O(1)</span> when table isn't
+                                too full<br>
+                                - Worst: <span style="color: #dc2626; font-weight: 600;">O(n)</span> when table is
+                                nearly full<br>
+                                <strong><i class="fas fa-database"></i> Space:</strong> <span
+                                    style="color: #059669; font-weight: 600;">O(n)</span> - no extra pointers<br>
+                                <strong>Issue:</strong> Primary clustering - consecutive occupied slots slow down future
+                                insertions
+                            </div>
+
+                            <div
+                                style="background: rgba(139, 92, 246, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(139, 92, 246, 0.3); padding: 1.5rem; border-radius: 8px;">
+                                <h4 style="color: #8b5cf6; margin-bottom: 0.75rem;"><i
+                                        class="fas fa-exclamation-triangle"></i> Linear Probing Issues & Solutions</h4>
+                                <ul style="line-height: 1.8; color: var(--text-light); font-size: 0.9rem;">
+                                    <li><strong>Primary Clustering:</strong> Consecutive filled slots form clusters,
+                                        increasing search time dramatically</li>
+                                    <li><strong>Deletion Challenge:</strong> Can't just delete - must mark as "deleted"
+                                        to maintain probe sequence integrity</li>
+                                    <li><strong>Load Factor Limit:</strong> Performance degrades rapidly above α = 0.7,
+                                        must keep table sparse</li>
+                                    <li><strong>Cache Advantage:</strong> Better cache locality than chaining - all data
+                                        in contiguous memory</li>
+                                    <li><strong>Solution:</strong> Use double hashing or quadratic probing to reduce
+                                        clustering</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        style="background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); padding: 2rem; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
+                        <h3 style="color: var(--primary-color); margin-bottom: 1.5rem;"><i class="fas fa-2"></i>
+                            Quadratic Probing</h3>
+
+                        <div style="margin-bottom: 1.5rem;">
+                            <h4 style="color: #10b981; margin-bottom: 0.75rem; font-size: 1.1rem;"><i
+                                    class="fas fa-cogs"></i> How It Works</h4>
+                            <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 0.75rem;">
+                                <strong>How it works:</strong> Instead of linear steps, use quadratic function: (hash +
+                                i²) % size for i = 1, 2, 3...
+                                Reduces clustering compared to linear probing.
+                            </p>
+                            <p style="line-height: 1.8; color: var(--text-light); font-size: 0.9rem;">
+                                <strong>Example:</strong> Try indices: hash, hash+1, hash+4, hash+9, hash+16...
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div
+                        style="background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); padding: 2rem; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
+                        <h3 style="color: var(--primary-color); margin-bottom: 1.5rem;"><i class="fas fa-3"></i> Double
+                            Hashing</h3>
+
+                        <div>
+                            <h4 style="color: #ef4444; margin-bottom: 0.75rem; font-size: 1.1rem;"><i
+                                    class="fas fa-cogs"></i> How It Works</h4>
+                            <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 0.75rem;">
+                                <strong>How it works:</strong> Use a second hash function to determine step size:
+                                <code
+                                    style="background: rgba(30, 41, 59, 0.8); padding: 0.2rem 0.5rem; border-radius: 4px;">new_index = (hash1 + i * hash2) % size</code>
+                            </p>
+                            <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 0.75rem;">
+                                <strong>Advantage:</strong> Better distribution, reduces both primary and secondary
+                                clustering. Each key has unique probe sequence.
+                            </p>
+                            <div
+                                style="background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(51, 65, 85, 0.4); padding: 1rem; border-radius: 8px;">
+                                <strong><i class="fas fa-clock"></i> Time:</strong> <span
+                                    style="color: #059669; font-weight: 600;">O(1)</span> average, better than
+                                linear/quadratic<br>
+                                <strong>Best For:</strong> When you need open addressing with minimal clustering
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        style="background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); padding: 2rem; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
+                        <h3 style="color: var(--primary-color); margin-bottom: 1.5rem;"><i class="fas fa-rocket"></i>
+                            Advanced Concepts in Open Addressing</h3>
+
+                        <div
+                            style="background: rgba(245, 158, 11, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(245, 158, 11, 0.3); padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                            <h4 style="color: #f57c00; margin-bottom: 0.75rem;"><i class="fas fa-chart-line"></i>
+                                Performance Analysis</h4>
+                            <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 0.5rem;">
+                                <strong>Successful Search/Lookup:</strong> Average probes = (1/(1-α)) * ln(1/(1-α))
+                                where α is load factor
+                            </p>
+                            <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 0.5rem;">
+                                <strong>Unsuccessful Search:</strong> Average probes = 1/(1-α)
+                            </p>
+                            <p style="line-height: 1.8; color: var(--text-light); font-size: 0.9rem;">
+                                At α=0.5, successful search takes ~1.4 probes, unsuccessful ~2 probes
+                            </p>
+                        </div>
+
+                        <div
+                            style="background: rgba(239, 68, 68, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(239, 68, 68, 0.3); padding: 1.5rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                            <h4 style="color: #ef4444; margin-bottom: 0.75rem;"><i
+                                    class="fas fa-exclamation-triangle"></i> Clustering Problems</h4>
+                            <ul style="line-height: 1.8; color: var(--text-light); font-size: 0.9rem;">
+                                <li><strong>Primary Clustering:</strong> Linear probing creates long runs of occupied
+                                    slots, increasing search time for new insertions</li>
+                                <li><strong>Secondary Clustering:</strong> Quadratic probing reduces primary clustering
+                                    but can still form clusters around certain indices</li>
+                                <li><strong>Solution:</strong> Double hashing eliminates both types by ensuring unique
+                                    probe sequences for each key</li>
+                            </ul>
+                        </div>
+
+                        <div
+                            style="background: rgba(16, 185, 129, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(16, 185, 129, 0.3); padding: 1.5rem; border-radius: 8px;">
+                            <h4 style="color: #10b981; margin-bottom: 0.75rem;"><i class="fas fa-balance-scale"></i>
+                                When to Use Each Method</h4>
+                            <div style="font-size: 0.9rem; line-height: 1.8; color: var(--text-light);">
+                                <p style="margin-bottom: 0.5rem;"><strong>Linear Probing:</strong> Simple
+                                    implementation, good cache performance, but suffers from primary clustering</p>
+                                <p style="margin-bottom: 0.5rem;"><strong>Quadratic Probing:</strong> Better clustering
+                                    behavior, still simple, but requires careful choice of table size</p>
+                                <p><strong>Double Hashing:</strong> Best performance, no clustering issues, but more
+                                    complex implementation</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="color: var(--primary-color); margin-bottom: 1rem;"></h3>
+
+            </div>
+
+            <div class="page" data-page="4">
+                <h2 style="color: var(--primary-color); margin-bottom: 1.5rem;"><i class="fas fa-rocket"></i> Advanced
+                    Concepts & Applications</h2>
+
+                <!-- Open Addressing Methods - Simplified -->
+                <div
+                    style="background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); padding: 2rem; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
+                    <h3 style="color: var(--primary-color); margin-bottom: 1.5rem;"><i class="fas fa-search"></i> Open
+                        Addressing Methods</h3>
+
+                    <div
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                        <!-- Linear Probing - Simplified -->
+                        <div
+                            style="background: rgba(139, 92, 246, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(139, 92, 246, 0.3); padding: 1.5rem; border-radius: 8px;">
+                            <h4 style="color: #8b5cf6; margin-bottom: 0.75rem;"><i class="fas fa-1"></i> Linear Probing
+                            </h4>
+                            <p
+                                style="line-height: 1.6; color: var(--text-light); margin-bottom: 0.75rem; font-size: 0.9rem;">
+                                <strong>Simple Idea:</strong> If your spot is taken, check the very next spot, then the
+                                next, and so on.
+                            </p>
+
+                            <div
+                                style="background: rgba(30, 41, 59, 0.6); padding: 0.75rem; border-radius: 6px; margin-bottom: 0.75rem;">
+                                <strong>Example:</strong><br>
+                                Table size: 7<br>
+                                Insert 18 → goes to index 4 <br>
+                                Insert 25 → index 4 taken → try 5 <br>
+                                Insert 32 → index 4 taken → try 5 taken → try 6 <br>
+                            </div>
+
+                            <div
+                                style="background: rgba(30, 41, 59, 0.6); padding: 0.75rem; border-radius: 6px; margin-bottom: 0.75rem;">
+                                <strong>Performance:</strong><br>
+                                <span style="color: #059669;">Fast</span> when table not full<br>
+                                <span style="color: #dc2626;">Slow</span> when table nearly full<br>
+                                Creates "traffic jams" of data
+                            </div>
+
+                            <p style="line-height: 1.6; color: var(--text-light); font-size: 0.85rem;">
+                                <strong>Real-life:</strong> Like a parking lot where everyone parks right next to each
+                                other, creating long lines.
+                            </p>
+                        </div>
+
+                        <!-- Quadratic Probing - Simplified -->
+                        <div
+                            style="background: rgba(16, 185, 129, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(16, 185, 129, 0.3); padding: 1.5rem; border-radius: 8px;">
+                            <h4 style="color: #10b981; margin-bottom: 0.75rem;"><i class="fas fa-2"></i> Quadratic
+                                Probing</h4>
+                            <p
+                                style="line-height: 1.6; color: var(--text-light); margin-bottom: 0.75rem; font-size: 0.9rem;">
+                                <strong>Simple Idea:</strong> Instead of checking next spots, jump further away each
+                                time.
+                            </p>
+
+                            <div
+                                style="background: rgba(30, 41, 59, 0.6); padding: 0.75rem; border-radius: 6px; margin-bottom: 0.75rem;">
+                                <strong>Example:</strong><br>
+                                Start at index 4 (taken)<br>
+                                Try index 4+1=5 (taken)<br>
+                                Try index 4+4=8→1 (empty) <br>
+                                Try index 4+9=13→6 (empty) <br>
+                            </div>
+
+                            <div
+                                style="background: rgba(30, 41, 59, 0.6); padding: 0.75rem; border-radius: 6px; margin-bottom: 0.75rem;">
+                                <strong>Better Than Linear:</strong><br>
+                                Less traffic jams<br>
+                                Spreads data better<br>
+                                Needs careful table size
+                            </div>
+
+                            <p style="line-height: 1.6; color: var(--text-light); font-size: 0.85rem;">
+                                <strong>Real-life:</strong> Like parking but skipping spots to avoid crowding in one
+                                area.
+                            </p>
+                        </div>
+
+                        <!-- Double Hashing - Simplified -->
+                        <div
+                            style="background: rgba(239, 68, 68, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(239, 68, 68, 0.3); padding: 1.5rem; border-radius: 8px;">
+                            <h4 style="color: #ef4444; margin-bottom: 0.75rem;"><i class="fas fa-3"></i> Double Hashing
+                            </h4>
+                            <p
+                                style="line-height: 1.6; color: var(--text-light); margin-bottom: 0.75rem; font-size: 0.9rem;">
+                                <strong>Simple Idea:</strong> Use a second "secret code" to decide how far to jump when
+                                spot is taken.
+                            </p>
+
+                            <div
+                                style="background: rgba(30, 41, 59, 0.6); padding: 0.75rem; border-radius: 6px; margin-bottom: 0.75rem;">
+                                <strong>Example:</strong><br>
+                                Key "apple" → first code says index 4<br>
+                                Second code says jump 3 spots<br>
+                                Index 4 taken → try 4+3=7<br>
+                                Index 7 taken → try 7+3=10→3 <br>
+                            </div>
+
+                            <div
+                                style="background: rgba(30, 41, 59, 0.6); padding: 0.75rem; border-radius: 6px; margin-bottom: 0.75rem;">
+                                <strong>Best Performance:</strong><br>
+                                No traffic jams<br>
+                                Every key has unique path<br>
+                                Fastest method overall
+                            </div>
+
+                            <p style="line-height: 1.6; color: var(--text-light); font-size: 0.85rem;">
+                                <strong>Real-life:</strong> Like having a backup parking plan that's different for
+                                everyone.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance & Load Factor - Simplified -->
+                <div
+                    style="background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); padding: 2rem; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
+                    <h3 style="color: var(--primary-color); margin-bottom: 1.5rem;"><i class="fas fa-chart-line"></i>
+                        Performance & Load Factor</h3>
+
+                    <div
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                        <!-- Load Factor Explained -->
+                        <div
+                            style="background: rgba(245, 158, 11, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(245, 158, 11, 0.3); padding: 1.5rem; border-radius: 8px;">
+                            <h4 style="color: #f57c00; margin-bottom: 0.75rem;"><i class="fas fa-weight-scale"></i> What
+                                is Load Factor?</h4>
+
+                            <div
+                                style="background: rgba(30, 41, 59, 0.6); padding: 0.75rem; border-radius: 6px; margin-bottom: 0.75rem;">
+                                <strong>Simple Formula:</strong><br>
+                                Load Factor = Number of items ÷ Table size
+                            </div>
+
+                            <div
+                                style="background: rgba(30, 41, 59, 0.6); padding: 0.75rem; border-radius: 6px; margin-bottom: 0.75rem;">
+                                <strong>Examples:</strong><br>
+                                • 5 items in 10 slots → 0.5 (Good!)<br>
+                                • 8 items in 10 slots → 0.8 (Getting full)<br>
+                                • 10 items in 10 slots → 1.0 (Too crowded!)
+                            </div>
+
+                            <p style="line-height: 1.6; color: var(--text-light); font-size: 0.85rem;">
+                                <strong>Real-life:</strong> Like how crowded a party is. 50 people in 100-person room is
+                                comfortable. 90 people is getting cramped!
+                            </p>
+                        </div>
+
+                        <!-- Performance Impact -->
+                        <div
+                            style="background: rgba(239, 68, 68, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(239, 68, 68, 0.3); padding: 1.5rem; border-radius: 8px;">
+                            <h4 style="color: #ef4444; margin-bottom: 0.75rem;"><i class="fas fa-gauge-high"></i> Speed
+                                vs Load Factor</h4>
+
+                            <div
+                                style="background: rgba(30, 41, 59, 0.6); padding: 0.75rem; border-radius: 6px; margin-bottom: 0.75rem;">
+                                <strong>How Fast is Search?</strong><br>
+                                • Load 0.5 → 1-2 checks (Very fast!)<br>
+                                • Load 0.7 → 2-3 checks (Still good)<br>
+                                • Load 0.9 → 5-10 checks (Getting slow)<br>
+                                • Load 1.0 → Could be 20+ checks (Too slow!)
+                            </div>
+
+                            <div style="background: rgba(30, 41, 59, 0.6); padding: 0.75rem; border-radius: 6px;">
+                                <strong>Sweet Spot:</strong><br>
+                                Keep load factor between 0.5 and 0.7<br>
+                                Best balance of speed and space
+                            </div>
+                        </div>
+
+                        <!-- Rehashing Simplified -->
+                        <div
+                            style="background: rgba(59, 130, 246, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(59, 130, 246, 0.3); padding: 1.5rem; border-radius: 8px;">
+                            <h4 style="color: #3b82f6; margin-bottom: 0.75rem;"><i class="fas fa-sync"></i> Rehashing -
+                                The Reset Button</h4>
+
+                            <div
+                                style="background: rgba(30, 41, 59, 0.6); padding: 0.75rem; border-radius: 6px; margin-bottom: 0.75rem;">
+                                <strong>When to Rehash?</strong><br>
+                                When table gets too crowded (load > 0.7)<br>
+                                Time for a bigger table!
+                            </div>
+
+                            <div
+                                style="background: rgba(30, 41, 59, 0.6); padding: 0.75rem; border-radius: 6px; margin-bottom: 0.75rem;">
+                                <strong>How it Works:</strong><br>
+                                1. Create bigger table (usually 2x size)<br>
+                                2. Move all items to new spots<br>
+                                3. Enjoy faster searches again!
+                            </div>
+
+                            <p style="line-height: 1.6; color: var(--text-light); font-size: 0.85rem;">
+                                <strong>Real-life:</strong> Like moving from a small crowded office to a bigger one
+                                where everyone has more space.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hash Functions & Real World - Compact -->
+                <div
+                    style="background: rgba(16, 185, 129, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(16, 185, 129, 0.3); padding: 2rem; border-radius: 12px; margin-bottom: 2rem;">
+                    <h3 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-cogs"></i> Hash
+                        Functions & Real World</h3>
+
+                    <div
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+                        <!-- Good Hash Functions -->
+                        <div style="background: rgba(30, 41, 59, 0.8); padding: 1.5rem; border-radius: 8px;">
+                            <h4 style="color: #10b981; margin-bottom: 0.75rem;">What Makes a Good Hash?</h4>
+                            <div style="line-height: 1.6; color: var(--text-light); font-size: 0.9rem;">
+                                <p><strong>Good Hash Function:</strong></p>
+                                <ul>
+                                    <li>Fast to calculate</li>
+                                    <li>Spreads data evenly</li>
+                                    <li>Same key → same result every time</li>
+                                    <li>Different keys → different results</li>
+                                </ul>
+
+                                <p style="margin-top: 1rem;"><strong>Simple Example:</strong></p>
+                                <p>For strings: Add up letter codes, then divide by table size</p>
+                            </div>
+                        </div>
+
+                        <!-- Common Problems -->
+                        <div style="background: rgba(30, 41, 59, 0.8); padding: 1.5rem; border-radius: 8px;">
+                            <h4 style="color: #f59e0b; margin-bottom: 0.75rem;">Common Hash Problems</h4>
+                            <div style="line-height: 1.6; color: var(--text-light); font-size: 0.9rem;">
+                                <p><strong>Collisions Happen!</strong></p>
+                                <ul>
+                                    <li>Two keys same spot</li>
+                                    <li>Bad hash → all data in one area</li>
+                                    <li>Table too small → always crowded</li>
+                                </ul>
+
+                                <p style="margin-top: 1rem;"><strong>Solutions:</strong></p>
+                                <p>Use chaining or open addressing we learned above!</p>
+                            </div>
+                        </div>
+
+                        <!-- Real World Tips -->
+                        <div style="background: rgba(30, 41, 59, 0.8); padding: 1.5rem; border-radius: 8px;">
+                            <h4 style="color: #3b82f6; margin-bottom: 0.75rem;">Pro Tips</h4>
+                            <div style="line-height: 1.6; color: var(--text-light); font-size: 0.9rem;">
+                                <p><strong>Best Practices:</strong></p>
+                                <ul>
+                                    <li>Use prime table sizes (11, 23, 53...)</li>
+                                    <li>Keep load factor around 0.7</li>
+                                    <li>Choose simple but good hash function</li>
+                                    <li>Test with your actual data</li>
+                                </ul>
+
+                                <p style="margin-top: 1rem;"><strong>Remember:</strong> Hash tables are like magic -
+                                    O(1) time when done right!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Comparison & When to Use -->
+                <div
+                    style="background: rgba(139, 92, 246, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(139, 92, 246, 0.3); padding: 2rem; border-radius: 12px; margin-bottom: 2rem;">
+                    <h3 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-balance-scale"></i>
+                        Quick Comparison</h3>
+
+                    <div
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                        <div style="background: rgba(30, 41, 59, 0.8); padding: 1.5rem; border-radius: 8px;">
+                            <h4 style="color: #8b5cf6; margin-bottom: 0.75rem;">Chaining vs Open Addressing</h4>
+                            <div style="line-height: 1.6; color: var(--text-light); font-size: 0.9rem;">
+                                <p><strong>Chaining (Linked Lists):</strong></p>
+                                <ul>
+                                    <li>Handles many collisions</li>
+                                    <li>Easy to implement</li>
+                                    <li>Uses extra memory</li>
+                                    <li>Slower for small data</li>
+                                </ul>
+
+                                <p style="margin-top: 1rem;"><strong>Open Addressing:</strong></p>
+                                <ul>
+                                    <li>Faster for small data</li>
+                                    <li>Better cache performance</li>
+                                    <li>Gets slow when full</li>
+                                    <li>Harder to delete</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(30, 41, 59, 0.8); padding: 1.5rem; border-radius: 8px;">
+                            <h4 style="color: #06b6d4; margin-bottom: 0.75rem;">When to Use Each Method</h4>
+                            <div style="line-height: 1.6; color: var(--text-light); font-size: 0.9rem;">
+                                <p><strong>Use Chaining When:</strong></p>
+                                <ul>
+                                    <li>• You have lots of data</li>
+                                    <li>• Don't know data size in advance</li>
+                                    <li>• Need simple implementation</li>
+                                </ul>
+
+                                <p style="margin-top: 1rem;"><strong>Use Open Addressing When:</strong></p>
+                                <ul>
+                                    <li>• Memory is limited</li>
+                                    <li>• Data size is predictable</li>
+                                    <li>• Need maximum speed</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div style="background: rgba(30, 41, 59, 0.8); padding: 1.5rem; border-radius: 8px;">
+                            <h4 style="color: #10b981; margin-bottom: 0.75rem;">Real-World Choices</h4>
+                            <div style="line-height: 1.6; color: var(--text-light); font-size: 0.9rem;">
+                                <p><strong>Java HashMap:</strong> Uses chaining</p>
+                                <p><strong>Python Dictionary:</strong> Uses open addressing</p>
+                                <p><strong>C++ unordered_map:</strong> Uses chaining</p>
+                                <p><strong>Google Swiss Tables:</strong> Advanced open addressing</p>
+
+                                <p style="margin-top: 1rem;"><strong>Bottom Line:</strong> Both work great when
+                                    implemented properly!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Real-World Applications - Compact Grid -->
+                <div
+                    style="background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); padding: 2rem; border-radius: 12px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);">
+                    <h3 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-bullseye"></i> Where
+                        Hash Tables Are Used</h3>
+
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        <div
+                            style="background: rgba(59, 130, 246, 0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #3b82f6;">
+                            <h4 style="color: #3b82f6; font-size: 0.9rem; margin-bottom: 0.5rem;"><i
+                                    class="fas fa-database"></i> Databases</h4>
+                            <p style="font-size: 0.85rem; color: var(--text-light);">Fast record lookup by ID</p>
+                        </div>
+
+                        <div
+                            style="background: rgba(16, 185, 129, 0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #10b981;">
+                            <h4 style="color: #10b981; font-size: 0.9rem; margin-bottom: 0.5rem;"><i
+                                    class="fas fa-bolt"></i> Caching</h4>
+                            <p style="font-size: 0.85rem; color: var(--text-light);">Web browsers, CDNs, Redis</p>
+                        </div>
+
+                        <div
+                            style="background: rgba(239, 68, 68, 0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #ef4444;">
+                            <h4 style="color: #ef4444; font-size: 0.9rem; margin-bottom: 0.5rem;"><i
+                                    class="fas fa-lock"></i> Passwords</h4>
+                            <p style="font-size: 0.85rem; color: var(--text-light);">Store hashed passwords securely</p>
+                        </div>
+
+                        <div
+                            style="background: rgba(245, 158, 11, 0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #f59e0b;">
+                            <h4 style="color: #f59e0b; font-size: 0.9rem; margin-bottom: 0.5rem;"><i
+                                    class="fas fa-spell-check"></i> Spell Check</h4>
+                            <p style="font-size: 0.85rem; color: var(--text-light);">Quick dictionary lookups</p>
+                        </div>
+
+                        <div
+                            style="background: rgba(139, 92, 246, 0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #8b5cf6;">
+                            <h4 style="color: #8b5cf6; font-size: 0.9rem; margin-bottom: 0.5rem;"><i
+                                    class="fas fa-code"></i> Compilers</h4>
+                            <p style="font-size: 0.85rem; color: var(--text-light);">Track variables & functions</p>
+                        </div>
+
+                        <div
+                            style="background: rgba(6, 182, 212, 0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #06b6d4;">
+                            <h4 style="color: #06b6d4; font-size: 0.9rem; margin-bottom: 0.5rem;"><i
+                                    class="fas fa-users"></i> Social Media</h4>
+                            <p style="font-size: 0.85rem; color: var(--text-light);">Find users by username</p>
+                        </div>
+
+                        <div
+                            style="background: rgba(99, 102, 241, 0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #6366f1;">
+                            <h4 style="color: #6366f1; font-size: 0.9rem; margin-bottom: 0.5rem;"><i
+                                    class="fas fa-network-wired"></i> Routers</h4>
+                            <p style="font-size: 0.85rem; color: var(--text-light);">Fast packet routing</p>
+                        </div>
+
+                        <div
+                            style="background: rgba(236, 72, 153, 0.1); padding: 1rem; border-radius: 8px; border-left: 3px solid #ec4899;">
+                            <h4 style="color: #ec4899; font-size: 0.9rem; margin-bottom: 0.5rem;"><i
+                                    class="fas fa-fingerprint"></i> Blockchain</h4>
+                            <p style="font-size: 0.85rem; color: var(--text-light);">Verify transactions</p>
+                        </div>
+                    </div>
+
+                    <!-- Final Summary -->
+                    <div
+                        style="background: rgba(30, 41, 59, 0.8); padding: 1.5rem; border-radius: 8px; margin-top: 1.5rem; text-align: center;">
+                        <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;"> Key Takeaway</h4>
+                        <p style="color: var(--text-light); font-size: 0.9rem; margin: 0;">
+                            Hash tables give you <strong>instant O(1) access</strong> to data! Perfect when you need
+                            fast lookups by key.
+                            Choose chaining for simplicity, open addressing for speed with known data size.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page" data-page="5">
+                <div class="content-section code-section">
+                    <h2 style="color: var(--primary-color); margin-bottom: 1rem;">Code Implementation</h2>
+                    <div class="code-tabs">
+                        <button class="code-tab active" data-lang="python">Python</button>
+                        <button class="code-tab" data-lang="java">Java</button>
+                        <button class="code-tab" data-lang="cpp">C++</button>
+                        <button class="code-tab" data-lang="c">C</button>
+                    </div>
+
+                    <div class="code-content active" data-lang="python">
+                        <h3>Hash Table with Chaining</h3>
+                        <pre>class HashTable:
+    def __init__(self, size=10):
+        self.size = size
+        self.table = [[] for _ in range(size)]
+    
+    def hash_function(self, key):
+        return hash(key) % self.size
+    
+    def insert(self, key, value):
+        index = self.hash_function(key)
+        for i, (k, v) in enumerate(self.table[index]):
+            if k == key:
+                self.table[index][i] = (key, value)
+                return
+        self.table[index].append((key, value))
+    
+    def lookup(self, key):
+        index = self.hash_function(key)
+        for k, v in self.table[index]:
+            if k == key:
+                return v
+        return None</pre>
+
+                    </div>
+
+                    <div class="code-content" data-lang="java">
+                        <h3>Hash Table with Chaining</h3>
+                        <pre>class HashTable {
+    private List&lt;List&lt;Entry&gt;&gt; table;
+    private int size;
+    
+    class Entry {
+        String key;
+        String value;
+        Entry(String k, String v) { key = k; value = v; }
+    }
+    
+    HashTable(int size) {
+        this.size = size;
+        table = new ArrayList&lt;&gt;(size);
+        for (int i = 0; i &lt; size; i++) {
+            table.add(new ArrayList&lt;&gt;());
+        }
+    }
+    
+    int hashFunction(String key) {
+        return Math.abs(key.hashCode()) % size;
+    }
+    
+    void insert(String key, String value) {
+        int index = hashFunction(key);
+        for (Entry e : table.get(index)) {
+            if (e.key.equals(key)) {
+                e.value = value;
+                return;
+            }
+        }
+        table.get(index).add(new Entry(key, value));
+    }
+    
+    String lookup(String key) {
+        int index = hashFunction(key);
+        for (Entry e : table.get(index)) {
+            if (e.key.equals(key)) return e.value;
+        }
+        return null;
+    }
+}
+
+                                        </div>
+
+                    <div class="code-content" data-lang="cpp">
+                        <h3>Hash Table with Chaining</h3>
+                        <pre>class HashTable {
+    vector&lt;vector&lt;pair&lt;string, string&gt;&gt;&gt; table;
+    int size;
+    
+    int hashFunction(const string& key) {
+        hash&lt;string&gt; hasher;
+        return hasher(key) % size;
+    }
+    
+public:
+    HashTable(int s) : size(s) {
+        table.resize(size);
+    }
+    
+    void insert(const string& key, const string& value) {
+        int index = hashFunction(key);
+        for (auto& p : table[index]) {
+            if (p.first == key) {
+                p.second = value;
+                return;
+            }
+        }
+        table[index].push_back({key, value});
+    }
+    
+    string* lookup(const string& key) {
+        int index = hashFunction(key);
+        for (auto& p : table[index]) {
+            if (p.first == key) {
+                return &p.second;
+            }
+        }
+        return nullptr;
+    }
+};</pre>
+                    </div>
+
+                    <div class="code-content" data-lang="c">
+                        <h3>Hash Table with Chaining</h3>
+                        <pre>#define TABLE_SIZE 10
+
+typedef struct Entry {
+    char* key;
+    char* value;
+    struct Entry* next;
+} Entry;
+
+typedef struct HashTable {
+    Entry* table[TABLE_SIZE];
+} HashTable;
+
+unsigned int hashFunction(const char* key) {
+    unsigned int hash = 0;
+    while (*key) {
+        hash = (hash * 31) + *key;
+        key++;
+    }
+    return hash % TABLE_SIZE;
+}
+
+void insert(HashTable* ht, const char* key, const char* value) {
+    unsigned int index = hashFunction(key);
+    Entry* current = ht-&gt;table[index];
+    while (current) {
+        if (strcmp(current-&gt;key, key) == 0) {
+            free(current-&gt;value);
+            current-&gt;value = strdup(value);
+            return;
+        }
+        current = current-&gt;next;
+    }
+    Entry* newEntry = malloc(sizeof(Entry));
+    newEntry-&gt;key = strdup(key);
+    newEntry-&gt;value = strdup(value);
+    newEntry-&gt;next = ht-&gt;table[index];
+    ht-&gt;table[index] = newEntry;
+}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chatbot">
+        <button class="chat-button" id="chatToggle"><i class="fas fa-comments"></i></button>
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <h3><i class="fas fa-robot"></i> AlgoBuddy</h3>
+                <button class="chat-close" id="chatClose">&times;</button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot">
+                    <p><i class="fas fa-hand-paper"></i> Hi! Ask me about hash tables, collision handling, or time
+                        complexity!</p>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Ask about hashing...">
+                <button id="chatSend"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/hashing.js') }}"></script>
+</body>
+
+</html>
