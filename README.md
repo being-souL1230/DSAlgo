@@ -2,7 +2,7 @@
 
 A comprehensive educational platform designed to make learning Data Structures and Algorithms interactive, engaging, and effective. The platform combines theoretical knowledge with practical implementation through visualizations and an integrated coding environment.
 
-## 🎯 Project Goals
+## Project Goals
 
 - Provide an interactive learning experience for DSA concepts
 - Enable hands-on coding practice with instant feedback
@@ -11,7 +11,7 @@ A comprehensive educational platform designed to make learning Data Structures a
 - Ensure a secure code execution environment
 - Offer comprehensive learning resources
 
-## 🚀 Features
+## Features
 
 ### Interactive Algorithm Visualizations
 
@@ -49,7 +49,7 @@ A comprehensive educational platform designed to make learning Data Structures a
   - Complexity analysis
   - Common use cases and patterns
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Frontend (Developed by Anshi Dixit)
 - **HTML5, CSS3, JavaScript** - Core web technologies
@@ -73,7 +73,7 @@ A comprehensive educational platform designed to make learning Data Structures a
   - Resource usage monitoring
   - Process isolation
 
-## 🏗️ System Architecture
+## System Architecture
 
 ### Frontend Architecture
 1. **Component-Based Structure**
@@ -131,7 +131,7 @@ A comprehensive educational platform designed to make learning Data Structures a
    - Resource usage limits
    - Process isolation
 
-## 🔄 Real-time Code Execution Flow
+## Real-time Code Execution Flow
 
 ### 1. User Interaction
    - User writes/edits code in the Monaco editor
@@ -221,7 +221,7 @@ A comprehensive educational platform designed to make learning Data Structures a
    - Includes output, errors (if any), and execution time
    - Frontend displays the results in the output panel
 
-## 🛡️ Security Implementation
+## Security Implementation
 
 ### 1. Code Execution Security
 - **Process Isolation**
@@ -298,7 +298,7 @@ A comprehensive educational platform designed to make learning Data Structures a
 - Input sanitization
 - Rate limiting (recommended for production)
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -358,12 +358,12 @@ A comprehensive educational platform designed to make learning Data Structures a
    http://localhost:5000
    ```
 
-## 📝 License
+## License
 
 [![License: Custom](https://img.shields.io/badge/License-Custom-blue.svg)](https://github.com/being-souL1230/DSAlgo/blob/main/LICENSE)  
 *Custom Open Source Attribution License (Rishab Dixit & Anshi Dixit)*
 
-## 🔍 Future Enhancements
+## Future Enhancements
 
 ### Planned Features
 - User authentication and progress tracking
@@ -385,12 +385,12 @@ A comprehensive educational platform designed to make learning Data Structures a
 - Coding challenges
 - Interview preparation guides
 
-## 👥 Contributors
+## Contributors
 
 - **Anshi Dixit** - Frontend Development & UI/UX Design
 - **Rishab Dixit** - Backend Development & Algorithm Implementation
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Inspired by various algorithm visualization tools and coding platforms
 - Built with the help of open-source libraries and frameworks
@@ -399,5 +399,5 @@ A comprehensive educational platform designed to make learning Data Structures a
 ---
 
 <div align="center">
-  Made with ❤️ by Anshi Dixit & Rishab Dixit
+  Made by Anshi Dixit & Rishab Dixit
 </div>
