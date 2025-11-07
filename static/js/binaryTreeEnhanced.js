@@ -15,9 +15,17 @@ let height = 500;
 
 function setTreeType(type, element) {
     treeType = type;
-    document.querySelectorAll('.tree-type-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
+    // Remove active class from all tree type buttons
+    const buttons = document.querySelectorAll('.simple-btn');
+    for (let i = 0; i < buttons.length; i++) {
+        const btn = buttons[i];
+        // Check if button contains BST or AVL text (even with icons)
+        if (btn.textContent.includes('BST') || btn.textContent.includes('AVL')) {
+            btn.classList.remove('active');
+        }
+    }
+    
+    // Add active class to clicked button
     if (element) {
         element.classList.add('active');
     }

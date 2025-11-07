@@ -41,23 +41,71 @@
             <h1 style="color: var(--primary-color); margin-bottom: 1rem;"><i class="fas fa-search"></i> Tree Traversal (DFS & BFS)</h1>
             <p style="color: #64748b; margin-bottom: 2rem;">Build a tree structure and watch DFS/BFS traversal algorithms in action!</p>
 
-            <div class="controls">
-                <h4 style="margin: 0 1rem 0 0; color: var(--primary-color);">Tree Building:</h4>
-                <button class="btn btn-info" onclick="addRoot()">Add Root</button>
-                <button class="btn btn-info" onclick="addChild()">Add Child</button>
-                <button class="btn btn-warning" onclick="cancelChildMode()">Cancel Child Mode</button>
+            <div class="controls" style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; margin-bottom: 1rem;">
+                <button class="simple-btn" onclick="addRoot()">
+                    <i class="fas fa-plus-circle"></i> Add Root
+                </button>
+                <button class="simple-btn" onclick="addChild()">
+                    <i class="fas fa-sitemap"></i> Add Child
+                </button>
+                <button class="simple-btn" onclick="cancelChildMode()">
+                    <i class="fas fa-times-circle"></i> Cancel
+                </button>
                 
-                <div style="width: 2px; height: 30px; background: rgba(99, 102, 241, 0.3); margin: 0 1rem;"></div>
+                <div style="width: 1px; height: 20px; background: rgba(99, 102, 241, 0.3); margin: 0 0.25rem;"></div>
                 
-                <button class="btn btn-secondary" onclick="setStart()">Set Start</button>
-                <button class="btn btn-secondary" onclick="setGoal()">Set Goal</button>
-                <button class="btn btn-secondary" onclick="clearGraph()">Clear Tree</button>
+                <button class="simple-btn" onclick="setStart()">
+                    <i class="fas fa-flag"></i> Set Start
+                </button>
+                <button class="simple-btn" onclick="setGoal()">
+                    <i class="fas fa-flag-checkered"></i> Set Goal
+                </button>
+                <button class="simple-btn" onclick="clearGraph()">
+                    <i class="fas fa-trash"></i> Clear
+                </button>
                 
-                <div style="width: 2px; height: 30px; background: rgba(99, 102, 241, 0.3); margin: 0 1rem;"></div>
+                <div style="width: 1px; height: 20px; background: rgba(99, 102, 241, 0.3); margin: 0 0.25rem;"></div>
                 
-                <button class="btn btn-success" onclick="runBFS()">Run BFS</button>
-                <button class="btn btn-success" onclick="runDFS()">Run DFS</button>
+                <button class="simple-btn primary" onclick="runBFS()">
+                    <i class="fas fa-play"></i> Run BFS
+                </button>
+                <button class="simple-btn primary" onclick="runDFS()">
+                    <i class="fas fa-play"></i> Run DFS
+                </button>
             </div>
+            
+            <style>
+                .simple-btn {
+                    background: rgba(30, 41, 59, 0.8);
+                    color: var(--text-light);
+                    border: 1px solid rgba(99, 102, 241, 0.3);
+                    padding: 0.5rem 1rem;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    font-size: 0.9rem;
+                    transition: all 0.2s ease;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.4rem;
+                }
+                
+                .simple-btn:hover {
+                    background: rgba(30, 41, 59, 0.9);
+                    border-color: rgba(99, 102, 241, 0.5);
+                    transform: translateY(-1px);
+                }
+                
+                .simple-btn.primary {
+                    background: rgba(30, 41, 59, 0.8);
+                    border-color: rgba(99, 102, 241, 0.3);
+                    font-weight: 600;
+                }
+                
+                .simple-btn.primary:hover {
+                    background: rgba(30, 41, 59, 0.9);
+                    border-color: rgba(99, 102, 241, 0.5);
+                }
+            </style>
 
             <div id="result-display">Click "Add Root" to start building a tree structure!</div>
 

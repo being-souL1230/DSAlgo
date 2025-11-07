@@ -8,29 +8,55 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        .pagination-controls button {
-            background: rgba(99, 102, 241, 0.1);
+        .simple-btn {
+            background: rgba(30, 41, 59, 0.8);
             color: var(--text-light);
-            border: 2px solid rgba(99, 102, 241, 0.3);
+            border: 1px solid rgba(99, 102, 241, 0.3);
             padding: 0.5rem 1rem;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 0.9rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        
+        .simple-btn:hover {
+            background: rgba(30, 41, 59, 0.9);
+            border-color: rgba(99, 102, 241, 0.5);
+            transform: translateY(-1px);
+        }
+        
+        .simple-btn.active {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 1px var(--primary-color);
+        }
+
+        .pagination-controls button {
+            background: rgba(30, 41, 59, 0.8);
+            color: var(--text-light);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
             margin: 0 0.25rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
         }
 
         .pagination-controls button:hover {
-            background: rgba(99, 102, 241, 0.2);
+            background: rgba(30, 41, 59, 0.9);
             border-color: rgba(99, 102, 241, 0.5);
-            transform: translateY(-2px);
+            transform: translateY(-1px);
         }
 
         .pagination-controls button.active {
-            background: rgba(99, 102, 241, 0.3);
-            border-color: rgba(99, 102, 241, 0.6);
-            color: white;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 1px var(--primary-color);
         }
 
         .page {
@@ -81,9 +107,15 @@
                     <div class="input-group">
                         <input type="text" id="hashKey" placeholder="Enter key">
                         <input type="text" id="hashValue" placeholder="Enter value">
-                        <button class="btn btn-primary" onclick="insertHash()">Insert</button>
-                        <button class="btn btn-secondary" onclick="lookupHash()">Lookup</button>
-                        <button class="btn btn-warning" onclick="clearHash()">Clear Table</button>
+                        <button class="simple-btn" onclick="insertHash()">
+                            <i class="fas fa-plus-circle"></i> Insert
+                        </button>
+                        <button class="simple-btn" onclick="lookupHash()">
+                            <i class="fas fa-search"></i> Lookup
+                        </button>
+                        <button class="simple-btn" onclick="clearHash()">
+                            <i class="fas fa-trash-alt"></i> Clear Table
+                        </button>
                     </div>
                 </div>
 

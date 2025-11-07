@@ -13,6 +13,7 @@
             height: calc(100vh - 70px);
             padding: 0;
             max-width: 100%;
+            overflow: hidden;
         }
         
         .practice-header {
@@ -25,109 +26,156 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 1rem;
+            z-index: 5;
+            position: relative;
         }
         
         .language-selector {
             display: flex;
-            gap: 0.5rem;
             align-items: center;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 10px;
+            padding: 0.35rem;
+            gap: 0;
+        }
+        
+        .language-selector span {
+            padding: 0 0.75rem;
+            border-right: 1px solid rgba(99, 102, 241, 0.2);
+            margin-right: 0.5rem;
         }
         
         .lang-btn {
-            padding: 0.5rem 1rem;
-            background: rgba(6, 182, 212, 0.1);
-            border: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 0.4rem 0.9rem;
+            background: transparent;
+            border: none;
             color: var(--text-light);
             cursor: pointer;
-            border-radius: 8px;
-            font-size: 0.9rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
             font-weight: 500;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        .lang-btn:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 60%;
+            width: 1px;
+            background: rgba(99, 102, 241, 0.2);
         }
         
         .lang-btn:hover {
-            background: rgba(6, 182, 212, 0.2);
-            transform: translateY(-2px);
+            background: rgba(99, 102, 241, 0.15);
+            color: #c7d2fe;
         }
         
         .lang-btn.active {
             background: var(--primary-color);
-            border-color: var(--primary-color);
             color: white;
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
         }
         
         .editor-actions {
             display: flex;
-            gap: 0.75rem;
+            align-items: center;
         }
         
-        /* Run Button - Matching Clear Button Style */
-        .run-btn {
-            padding: 0.4rem 1rem;
-            background: var(--primary-color);
-            border: 1px solid var(--primary-color);
-            color: white;
+        
+        .action-buttons {
+            display: flex;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 8px;
+            padding: 0.3rem;
+            gap: 0;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+        
+        .action-buttons button {
+            margin: 0;
+            border-radius: 5px;
+            border: none;
+            background: transparent;
+            width: 32px;
+            height: 28px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+        
+        .action-buttons button:hover {
+            background: rgba(99, 102, 241, 0.2);
+            color: #c7d2fe;
+        }
+        
+        .action-buttons button:active {
+            transform: scale(0.95);
+        }
+        
+        .button-separator {
+            width: 1px;
+            height: 18px;
+            background: rgba(99, 102, 241, 0.2);
+            margin: 0 0.25rem;
+        }
+        
+        .ai-approach-btn {
+            background: transparent !important;
+        }
+        
+        .ai-approach-btn:hover {
+            background: rgba(99, 102, 241, 0.2) !important;
+        }
+        }
+        
+        .terminal-btn i {
+            font-size: 0.8em;
+        }
+        
+        .ai-approach-btn {
+            padding: 0 0.6rem;
+            background: transparent;
+            border: 1px solid #4b5563;
+            color: #9ca3af;
             cursor: pointer;
             border-radius: 4px;
             font-size: 0.85rem;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .run-btn:hover {
-            background: var(--secondary-color);
-            border-color: var(--secondary-color);
-            transform: none;
-        }
-        
-        .run-btn:active {
-            transform: scale(0.98);
-        }
-        
-        .run-btn i {
-            font-size: 0.9em;
-            transition: transform 0.2s ease;
-        }
-        
-        /* Clear Button - Compact Style */
-        .clear-btn {
-            padding: 0.3rem 0.8rem;
-            background: transparent;
-            border: 1px solid var(--primary-color);
-            color: var(--primary-color);
-            cursor: pointer;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 500;
             transition: all 0.2s ease;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            min-width: 60px;
             height: 30px;
+            min-width: 30px;
         }
         
-        .clear-btn:hover {
-            background: rgba(6, 182, 212, 0.05);
-            opacity: 1;
-            transform: none;
-            box-shadow: none;
+        .ai-approach-btn:hover {
+            background: rgba(99, 102, 241, 0.1);
+            color: #6366f1;
+            border-color: #6366f1;
         }
         
-        .clear-btn:active {
+        .ai-approach-btn:active {
             transform: scale(0.98);
         }
         
-        .clear-btn i {
-            font-size: 0.9em;
-            transition: transform 0.2s ease;
+        .ai-approach-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
         
-        .clear-btn:hover i {
-            transform: rotate(-10deg);
+        .ai-approach-btn i {
+            font-size: 1rem;
         }
         
         .editor-wrapper {
@@ -226,6 +274,7 @@
         #monaco-editor {
             flex: 1;
             overflow: hidden;
+            height: 100%;
         }
         
         .output-content {
@@ -235,6 +284,7 @@
             font-family: 'Monaco', 'Consolas', monospace;
             font-size: 0.9rem;
             line-height: 1.6;
+            background: #000000;
         }
         
         .output-success {
@@ -312,6 +362,223 @@
                 display: none;
             }
         }
+        
+        /* AI Analysis Panel - Clean & Professional */
+        .ai-insights-panel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 850px;
+            height: 85vh;
+            max-height: 85vh;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(30, 41, 59, 0.98));
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(99, 102, 241, 0.5);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+        
+        .ai-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.25rem;
+            background: rgba(99, 102, 241, 0.08);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.3);
+            flex-shrink: 0;
+        }
+        
+        .ai-panel-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #e5e7eb;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        
+        .ai-panel-title i {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+        
+        .ai-panel-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .ai-btn {
+            padding: 0.4rem 0.8rem;
+            background: transparent;
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            color: var(--text-light);
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        .ai-btn:hover {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: rgba(99, 102, 241, 0.6);
+        }
+        
+        /* AI Debug Panel - Clean & Professional */
+        .ai-debug-panel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 850px;
+            height: 85vh;
+            max-height: 85vh;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(30, 41, 59, 0.98));
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(239, 68, 68, 0.5);
+            border-radius: 12px;
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.3s ease-out;
+            overflow: hidden;
+        }
+        
+        .ai-debug-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.25rem;
+            background: rgba(239, 68, 68, 0.08);
+            border-bottom: 1px solid rgba(239, 68, 68, 0.3);
+            flex-shrink: 0;
+        }
+        
+        .ai-debug-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #ef4444;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        
+        .ai-debug-title i {
+            font-size: 1.1rem;
+        }
+        
+        .ai-spinner {
+            border: 3px solid rgba(99, 102, 241, 0.2);
+            border-top: 3px solid #6366f1;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Custom Scrollbar for AI Panels */
+        .ai-debug-content::-webkit-scrollbar,
+        .ai-insights-content::-webkit-scrollbar,
+        #ai-analysis-content::-webkit-scrollbar,
+        #ai-debug-content::-webkit-scrollbar,
+        #ai-insights-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .ai-debug-content::-webkit-scrollbar-track,
+        .ai-insights-content::-webkit-scrollbar-track,
+        #ai-analysis-content::-webkit-scrollbar-track,
+        #ai-debug-content::-webkit-scrollbar-track,
+        #ai-insights-content::-webkit-scrollbar-track {
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 10px;
+        }
+        
+        .ai-debug-content::-webkit-scrollbar-thumb,
+        .ai-insights-content::-webkit-scrollbar-thumb,
+        #ai-analysis-content::-webkit-scrollbar-thumb,
+        #ai-debug-content::-webkit-scrollbar-thumb,
+        #ai-insights-content::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, rgba(99, 102, 241, 0.8), rgba(139, 92, 246, 0.8));
+            border-radius: 10px;
+            border: 2px solid rgba(30, 41, 59, 0.5);
+        }
+        
+        .ai-debug-content::-webkit-scrollbar-thumb:hover,
+        .ai-insights-content::-webkit-scrollbar-thumb:hover,
+        #ai-analysis-content::-webkit-scrollbar-thumb:hover,
+        #ai-debug-content::-webkit-scrollbar-thumb:hover,
+        #ai-insights-content::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, rgba(99, 102, 241, 1), rgba(139, 92, 246, 1));
+        }
+        
+        /* AI panels content area with word wrap */
+        .ai-debug-content, .ai-insights-content, #ai-analysis-content {
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            word-break: break-word;
+            padding: 1.25rem;
+            flex: 1 1 auto;
+            min-height: 0;
+            max-height: calc(85vh - 80px);
+            color: rgba(226, 232, 240, 0.95);
+            line-height: 1.6;
+            font-size: 0.95rem;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .ai-debug-content *, .ai-insights-content *, #ai-analysis-content * {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            max-width: 100%;
+        }
+        
+        .ai-debug-content pre, .ai-insights-content pre, #ai-analysis-content pre {
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .ai-debug-content table, .ai-insights-content table, #ai-analysis-content table {
+            max-width: 100%;
+            table-layout: fixed;
+        }
     </style>
 </head>
 <body>
@@ -343,12 +610,21 @@
                 <button class="lang-btn" data-lang="cpp">C++</button>
                 <button class="lang-btn" data-lang="c">C</button>
             </div>
-            <div class="editor-actions">
-                <button class="clear-btn" onclick="clearEditor()" title="Clear Editor">
-                    <i class="fas fa-broom"></i> Clear
+            <div class="action-buttons">
+                <button class="run-btn" onclick="runCode()" title="Run Code">
+                    <i class="fas fa-play"></i>
                 </button>
-                <button class="run-btn" onclick="runCode()" title="Run Code (Ctrl+Enter)">
-                    <i class="fas fa-play-circle"></i> Run
+                <div class="button-separator"></div>
+                <button class="ai-approach-btn" id="analyze-code-btn" onclick="analyzeCode()" title="Analyze Code with AI">
+                    <i class="fas fa-magic"></i>
+                </button>
+                <div class="button-separator"></div>
+                <button class="clear-btn" onclick="clearEditor()" title="Clear Editor">
+                    <i class="fas fa-eraser"></i>
+                </button>
+                <div class="button-separator"></div>
+                <button class="terminal-btn" onclick="toggleOutput()" title="Toggle Terminal">
+                    <i class="fas fa-terminal"></i>
                 </button>
             </div>
         </div>
@@ -388,16 +664,47 @@
                 </div>
             </div>
         </div>
+        
+        <!-- AI Debug Panel (auto-triggered on errors) -->
+        <div class="ai-debug-panel" id="ai-debug-panel">
+            <div class="ai-debug-header">
+                <div class="ai-debug-title">
+                    <i class="fas fa-bug"></i>
+                    AI Debug Suggestions
+                </div>
+                <div class="ai-panel-actions">
+                    <button class="ai-btn" onclick="closeAIDebug()" title="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="ai-debug-content" id="ai-debug-content">
+            </div>
+        </div>
+
+        <!-- AI Code Analysis Panel (user-triggered) -->
+        <div class="ai-insights-panel" id="ai-analysis-panel" style="display: none;">
+            <div class="ai-panel-header">
+                <div class="ai-panel-title">
+                    <i class="fas fa-chart-line"></i>
+                    AI Code Analysis
+                </div>
+                <div class="ai-panel-actions">
+                    <button class="ai-btn" onclick="closeAIAnalysis()" title="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="ai-insights-content" id="ai-analysis-content">
+            </div>
+        </div>
     </div>
 
-    <button class="show-output-btn" id="showOutputBtn" onclick="toggleOutput()" title="Show Output Panel">
-        <i class="fas fa-terminal"></i>
-    </button>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.53.0/min/vs/loader.min.js"></script>
     <script>
-        let editor;
-        let currentLanguage = 'python';
+        window.editor = null;
+        window.currentLanguage = 'python';
 
         const codeTemplates = {
             python: `# Welcome to DSA Practice!
@@ -484,7 +791,7 @@ int main() {
         });
 
         require(['vs/editor/editor.main'], function() {
-            editor = monaco.editor.create(document.getElementById('monaco-editor'), {
+            window.editor = monaco.editor.create(document.getElementById('monaco-editor'), {
                 value: codeTemplates.python,
                 language: 'python',
                 theme: 'vs-dark',
@@ -502,11 +809,11 @@ int main() {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
-                currentLanguage = this.dataset.lang;
+                window.currentLanguage = this.dataset.lang;
                 
-                const monacoLang = languageMap[currentLanguage];
-                monaco.editor.setModelLanguage(editor.getModel(), monacoLang);
-                editor.setValue(codeTemplates[currentLanguage]);
+                const monacoLang = languageMap[window.currentLanguage];
+                monaco.editor.setModelLanguage(window.editor.getModel(), monacoLang);
+                window.editor.setValue(codeTemplates[window.currentLanguage]);
                 
                 updateEditorTitle();
             });
@@ -519,37 +826,34 @@ int main() {
                 'cpp': '.cpp',
                 'c': '.c'
             };
-            document.getElementById('editor-title').textContent = `code${extensions[currentLanguage]}`;
+            document.getElementById('editor-title').textContent = `code${extensions[window.currentLanguage]}`;
         }
 
         function clearEditor() {
-            editor.setValue(codeTemplates[currentLanguage]);
+            window.editor.setValue(codeTemplates[window.currentLanguage]);
         }
 
         function toggleOutput() {
             const panel = document.getElementById('outputPanel');
-            const showBtn = document.getElementById('showOutputBtn');
-            
+            if (!panel) return;
             panel.classList.toggle('hidden');
-            
-            if (panel.classList.contains('hidden')) {
-                showBtn.classList.add('visible');
-            } else {
-                showBtn.classList.remove('visible');
-            }
         }
 
         async function runCode() {
-            const code = editor.getValue();
+            const code = window.editor.getValue();
             const outputDiv = document.getElementById('output');
             const loadingDiv = document.getElementById('loading');
             const panel = document.getElementById('outputPanel');
-            const showBtn = document.getElementById('showOutputBtn');
+            const aiDebugPanel = document.getElementById('ai-debug-panel');
+            
+            // Hide debug panel when running code again
+            if (aiDebugPanel) {
+                aiDebugPanel.style.display = 'none';
+            }
             
             // Show output panel if hidden
-            if (panel.classList.contains('hidden')) {
+            if (panel && panel.classList.contains('hidden')) {
                 panel.classList.remove('hidden');
-                showBtn.classList.remove('visible');
             }
             
             outputDiv.style.display = 'none';
@@ -563,7 +867,7 @@ int main() {
                     },
                     body: JSON.stringify({
                         code: code,
-                        language: currentLanguage
+                        language: window.currentLanguage
                     })
                 });
                 
@@ -580,12 +884,18 @@ int main() {
                         </div>
                     `;
                 } else {
+                    const errorOutput = result.error || result.output || 'Unknown error';
                     outputDiv.innerHTML = `
                         <div class="output-section">
                             <div class="output-label"><i class="fas fa-exclamation-circle"></i> Error</div>
-                            <pre class="output-error">${escapeHtml(result.error)}</pre>
+                            <pre class="output-error">${escapeHtml(errorOutput)}</pre>
                         </div>
                     `;
+                    
+                    // Auto-trigger AI debugging
+                    if (hasErrorInOutput(errorOutput)) {
+                        getDebugSuggestions(errorOutput);
+                    }
                 }
             } catch (error) {
                 loadingDiv.classList.remove('active');
@@ -634,5 +944,8 @@ int main() {
             document.body.style.cursor = 'default';
         });
     </script>
+    
+    <!-- AI Integration Script -->
+    <script src="{{ url_for('static', filename='js/ai-integration.js') }}"></script>
 </body>
 </html>
