@@ -42,11 +42,11 @@ instance/
 *.swp
 *.swo
 *~
-
+.env
 # OS
 .DS_Store
 Thumbs.db
-
+.gitignore
 # Logs
 *.log
 
