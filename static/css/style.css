@@ -5,31 +5,45 @@
 }
 
 :root {
-    --primary-color: #06b6d4;
-    --secondary-color: #0ea5e9;
-    --accent-color: #f97316;
-    --bg-dark: #0a0e1a;
-    --bg-light: #151b2e;
-    --text-dark: #f1f5f9;
-    --text-light: #cbd5e1;
-    --border-color: #1e3a5f;
-    --code-bg: #1a1f35;
+    /* Modern color palette */
+    --primary-color: #3b82f6;
+    --primary-hover: #2563eb;
+    --secondary-color: #8b5cf6;
+    --accent-color: #ec4899;
     --success: #10b981;
     --warning: #f59e0b;
     --error: #ef4444;
-    --glass-bg: rgba(10, 14, 26, 0.85);
-    --glass-border: rgba(30, 58, 95, 0.6);
+    
+    /* Dark theme colors */
+    --bg-dark: #0f172a;
+    --bg-darker: #020617;
+    --bg-light: #1e293b;
+    --bg-lighter: #334155;
+    
+    /* Text colors */
+    --text-dark: #f8fafc;
+    --text-light: #cbd5e1;
+    --text-muted: #94a3b8;
+    
+    /* UI Elements */
+    --border-color: #2d3748;
+    --code-bg: #1e1e2e;
+    --glass-bg: rgba(15, 23, 42, 0.9);
+    --glass-border: rgba(99, 102, 241, 0.2);
+    --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body {
     font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #0a0e1a 0%, #151b2e 40%, #1a2847 100%);
+    background: linear-gradient(135deg, var(--bg-darker) 0%, var(--bg-dark) 40%, #1e293b 100%);
     background-size: 400% 400%;
     min-height: 100vh;
     color: var(--text-dark);
     animation: bgShift 15s ease-in-out infinite;
     position: relative;
     overflow-x: hidden;
+    line-height: 1.6;
 }
 
 body::before {
@@ -72,11 +86,11 @@ header {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--glass-border);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--card-shadow);
     position: sticky;
     top: 0;
     z-index: 100;
-    transition: all 0.3s ease;
+    transition: var(--transition);
 }
 
 header:hover {
@@ -124,8 +138,20 @@ header:hover {
     color: var(--text-light);
     font-weight: 500;
     font-size: 0.95rem;
-    padding: 0.5rem 0.75rem;
-    border-radius: 12px;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: var(--transition);
+    border: 1px solid transparent;
+}
+
+.nav-links a:hover {
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.nav-links a:active {
+    transform: translateY(1px);
 }
 
 .hero {
@@ -147,15 +173,24 @@ header:hover {
     z-index: -1;
 }
 
-.hero h1 {
-    font-size: 2.8rem;
-    margin-bottom: 0.75rem;
+/* .hero h1 {
+    font-size: 1.9rem;
+    margin-bottom: 0.9rem;
     text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-    background: linear-gradient(45deg, var(--text-dark), rgba(241, 245, 249, 0.9));
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+    background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: textGlow 2s ease-in-out infinite alternate;
+    animation: textGlow 2s ease-in-out infinite alternate, gradientShift 8s ease infinite;
+    font-weight: 800;
+    line-height: 1.2;
+} */
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 @keyframes textGlow {
@@ -183,16 +218,28 @@ header:hover {
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     border: 1px solid var(--glass-border);
-    border-radius: 20px;
-    padding: 1.5rem;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border-radius: 12px;
+    padding: 1.75rem 1.5rem;
+    box-shadow: var(--card-shadow);
+    transition: var(--transition);
     cursor: pointer;
     text-decoration: none;
     color: var(--text-dark);
     display: block;
     position: relative;
     overflow: hidden;
+    height: 100%;
+    border-top: 3px solid var(--primary-color);
+}
+
+.module-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary-color);
+}
+
+.module-card:active {
+    transform: translateY(-2px);
 }
 
 .module-card::before {
@@ -1573,22 +1620,22 @@ i.fas:hover {
 }
 
 .learn-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-    border-color: var(--primary-color);
+transform: translateY(-5px);
+box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+border-color: var(--primary-color);
 }
 
 .learn-icon {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    color: var(--primary-color);
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(6, 182, 212, 0.1);
+font-size: 2.5rem;
+margin-bottom: 1rem;
+color: var(--primary-color);
+width: 70px;
+height: 70px;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+background: rgba(59, 130, 246, 0.1);
 }
 
 .learn-card h3 {
